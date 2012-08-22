@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+
+  <?include Settings.wxi?>
+
+  <?warning $(var.Platform)?>
+  
+  <Product 
+      Id="$(var.ProductId)" 
+      Name="$(var.ProductName)" 
+      Language="1033" 
+      Version="$(var.ProductVersion)" 
+      Manufacturer="$(var.ProductManufacturer)" 
+      UpgradeCode="$(var.ProductUpgradeCode)">
+    
+    <Package 
+      InstallerVersion="400" 
+      InstallPrivileges="elevated"
+      Compressed="yes" 
+      InstallScope="perMachine" 
+      Manufacturer="$(var.ProductManufacturer)" 
+      Description="$(var.ProductName)"
+      Platform="$(var.Platform)"/>
+
+    <Media Id="1" Cabinet="media1.cab" EmbedCab="yes" />
+
+    <MajorUpgrade
+      AllowDowngrades="no"
+      Schedule="afterInstallFinalize"
+      MigrateFeatures="yes"
+      DowngradeErrorMessage="A later or current version of [ProductName] is already installed. To install this version, uninstall the installed version first."
+	    />
+
+    <Directory Id="TARGETDIR" Name="SourceDir">
+      <Directory Id="$(var.PlatformProgramFilesFolder)">
+        <Directory Id="INSTALLLOCATION" Name="TouchMind">
+          <Directory Id="enUS" Name="en-US"/>
+          <Directory Id="jaJP" Name="ja-JP"/>
+        </Directory>
+      </Directory>
+      <Directory Id="ProgramMenuFolder">
+        <Directory Id="APPLICATIONPROGRAMFOLDER" Name="TouchMind"/>
+      </Directory>
+    </Directory>
+
+    <Icon Id="TouchMind_File_ico" SourceFile="TouchMind_File.ico"/>
+
+    <DirectoryRef Id="INSTALLLOCATION">
+      <Component Id="TouchMindExe" Guid="7B8A4C0F-489F-4c64-920D-D4F105D8A05F" Win64="$(var.Win64)">
+        <File Id="TouchMind.exe" Name="TouchMind.exe" DiskId="1" Source="$(var.BinaryDir)\TouchMind.exe" KeyPath="yes"/>
+        <File Id="TouchMind_File.ico" Name="TouchMind_File.ico" DiskId="1" Source="TouchMind_File.ico" KeyPath="no"/>
+        <ProgId Id="TouchMind.tmm" Description="TouchMind Mind Map file" Icon="TouchMind_File.ico">
+          <Extension Id="tmm">
+            <Verb Id="Open" Command="Open" TargetFile="TouchMind.exe" Argument='"%1"'/>
+          </Extension>
+        </ProgId>
+      </Component>
+      <Component Id="license.rtf" Guid="F19CD7F0-BD90-4941-A312-9EACD6C8F4EC" Win64="$(var.Win64)">
+        <File Id="license.rtf" Name="license.rtf" DiskId="1" Source="license.rtf" KeyPath="yes"/>
+      </Component>
+      <Component Id="TouchMindMUI.dll" Guid="1962742A-FC5E-42D0-BE75-2EA67992BB5A" Win64="$(var.Win64)">
+        <File Id="TouchMindMUI.dll" Name="TouchMindMUI.dll" DiskId="1" Source="$(var.BinaryDir)\TouchMindMUI.dll" KeyPath="yes"/>
+      </Component>
+    </DirectoryRef>
+
+    <DirectoryRef Id="enUS">
+      <Component Id="enUS_touchmindmui.dll.mui" Guid="F74D7028-0046-4DBD-9E48-BFF191A93AA0">
+        <File Id="enUS_touchmindmui.dll.mui" Name="touchmindmui.dll.mui" DiskId="1" Source="$(var.BinaryDir)\en-US\touchmindmui.dll.mui" KeyPath="yes"/>
+      </Component>
+    </DirectoryRef>
+
+    <DirectoryRef Id="jaJP">
+      <Component Id="jaJP_touchmindmui.dll.mui" Guid="861FE77D-D5F0-41C3-B098-EAD0F4FC0CA6">
+        <File Id="jaJP_touchmindmui.dll.mui" Name="touchmindmui.dll.mui" DiskId="1" Source="$(var.BinaryDir)\ja-JP\touchmindmui.dll.mui" KeyPath="yes"/>
+      </Component>
+    </DirectoryRef>
+
+    <DirectoryRef Id="APPLICATIONPROGRAMFOLDER">
+      <Component Id="ApplicationShortcut" Guid="1981BE60-D5D5-4a52-A8D7-038BD5CC01D7">
+        <Shortcut Id="ApplicationStartMenuShortcut_TouchMindExe"
+                  Name="TouchMind"
+                  Description="TouchMind"
+                  Target="[INSTALLLOCATION]TouchMind.exe"
+                  WorkingDirectory="INSTALLLOCATION" Icon="TouchMind.ico">
+          <Icon Id="TouchMind.ico" SourceFile="TouchMind.ico"/>
+        </Shortcut>
+        <Shortcut Id="UninstallProduct"
+                  Name="Uninstall TouchMind"
+                  Description="Uninstall TouchMind"
+                  Target="[System64Folder]msiexec.exe"
+                  Arguments="/x [ProductCode]"/>
+        <RemoveFolder Id="APPLICATIONPROGRAMFOLDER" On="uninstall"/>
+        <RegistryValue Root="HKCU" Key="Software\TouchMind\TouchMind" Name="installed"
+                      Type="integer" Value="1" KeyPath="yes"/>
+      </Component>
+    </DirectoryRef>
+
+    <DirectoryRef Id="INSTALLLOCATION">
+      <Directory Id="DirectXRedistDirectory" Name="DirectX_Jun2010">
+        <Component Id="DirectXRedist" Guid="F1211F23-88AE-4bd9-AD5D-2C56A8B88897">
+          <File Id="DXSETUPEXE"
+                  Source="C:\Program Files (x86)\Microsoft DirectX SDK (June 2010)\Redist\DXSETUP.exe"
+                  KeyPath="yes"
+                  Checksum="yes"/>
+          <File Id="dxupdate.cab"
+                  Source="C:\Program Files (x86)\Microsoft DirectX SDK (June 2010)\Redist\dxupdate.cab"/>
+          <File Id="dxdllreg_x86.cab"
+                  Source="C:\Program Files (x86)\Microsoft DirectX SDK (June 2010)\Redist\dxdllreg_x86.cab"/>
+          <File Id="dsetup32.dll"
+                  Source="C:\Program Files (x86)\Microsoft DirectX SDK (June 2010)\Redist\dsetup32.dll"/>
+          <File Id="dsetup.dll"
+                  Source="C:\Program Files (x86)\Microsoft DirectX SDK (June 2010)\Redist\dsetup.dll"/>
+          
+          <File Id="Jun2010_D3DCompiler_43_x64.cab"
+                  Source="C:\Program Files (x86)\Microsoft DirectX SDK (June 2010)\Redist\Jun2010_D3DCompiler_43_x64.cab"/>
+          <File Id="Jun2010_D3DCompiler_43_x86.cab"
+                  Source="C:\Program Files (x86)\Microsoft DirectX SDK (June 2010)\Redist\Jun2010_D3DCompiler_43_x86.cab"/>
+          
+          <File Id="Jun2010_d3dcsx_43_x86.cab"
+                  Source="C:\Program Files (x86)\Microsoft DirectX SDK (June 2010)\Redist\Jun2010_d3dcsx_43_x86.cab"/>
+          <File Id="Jun2010_d3dcsx_43_x64.cab"
+                  Source="C:\Program Files (x86)\Microsoft DirectX SDK (June 2010)\Redist\Jun2010_d3dcsx_43_x64.cab"/>
+
+          <File Id="Jun2010_d3dx10_43_x86.cab"
+                  Source="C:\Program Files (x86)\Microsoft DirectX SDK (June 2010)\Redist\Jun2010_d3dx10_43_x86.cab"/>
+          <File Id="Jun2010_d3dx10_43_x64.cab"
+                  Source="C:\Program Files (x86)\Microsoft DirectX SDK (June 2010)\Redist\Jun2010_d3dx10_43_x64.cab"/>
+
+          <File Id="Jun2010_d3dx11_43_x86.cab"
+                  Source="C:\Program Files (x86)\Microsoft DirectX SDK (June 2010)\Redist\Jun2010_d3dx11_43_x86.cab"/>
+          <File Id="Jun2010_d3dx11_43_x64.cab"
+                  Source="C:\Program Files (x86)\Microsoft DirectX SDK (June 2010)\Redist\Jun2010_d3dx11_43_x64.cab"/>
+
+          <File Id="Jun2010_d3dx9_43_x86.cab"
+                  Source="C:\Program Files (x86)\Microsoft DirectX SDK (June 2010)\Redist\Jun2010_d3dx9_43_x86.cab"/>
+          <File Id="Jun2010_d3dx9_43_x64.cab"
+                  Source="C:\Program Files (x86)\Microsoft DirectX SDK (June 2010)\Redist\Jun2010_d3dx9_43_x64.cab"/>
+
+          <File Id="Jun2010_XACT_x86.cab"
+                  Source="C:\Program Files (x86)\Microsoft DirectX SDK (June 2010)\Redist\Jun2010_XACT_x86.cab"/>
+          <File Id="Jun2010_XACT_x64.cab"
+                  Source="C:\Program Files (x86)\Microsoft DirectX SDK (June 2010)\Redist\Jun2010_XACT_x64.cab"/>
+
+          <File Id="Jun2010_XAudio_x86.cab"
+                  Source="C:\Program Files (x86)\Microsoft DirectX SDK (June 2010)\Redist\Jun2010_XAudio_x86.cab"/>
+          <File Id="Jun2010_XAudio_x64.cab"
+                  Source="C:\Program Files (x86)\Microsoft DirectX SDK (June 2010)\Redist\Jun2010_XAudio_x64.cab"/>
+        </Component>
+      </Directory>
+    </DirectoryRef>
+
+    <Feature Id="ProductFeature" Title="TouchMind_WiX" Level="1">
+      <ComponentRef Id="TouchMindExe"/>
+      <ComponentRef Id="license.rtf"/>
+      <ComponentRef Id="TouchMindMUI.dll"/>
+      <ComponentRef Id="enUS_touchmindmui.dll.mui"/>
+      <ComponentRef Id="jaJP_touchmindmui.dll.mui"/>
+      <ComponentRef Id="ApplicationShortcut"/>
+    </Feature>
+
+    <Feature Id="DirectXRedist"
+              Title="DirectX Runtime June 2010"
+              AllowAdvertise="no"
+              Display="hidden" Level="1">
+      <ComponentRef Id="DirectXRedist"/>
+    </Feature>
+
+    <CustomAction Id="InstallDirectX"
+                       FileKey="DXSETUPEXE"
+                       ExeCommand="/silent"
+                       Execute="deferred"
+                       Impersonate="no"
+                       Return="check"/>
+    <InstallExecuteSequence>
+      <Custom Action="InstallDirectX" Before="InstallFinalize">
+        <![CDATA[NOT REMOVE]]>
+      </Custom>
+    </InstallExecuteSequence>
+
+    
+    
+    <UI>
+      <ProgressText Action="InstallDirectX">Installing DirectX June 2010</ProgressText>
+    </UI>
+    
+    <UIRef Id="WixUI_InstallDir"/>
+    <UIRef Id="WixUI_ErrorProgressText" />
+    <Property Id="WIXUI_INSTALLDIR" Value="INSTALLLOCATION" />
+    <WixVariable Id="WixUILicenseRtf" Value="license.rtf"/>
+
+    <Condition Message="This application is only supported on Windows Vista, Windows 7, or higher.">
+      <![CDATA[Installed OR (VersionNT >= 600)]]>
+    </Condition>
+
+  </Product>
+</Wix>

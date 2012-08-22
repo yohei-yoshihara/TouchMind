@@ -1,0 +1,160 @@
+// Microsoft Visual C++ generated resource script.
+//
+#include "resource.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#ifndef APSTUDIO_INVOKED
+#include "targetver.h"
+#endif
+#define APSTUDIO_HIDDEN_SYMBOLS
+#include "windows.h"
+#undef APSTUDIO_HIDDEN_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// âpåÍ (ïƒçë) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
+//#pragma code_page(932)
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Bitmap
+//
+
+IDB_TOUCHMIND           BITMAP                  "res\\TouchMindL.bmp"
+
+IDB_NODESTYLE_ROUNDEDRECT BITMAP "..\\TouchMind\\res\\RoundedRect.bmp"
+IDB_NODESTYLE_RECTANGLE   BITMAP "..\\TouchMind\\res\\Rectangle.bmp"
+
+IDB_LINEWIDTH_1           BITMAP "..\\TouchMind\\res\\line_width1_36x36.bmp"
+IDB_LINEWIDTH_3           BITMAP "..\\TouchMind\\res\\line_width3_36x36.bmp"
+IDB_LINEWIDTH_5           BITMAP "..\\TouchMind\\res\\line_width5_36x36.bmp"
+IDB_LINEWIDTH_8           BITMAP "..\\TouchMind\\res\\line_width8_36x36.bmp"
+
+IDB_LINESTYLE_SOLID       BITMAP "..\\TouchMind\\res\\line_solid_36x36.bmp"
+IDB_LINESTYLE_DASHED      BITMAP "..\\TouchMind\\res\\line_dashed_36x36.bmp"
+IDB_LINESTYLE_DOTTED      BITMAP "..\\TouchMind\\res\\line_dotted_36x36.bmp"
+
+IDB_LINESTYLE_SOLID64x24  BITMAP "..\\TouchMind\\res\\line_solid_64x24.bmp"
+IDB_LINESTYLE_DASHED64x24 BITMAP "..\\TouchMind\\res\\line_dashed_64x24.bmp"
+IDB_LINESTYLE_DOTTED64x24 BITMAP "..\\TouchMind\\res\\line_dotted_64x24.bmp"
+
+IDB_LINE_EDGE_STYLE_NORMAL      BITMAP  "..\\TouchMind\\res\\edge_normal.bmp"
+IDB_LINE_EDGE_STYLE_EDGE1_ARROW BITMAP  "..\\TouchMind\\res\\edge_edge1_arrow.bmp"
+IDB_LINE_EDGE_STYLE_EDGE2_ARROW BITMAP  "..\\TouchMind\\res\\edge_edge2_arrow.bmp"
+IDB_LINE_EDGE_STYLE_BOTH_ARROW  BITMAP  "..\\TouchMind\\res\\edge_both_arrow.bmp"
+IDB_LINE_EDGE_STYLE_EDGE1_CIRCLE BITMAP "..\\TouchMind\\res\\edge_edge1_circle.bmp"
+IDB_LINE_EDGE_STYLE_EDGE2_CIRCLE BITMAP "..\\TouchMind\\res\\edge_edge2_circle.bmp"
+IDB_LINE_EDGE_STYLE_BOTH_CIRCLE  BITMAP "..\\TouchMind\\res\\edge_both_circle.bmp"
+IDB_LINE_EDGE_STYLE_CIRCLE_ARROW BITMAP "..\\TouchMind\\res\\edge_circle_arrow.bmp"
+IDB_LINE_EDGE_STYLE_ARROW_CIRCLE BITMAP "..\\TouchMind\\res\\edge_arrow_circle.bmp"
+
+IDB_LINE_EDGE_STYLE_NORMAL36x36       BITMAP "..\\TouchMind\\res\\edge_normal_36x36.bmp"
+IDB_LINE_EDGE_STYLE_EDGE1_ARROW36x36  BITMAP "..\\TouchMind\\res\\edge_left_arrow_36x36.bmp"
+IDB_LINE_EDGE_STYLE_EDGE2_ARROW36x36  BITMAP "..\\TouchMind\\res\\edge_right_arrow_36x36.bmp"
+IDB_LINE_EDGE_STYLE_BOTH_ARROW36x36   BITMAP "..\\TouchMind\\res\\edge_both_arrow_36x36.bmp"
+IDB_LINE_EDGE_STYLE_EDGE1_CIRCLE36x36 BITMAP "..\\TouchMind\\res\\edge_left_circle_36x36.bmp"
+IDB_LINE_EDGE_STYLE_EDGE2_CIRCLE36x36 BITMAP "..\\TouchMind\\res\\edge_right_circle_36x36.bmp"
+IDB_LINE_EDGE_STYLE_BOTH_CIRCLE36x36  BITMAP "..\\TouchMind\\res\\edge_both_circle_36x36.bmp"
+IDB_LINE_EDGE_STYLE_CIRCLE_ARROW36x36 BITMAP "..\\TouchMind\\res\\edge_circle_arrow_36x36.bmp"
+IDB_LINE_EDGE_STYLE_ARROW_CIRCLE36x36 BITMAP "..\\TouchMind\\res\\edge_arrow_circle_36x36.bmp"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Icon
+//
+
+// Icon with lowest ID value placed first to ensure application icon
+// remains consistent on all systems.
+IDI_TOUCHMIND           ICON                    "TouchMind.ico"
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE 
+BEGIN
+    "resource.h\0"
+END
+
+2 TEXTINCLUDE 
+BEGIN
+    "#ifndef APSTUDIO_INVOKED\r\n"
+    "#include ""targetver.h""\r\n"
+    "#endif\r\n"
+    "#define APSTUDIO_HIDDEN_SYMBOLS\r\n"
+    "#include ""windows.h""\r\n"
+    "#undef APSTUDIO_HIDDEN_SYMBOLS\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE 
+BEGIN
+    "\r\n"
+    "\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// RCDATA
+//
+
+IDR_PIXEL_SHADER        RCDATA                  "default.fxo"
+IDR_GAUSS_SHADER        RCDATA                  "gauss.fxo"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Accelerator
+//
+
+IDR_ACCELERATOR_DEFAULT ACCELERATORS
+BEGIN
+    "^C",           ID_ACCELERATOR_COPY,    ASCII,  NOINVERT
+    "^X",           ID_ACCELERATOR_CUT,     ASCII,  NOINVERT
+    "^N",           ID_ACCELERATOR_NEW,     ASCII,  NOINVERT
+    "^O",           ID_ACCELERATOR_OPEN,    ASCII,  NOINVERT
+    "^V",           ID_ACCELERATOR_PASTE,   ASCII,  NOINVERT
+    "^S",           ID_ACCELERATOR_SAVE,    ASCII,  NOINVERT
+    "^Z",           ID_ACCELERATOR_UNDO,    ASCII,  NOINVERT
+    VK_F12,         ID_ACCELERATOR_DUMP,    VIRTKEY, SHIFT, CONTROL, ALT, NOINVERT
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// String Table
+//
+
+STRINGTABLE
+BEGIN
+    IDS_APP_TITLE           "TouchMind"
+END
+
+#endif    // âpåÍ (ïƒçë) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+
+
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+

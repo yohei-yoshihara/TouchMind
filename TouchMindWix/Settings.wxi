@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Include>
+  
+  <?define ProductName="TouchMind" ?>
+  <?define ProductVersion="1.0.1.0" ?>
+  <?define ProductManufacturer="Yohei Yoshihara" ?>
+  
+  <?if $(var.Platform) = x64 ?>
+    <?define ProductId="FA5A1CAC-1E9B-407D-8382-A519E83C8997" ?>
+    <?define ProductUpgradeCode="9E4E5E9A-1CA4-43CE-BAA9-6FA62F4F89DC" ?>
+    <?define Win64="yes" ?>
+    <?define PlatformProgramFilesFolder="ProgramFiles64Folder" ?>
+    <?define BinaryDir="..\x64\Release" ?>
+  <?else ?>
+    <?define ProductId="6548db90-c0dc-44d4-a22a-285e4d153457" ?>
+    <?define ProductUpgradeCode="1557df32-eedb-4a0e-8d35-0cebf529ead9" ?>
+    <?define Win64="no" ?>
+    <?define PlatformProgramFilesFolder="ProgramFilesFolder" ?>
+    <?define BinaryDir="..\Release" ?>
+  <?endif ?>
+
+</Include>

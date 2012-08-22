@@ -1,0 +1,323 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{2994E98A-0595-4E4E-9103-6FBD27978054}</ProjectGuid>
+    <RootNamespace>TouchMind</RootNamespace>
+    <Keyword>Win32Proj</Keyword>
+    <SccProjectName>Svn</SccProjectName>
+    <SccAuxPath>Svn</SccAuxPath>
+    <SccLocalPath>Svn</SccLocalPath>
+    <SccProvider>SubversionScc</SccProvider>
+    <ProjectName>TouchMind</ProjectName>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseOfAtl>Static</UseOfAtl>
+    <CharacterSet>Unicode</CharacterSet>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseOfAtl>Static</UseOfAtl>
+    <CharacterSet>Unicode</CharacterSet>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseOfAtl>Static</UseOfAtl>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseOfAtl>Static</UseOfAtl>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="$(SolutionDir)\TouchMindLib\props/DirectX_x86.props" />
+    <Import Project="$(SolutionDir)\TouchMindLib\props/boost_x86.props" />
+    <Import Project="$(SolutionDir)\TouchMindLib\props/WindowsSDK_x86.props" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="$(SolutionDir)\TouchMindLib\props/DirectX_x64.props" />
+    <Import Project="$(SolutionDir)\TouchMindLib\props/boost_x64.props" />
+    <Import Project="$(SolutionDir)\TouchMindLib\props/WindowsSDK_x64.props" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="$(SolutionDir)\TouchMindLib\props/DirectX_x86.props" />
+    <Import Project="$(SolutionDir)\TouchMindLib\props/boost_x86.props" />
+    <Import Project="$(SolutionDir)\TouchMindLib\props/WindowsSDK_x86.props" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="$(SolutionDir)\TouchMindLib\props/DirectX_x64.props" />
+    <Import Project="$(SolutionDir)\TouchMindLib\props/boost_x64.props" />
+    <Import Project="$(SolutionDir)\TouchMindLib\props/WindowsSDK_x64.props" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup>
+    <_ProjectFileVersion>10.0.30319.1</_ProjectFileVersion>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(SolutionDir)$(Configuration)\</OutDir>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(SolutionDir)$(Platform)\$(Configuration)\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(Configuration)\</IntDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(Platform)\$(Configuration)\</IntDir>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</LinkIncremental>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</LinkIncremental>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(SolutionDir)$(Configuration)\</OutDir>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(SolutionDir)$(Platform)\$(Configuration)\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(Configuration)\</IntDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(Platform)\$(Configuration)\</IntDir>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</LinkIncremental>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</LinkIncremental>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <AdditionalOptions>/Zm256 %(AdditionalOptions)</AdditionalOptions>
+      <Optimization>Disabled</Optimization>
+      <AdditionalIncludeDirectories>..\TouchMindLib</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <MinimalRebuild>true</MinimalRebuild>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
+      <MultiProcessorCompilation>false</MultiProcessorCompilation>
+    </ClCompile>
+    <Link>
+      <AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>
+      </AdditionalLibraryDirectories>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <SubSystem>Windows</SubSystem>
+      <TargetMachine>MachineX86</TargetMachine>
+      <DelayLoadDLLs>user32.dll;shell32.dll;Uxtheme.dll;%(DelayLoadDLLs)</DelayLoadDLLs>
+    </Link>
+    <PreBuildEvent>
+      <Command>
+      </Command>
+    </PreBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <AdditionalOptions>/Zm256 %(AdditionalOptions)</AdditionalOptions>
+      <Optimization>Disabled</Optimization>
+      <AdditionalIncludeDirectories>..\TouchMindLib</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <MultiProcessorCompilation>false</MultiProcessorCompilation>
+    </ClCompile>
+    <Link>
+      <AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>
+      </AdditionalLibraryDirectories>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <SubSystem>Windows</SubSystem>
+      <DelayLoadDLLs>user32.dll;shell32.dll;Uxtheme.dll;%(DelayLoadDLLs)</DelayLoadDLLs>
+    </Link>
+    <PreBuildEvent>
+      <Command>
+      </Command>
+    </PreBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <AdditionalOptions>/Zm256 %(AdditionalOptions)</AdditionalOptions>
+      <Optimization>MaxSpeed</Optimization>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <AdditionalIncludeDirectories>..\TouchMindLib</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <WarningLevel>Level4</WarningLevel>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <MultiProcessorCompilation>false</MultiProcessorCompilation>
+    </ClCompile>
+    <Link>
+      <AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>
+      </AdditionalLibraryDirectories>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <SubSystem>Windows</SubSystem>
+      <OptimizeReferences>true</OptimizeReferences>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <TargetMachine>MachineX86</TargetMachine>
+      <DelayLoadDLLs>user32.dll;shell32.dll;Uxtheme.dll;%(DelayLoadDLLs)</DelayLoadDLLs>
+    </Link>
+    <PreBuildEvent>
+      <Command>
+      </Command>
+    </PreBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <AdditionalOptions>/Zm256 %(AdditionalOptions)</AdditionalOptions>
+      <Optimization>MaxSpeed</Optimization>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <AdditionalIncludeDirectories>..\TouchMindLib</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <WarningLevel>Level4</WarningLevel>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <MultiProcessorCompilation>false</MultiProcessorCompilation>
+    </ClCompile>
+    <Link>
+      <AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>
+      </AdditionalLibraryDirectories>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <SubSystem>Windows</SubSystem>
+      <OptimizeReferences>true</OptimizeReferences>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <DelayLoadDLLs>user32.dll;shell32.dll;Uxtheme.dll;%(DelayLoadDLLs)</DelayLoadDLLs>
+    </Link>
+    <PreBuildEvent>
+      <Command>
+      </Command>
+    </PreBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="TouchMind.cpp" />
+    <ClCompile Include="stdafx.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="TouchMind.h" />
+    <ClInclude Include="Resource.h" />
+    <ClInclude Include="stdafx.h" />
+    <ClInclude Include="targetver.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="cleanall.bat" />
+    <None Include="mui.bat" />
+    <None Include="mui_rcconfig.xml" />
+    <None Include="mui_x64.bat" />
+    <None Include="res\BothSideArrowLine.bmp" />
+    <None Include="res\DashedLine.bmp" />
+    <None Include="res\DottedLine.bmp" />
+    <None Include="res\edge_arrow_circle.bmp" />
+    <None Include="res\edge_arrow_circle_36x36.bmp" />
+    <None Include="res\edge_both_arrow.bmp" />
+    <None Include="res\edge_both_arrow_36x36.bmp" />
+    <None Include="res\edge_both_circle.bmp" />
+    <None Include="res\edge_both_circle_36x36.bmp" />
+    <None Include="res\edge_circle_arrow.bmp" />
+    <None Include="res\edge_circle_arrow_36x36.bmp" />
+    <None Include="res\edge_edge1_arrow.bmp" />
+    <None Include="res\edge_edge1_circle.bmp" />
+    <None Include="res\edge_edge2_arrow.bmp" />
+    <None Include="res\edge_edge2_circle.bmp" />
+    <None Include="res\edge_left_arrow_36x36.bmp" />
+    <None Include="res\edge_left_circle_36x36.bmp" />
+    <None Include="res\edge_normal.bmp" />
+    <None Include="res\edge_normal_36x36.bmp" />
+    <None Include="res\edge_right_arrow_36x36.bmp" />
+    <None Include="res\edge_right_circle_36x36.bmp" />
+    <None Include="res\EditText64x64.bmp" />
+    <None Include="res\Ellipse.bmp" />
+    <None Include="res\LeftArrowLine.bmp" />
+    <None Include="res\Line1.bmp" />
+    <None Include="res\Line3.bmp" />
+    <None Include="res\Line5.bmp" />
+    <None Include="res\Line8.bmp" />
+    <None Include="res\line_dashed_36x36.bmp" />
+    <None Include="res\line_dashed_64x24.bmp" />
+    <None Include="res\line_dotted_36x36.bmp" />
+    <None Include="res\line_dotted_64x24.bmp" />
+    <None Include="res\line_solid_36x36.bmp" />
+    <None Include="res\line_solid_64x24.bmp" />
+    <None Include="res\line_width1_36x36.bmp" />
+    <None Include="res\line_width3_36x36.bmp" />
+    <None Include="res\line_width5_36x36.bmp" />
+    <None Include="res\line_width8_36x36.bmp" />
+    <None Include="res\Link.bmp" />
+    <None Include="res\NewNode64x64.bmp" />
+    <None Include="res\NormalLine.bmp" />
+    <None Include="res\Rectangle.bmp" />
+    <None Include="res\RightArrowLine.bmp" />
+    <None Include="res\RoundedRect.bmp" />
+    <None Include="res\TouchMindL.bmp" />
+    <None Include="TODO.txt" />
+    <None Include="TouchMind_File.ico" />
+    <None Include="res\Copy.bmp" />
+    <None Include="res\Cut.bmp" />
+    <None Include="res\BackgroundColor.bmp" />
+    <None Include="res\ExitL.bmp" />
+    <None Include="TouchMind.ico" />
+    <None Include="res\NewL.bmp" />
+    <None Include="res\OpenFileL.bmp" />
+    <None Include="res\Paste.bmp" />
+    <None Include="res\PrintL.bmp" />
+    <None Include="res\PrintPreviewL.bmp" />
+    <None Include="res\SaveAsL.bmp" />
+    <None Include="res\SaveL.bmp" />
+    <None Include="res\UndoS.bmp" />
+    <CustomBuild Include="default.fx">
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">fxc /Zi /T fx_4_0 /Fo default.fxo default.fx</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">fxc /Zi /T fx_4_0 /Fo default.fxo default.fx</Command>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">default.fxo;%(Outputs)</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">default.fxo;%(Outputs)</Outputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">fxc /T fx_4_0 /Fo default.fxo default.fx</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">fxc /T fx_4_0 /Fo default.fxo default.fx</Command>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">default.fxo;%(Outputs)</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">default.fxo;%(Outputs)</Outputs>
+    </CustomBuild>
+    <CustomBuild Include="gauss.fx">
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">fxc /Zi /T fx_4_0 /Fo gauss.fxo gauss.fx</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">fxc /Zi /T fx_4_0 /Fo gauss.fxo gauss.fx</Command>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">gauss.fxo;%(Outputs)</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">gauss.fxo;%(Outputs)</Outputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">fxc /T fx_4_0 /Fo gauss.fxo gauss.fx</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">fxc /T fx_4_0 /Fo gauss.fxo gauss.fx</Command>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">gauss.fxo;%(Outputs)</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">gauss.fxo;%(Outputs)</Outputs>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="TouchMind.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\TouchMindLib\TouchMindLib.vcxproj">
+      <Project>{4ad4f9f3-8c23-4518-9914-0f6364d90478}</Project>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

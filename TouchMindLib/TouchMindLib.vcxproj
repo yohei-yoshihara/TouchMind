@@ -1,0 +1,394 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{4AD4F9F3-8C23-4518-9914-0F6364D90478}</ProjectGuid>
+    <RootNamespace>TouchMindLib</RootNamespace>
+    <Keyword>Win32Proj</Keyword>
+    <ProjectName>TouchMindLib</ProjectName>
+    <SccProjectName>Svn</SccProjectName>
+    <SccAuxPath>Svn</SccAuxPath>
+    <SccLocalPath>Svn</SccLocalPath>
+    <SccProvider>SubversionScc</SccProvider>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <CharacterSet>Unicode</CharacterSet>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <CharacterSet>Unicode</CharacterSet>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="$(SolutionDir)\TouchMindLib\props/DirectX_x86.props" />
+    <Import Project="$(SolutionDir)\TouchMindLib\props/boost_x86.props" />
+    <Import Project="$(SolutionDir)\TouchMindLib\props/WindowsSDK_x86.props" />
+    <Import Project="$(SolutionDir)\TouchMindLib\props/TouchMindLib.props" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="$(SolutionDir)\TouchMindLib\props/DirectX_x64.props" />
+    <Import Project="$(SolutionDir)\TouchMindLib\props/boost_x64.props" />
+    <Import Project="$(SolutionDir)\TouchMindLib\props/WindowsSDK_x64.props" />
+    <Import Project="$(SolutionDir)\TouchMindLib\props/TouchMindLib.props" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="$(SolutionDir)\TouchMindLib\props/DirectX_x86.props" />
+    <Import Project="$(SolutionDir)\TouchMindLib\props/boost_x86.props" />
+    <Import Project="$(SolutionDir)\TouchMindLib\props/WindowsSDK_x86.props" />
+    <Import Project="$(SolutionDir)\TouchMindLib\props/TouchMindLib.props" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="$(SolutionDir)\TouchMindLib\props/DirectX_x64.props" />
+    <Import Project="$(SolutionDir)\TouchMindLib\props/boost_x64.props" />
+    <Import Project="$(SolutionDir)\TouchMindLib\props/WindowsSDK_x64.props" />
+    <Import Project="$(SolutionDir)\TouchMindLib\props/TouchMindLib.props" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup>
+    <_ProjectFileVersion>10.0.30319.1</_ProjectFileVersion>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(SolutionDir)$(Configuration)\</OutDir>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(SolutionDir)$(Platform)\$(Configuration)\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(Configuration)\</IntDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(Platform)\$(Configuration)\</IntDir>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(SolutionDir)$(Configuration)\</OutDir>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(SolutionDir)$(Platform)\$(Configuration)\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(Configuration)\</IntDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(Platform)\$(Configuration)\</IntDir>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <AdditionalOptions>/Zm256 %(AdditionalOptions)</AdditionalOptions>
+      <Optimization>Disabled</Optimization>
+      <AdditionalIncludeDirectories>..\TouchMind</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <MinimalRebuild>true</MinimalRebuild>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <GenerateXMLDocumentationFiles>false</GenerateXMLDocumentationFiles>
+      <XMLDocumentationFileName>$(IntDir)</XMLDocumentationFileName>
+      <WarningLevel>Level4</WarningLevel>
+      <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
+      <MultiProcessorCompilation>false</MultiProcessorCompilation>
+      <TreatWarningAsError>true</TreatWarningAsError>
+    </ClCompile>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <AdditionalOptions>/Zm256 %(AdditionalOptions)</AdditionalOptions>
+      <Optimization>Disabled</Optimization>
+      <AdditionalIncludeDirectories>
+      </AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <GenerateXMLDocumentationFiles>false</GenerateXMLDocumentationFiles>
+      <XMLDocumentationFileName>$(IntDir)</XMLDocumentationFileName>
+      <WarningLevel>Level4</WarningLevel>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <MultiProcessorCompilation>false</MultiProcessorCompilation>
+      <TreatWarningAsError>true</TreatWarningAsError>
+    </ClCompile>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <AdditionalOptions>/Zm256 %(AdditionalOptions)</AdditionalOptions>
+      <Optimization>MaxSpeed</Optimization>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <AdditionalIncludeDirectories>..\TouchMind</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <MultiProcessorCompilation>false</MultiProcessorCompilation>
+    </ClCompile>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <AdditionalOptions>/Zm256 %(AdditionalOptions)</AdditionalOptions>
+      <Optimization>MaxSpeed</Optimization>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <AdditionalIncludeDirectories>..\TouchMind</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <MultiProcessorCompilation>false</MultiProcessorCompilation>
+    </ClCompile>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="touchmind\model\BaseModel.cpp" />
+    <ClCompile Include="touchmind\model\linkedge\LinkEdgeModel.cpp" />
+    <ClCompile Include="touchmind\model\link\LinkModel.cpp" />
+    <ClCompile Include="touchmind\model\node\iterator\ChildFirstNodeIterator.cpp" />
+    <ClCompile Include="touchmind\model\node\iterator\ParentFirstNodeIterator.cpp" />
+    <ClCompile Include="touchmind\model\path\PathModel.cpp" />
+    <ClCompile Include="touchmind\operation\FileOperation.cpp" />
+    <ClCompile Include="touchmind\print\PrintTicketHelper.cpp" />
+    <ClCompile Include="touchmind\print\XPSGeometryBuilder.cpp" />
+    <ClCompile Include="touchmind\prop\LineEdgeStyle.cpp" />
+    <ClCompile Include="touchmind\prop\LineStyle.cpp" />
+    <ClCompile Include="touchmind\prop\LineWidth.cpp" />
+    <ClCompile Include="touchmind\prop\NodeShape.cpp" />
+    <ClCompile Include="touchmind\ribbon\dispatch\INodeProperty.cpp" />
+    <ClCompile Include="touchmind\ribbon\handler\LineEdgeStyleCommandHandler.cpp" />
+    <ClCompile Include="touchmind\ribbon\handler\LineColorCommandHandler.cpp" />
+    <ClCompile Include="touchmind\ribbon\handler\LineStyleCommandHandler.cpp" />
+    <ClCompile Include="touchmind\ribbon\dispatch\RibbonRequestDispatcher.cpp" />
+    <ClCompile Include="touchmind\ribbon\handler\NodeBackgroundColorCommandHandler.cpp" />
+    <ClCompile Include="touchmind\ribbon\PropertySet.cpp" />
+    <ClCompile Include="touchmind\ribbon\RibbonFramework.cpp" />
+    <ClCompile Include="touchmind\ribbon\handler\NodeShapeCommandHandler.cpp" />
+    <ClCompile Include="touchmind\ribbon\handler\LineWidthCommandHandler.cpp" />
+    <ClCompile Include="touchmind\ribbon\dispatch\ILineProperty.cpp" />
+    <ClCompile Include="touchmind\selection\DefaultPropertyModel.cpp" />
+    <ClCompile Include="touchmind\selection\SelectableSupport.cpp" />
+    <ClCompile Include="touchmind\selection\SelectionManager.cpp" />
+    <ClCompile Include="touchmind\touch\AbstractManipulationHelper.cpp" />
+    <ClCompile Include="touchmind\animation\AnimationManagerEventHandler.cpp" />
+    <ClCompile Include="touchmind\touch\TouchUtil.cpp" />
+    <ClCompile Include="touchmind\util\BitmapHelper.cpp" />
+    <ClCompile Include="touchmind\shell\Clipboard.cpp" />
+    <ClCompile Include="touchmind\Common.cpp" />
+    <ClCompile Include="touchmind\model\CurvePoints.cpp" />
+    <ClCompile Include="touchmind\control\DWriteEditControlDisplayAttribute.cpp" />
+    <ClCompile Include="touchmind\control\DWriteEditControlTextEditSink.cpp" />
+    <ClCompile Include="touchmind\shell\FileAssociation.cpp" />
+    <ClCompile Include="touchmind\text\FontAttribute.cpp" />
+    <ClCompile Include="touchmind\text\FontAttributeCommand.cpp" />
+    <ClCompile Include="touchmind\logging\Logging.cpp" />
+    <ClCompile Include="touchmind\MUI.cpp" />
+    <ClCompile Include="touchmind\print\XpsDWriteTextRenderer.cpp" />
+    <ClCompile Include="touchmind\print\XPSPrint.cpp" />
+    <ClCompile Include="touchmind\print\XPSPrintCommon.cpp" />
+    <ClCompile Include="touchmind\print\XPSPrintSetupDialog.cpp" />
+    <ClCompile Include="touchmind\ribbon\handler\FontControlCommandHandler.cpp" />
+    <ClCompile Include="touchmind\Configuration.cpp" />
+    <ClCompile Include="touchmind\util\ColorUtil.cpp" />
+    <ClCompile Include="touchmind\util\CoordinateConversion.cpp" />
+    <ClCompile Include="touchmind\Context.cpp" />
+    <ClCompile Include="touchmind\control\DWriteTextSizeProvider.cpp" />
+    <ClCompile Include="touchmind\view\BaseView.cpp" />
+    <ClCompile Include="touchmind\view\GeometryBuilder.cpp" />
+    <ClCompile Include="touchmind\view\linkedge\BaseLinkEdgeView.cpp" />
+    <ClCompile Include="touchmind\view\link\BaseLinkView.cpp" />
+    <ClCompile Include="touchmind\view\linkedge\impl\ArrowLinkEdgeView.cpp" />
+    <ClCompile Include="touchmind\view\linkedge\impl\CircleLinkEdgeView.cpp" />
+    <ClCompile Include="touchmind\view\link\impl\DefaultLinkView.cpp" />
+    <ClCompile Include="touchmind\view\linkedge\impl\NormalLinkEdgeView.cpp" />
+    <ClCompile Include="touchmind\view\linkedge\LinkEdgeViewFactory.cpp" />
+    <ClCompile Include="touchmind\view\link\LinkViewManager.cpp" />
+    <ClCompile Include="touchmind\view\node\impl\RectangleNodeView.cpp" />
+    <ClCompile Include="touchmind\view\node\impl\RoundedRectNodeView.cpp" />
+    <ClCompile Include="touchmind\view\node\BaseNodeView.cpp" />
+    <ClCompile Include="touchmind\view\link\LinkViewFactory.cpp" />
+    <ClCompile Include="touchmind\view\node\NodeViewFactory.cpp" />
+    <ClCompile Include="touchmind\view\path\impl\DefaultPathView.cpp" />
+    <ClCompile Include="touchmind\view\path\BasePathView.cpp" />
+    <ClCompile Include="touchmind\view\path\PathViewFactory.cpp" />
+    <ClCompile Include="touchmind\win\CanvasPanel.cpp" />
+    <ClCompile Include="touchmind\control\DWriteEditControl.cpp" />
+    <ClCompile Include="touchmind\control\DWriteEditControlManager.cpp" />
+    <ClCompile Include="touchmind\control\DWriteEditControlTextStoreACP.cpp" />
+    <ClCompile Include="touchmind\filter\GaussFilter.cpp" />
+    <ClCompile Include="touchmind\layout\LayoutManager.cpp" />
+    <ClCompile Include="touchmind\touch\ManipulationHelper.cpp" />
+    <ClCompile Include="touchmind\model\MapModel.cpp" />
+    <ClCompile Include="touchmind\tsf\MessageQueue.cpp" />
+    <ClCompile Include="touchmind\operation\CreateLinkOperation.cpp" />
+    <ClCompile Include="touchmind\operation\NodeMovingOperation.cpp" />
+    <ClCompile Include="touchmind\operation\NodeResizingOperation.cpp" />
+    <ClCompile Include="touchmind\win\TouchMindApp.cpp" />
+    <ClCompile Include="touchmind\ribbon\RibbonCommandHandler.cpp" />
+    <ClCompile Include="touchmind\shell\MRUManager.cpp" />
+    <ClCompile Include="touchmind\model\node\NodeModel.cpp">
+      <XMLDocumentationFileName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(IntDir)xdc</XMLDocumentationFileName>
+      <XMLDocumentationFileName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(IntDir)xdc</XMLDocumentationFileName>
+    </ClCompile>
+    <ClCompile Include="touchmind\converter\NodeModelToTextConverter.cpp" />
+    <ClCompile Include="touchmind\converter\NodeModelXMLDecoder.cpp" />
+    <ClCompile Include="touchmind\converter\NodeModelXMLEncoder.cpp" />
+    <ClCompile Include="touchmind\util\OSVersionChecker.cpp" />
+    <ClCompile Include="touchmind\view\node\NodeFigureHelper.cpp" />
+    <ClCompile Include="touchmind\util\ScrollBarHelper.cpp" />
+    <ClCompile Include="touchmind\view\node\NodeViewManager.cpp" />
+    <ClCompile Include="stdafx.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="touchmind\util\TimeUtil.cpp" />
+    <ClCompile Include="touchmind\control\StatusBar.cpp" />
+    <ClCompile Include="touchmind\tsf\TSFManager.cpp" />
+    <ClCompile Include="touchmind\util\Utils.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="forwarddecl.h" />
+    <ClInclude Include="libs.h" />
+    <ClInclude Include="resource.h" />
+    <ClInclude Include="touchmind\animation\IAnimationStatusChangedListener.h" />
+    <ClInclude Include="touchmind\model\BaseModel.h" />
+    <ClInclude Include="touchmind\model\linkedge\LinkEdgeModel.h" />
+    <ClInclude Include="touchmind\model\link\LinkModel.h" />
+    <ClInclude Include="touchmind\model\node\iterator\ChildFirstNodeIterator.h" />
+    <ClInclude Include="touchmind\model\node\iterator\ParentFirstNodeIterator.h" />
+    <ClInclude Include="touchmind\model\path\PathModel.h" />
+    <ClInclude Include="touchmind\operation\FileOperation.h" />
+    <ClInclude Include="touchmind\operation\IOperation.h" />
+    <ClInclude Include="touchmind\print\PrintTicketHelper.h" />
+    <ClInclude Include="touchmind\print\XPSGeometryBuilder.h" />
+    <ClInclude Include="touchmind\prop\LineEdgeStyle.h" />
+    <ClInclude Include="touchmind\prop\LineStyle.h" />
+    <ClInclude Include="touchmind\prop\LineWidth.h" />
+    <ClInclude Include="touchmind\prop\NodeShape.h" />
+    <ClInclude Include="touchmind\ribbon\dispatch\INodeProperty.h" />
+    <ClInclude Include="touchmind\ribbon\handler\LineEdgeStyleCommandHandler.h" />
+    <ClInclude Include="touchmind\ribbon\handler\LineColorCommandHandler.h" />
+    <ClInclude Include="touchmind\ribbon\handler\LineStyleCommandHandler.h" />
+    <ClInclude Include="touchmind\ribbon\dispatch\RibbonRequestDispatcher.h" />
+    <ClInclude Include="touchmind\ribbon\handler\NodeBackgroundColorCommandHandler.h" />
+    <ClInclude Include="touchmind\ribbon\PropertySet.h" />
+    <ClInclude Include="touchmind\ribbon\RibbonFramework.h" />
+    <ClInclude Include="touchmind\ribbon\handler\NodeShapeCommandHandler.h" />
+    <ClInclude Include="touchmind\ribbon\handler\LineWidthCommandHandler.h" />
+    <ClInclude Include="touchmind\ribbon\dispatch\ILineProperty.h" />
+    <ClInclude Include="touchmind\selection\DefaultPropertyModel.h" />
+    <ClInclude Include="touchmind\selection\SelectableSupport.h" />
+    <ClInclude Include="touchmind\selection\SelectionManager.h" />
+    <ClInclude Include="touchmind\touch\AbstractManipulationHelper.h" />
+    <ClInclude Include="touchmind\animation\AnimationManagerEventHandler.h" />
+    <ClInclude Include="touchmind\touch\TouchUtil.h" />
+    <ClInclude Include="touchmind\util\BitmapHelper.h" />
+    <ClInclude Include="touchmind\shell\Clipboard.h" />
+    <ClInclude Include="touchmind\control\DWriteEditControlDisplayAttribute.h" />
+    <ClInclude Include="touchmind\control\DWriteEditControlTextEditSink.h" />
+    <ClInclude Include="touchmind\shell\FileAssociation.h" />
+    <ClInclude Include="touchmind\text\FontAttribute.h" />
+    <ClInclude Include="touchmind\text\FontAttributeCommand.h" />
+    <ClInclude Include="touchmind\MUI.h" />
+    <ClInclude Include="touchmind\print\XpsDWriteTextRenderer.h" />
+    <ClInclude Include="touchmind\print\XPSPrint.h" />
+    <ClInclude Include="touchmind\print\XPSPrintCommon.h" />
+    <ClInclude Include="touchmind\print\XPSPrintSetupDialog.h" />
+    <ClInclude Include="touchmind\ribbon\handler\FontControlCommandHandler.h" />
+    <ClInclude Include="touchmind\Common.h" />
+    <ClInclude Include="touchmind\Configuration.h" />
+    <ClInclude Include="touchmind\util\ColorUtil.h" />
+    <ClInclude Include="touchmind\util\CoordinateConversion.h" />
+    <ClInclude Include="touchmind\model\CurvePoints.h" />
+    <ClInclude Include="touchmind\Context.h" />
+    <ClInclude Include="touchmind\control\DWriteTextSizeProvider.h" />
+    <ClInclude Include="touchmind\view\BaseView.h" />
+    <ClInclude Include="touchmind\view\link\LinkViewFactory.h" />
+    <ClInclude Include="touchmind\view\node\impl\RectangleNodeView.h" />
+    <ClInclude Include="touchmind\view\node\NodeViewFactory.h" />
+    <ClInclude Include="touchmind\view\path\impl\DefaultPathView.h" />
+    <ClInclude Include="touchmind\view\path\BasePathView.h" />
+    <ClInclude Include="touchmind\view\path\PathViewFactory.h" />
+    <ClInclude Include="touchmind\visitor\NodeDrawVisitor.h" />
+    <ClInclude Include="touchmind\visitor\NodeHitTestVisitor.h" />
+    <ClInclude Include="touchmind\view\GeometryBuilder.h" />
+    <ClInclude Include="touchmind\view\linkedge\BaseLinkEdgeView.h" />
+    <ClInclude Include="touchmind\view\link\BaseLinkView.h" />
+    <ClInclude Include="touchmind\view\linkedge\impl\ArrowLinkEdgeView.h" />
+    <ClInclude Include="touchmind\view\linkedge\impl\CircleLinkEdgeView.h" />
+    <ClInclude Include="touchmind\view\linkedge\impl\NormalLinkEdgeView.h" />
+    <ClInclude Include="touchmind\view\linkedge\LinkEdgeViewFactory.h" />
+    <ClInclude Include="touchmind\view\link\impl\DefaultLinkView.h" />
+    <ClInclude Include="touchmind\view\link\LinkViewManager.h" />
+    <ClInclude Include="touchmind\view\node\impl\RoundedRectNodeView.h" />
+    <ClInclude Include="touchmind\view\node\BaseNodeView.h" />
+    <ClInclude Include="touchmind\win\CanvasPanel.h" />
+    <ClInclude Include="touchmind\control\DWriteEditControl.h" />
+    <ClInclude Include="touchmind\control\DWriteEditControlCommon.h" />
+    <ClInclude Include="touchmind\control\DWriteEditControlManager.h" />
+    <ClInclude Include="touchmind\control\DWriteEditControlTextStoreACP.h" />
+    <ClInclude Include="touchmind\filter\GaussFilter.h" />
+    <ClInclude Include="touchmind\layout\ILayoutManager.h" />
+    <ClInclude Include="touchmind\model\Insets.h" />
+    <ClInclude Include="touchmind\layout\ITextSizeProvider.h" />
+    <ClInclude Include="touchmind\layout\LayoutManager.h" />
+    <ClInclude Include="touchmind\logging\Logging.h" />
+    <ClInclude Include="touchmind\touch\ManipulationHelper.h" />
+    <ClInclude Include="touchmind\model\MapModel.h" />
+    <ClInclude Include="touchmind\tsf\MessageQueue.h" />
+    <ClInclude Include="touchmind\operation\CreateLinkOperation.h" />
+    <ClInclude Include="touchmind\operation\NodeMovingOperation.h" />
+    <ClInclude Include="touchmind\operation\NodeResizingOperation.h" />
+    <ClInclude Include="touchmind\win\TouchMindApp.h" />
+    <ClInclude Include="touchmind\ribbon\RibbonCommandHandler.h" />
+    <ClInclude Include="touchmind\shell\MRUManager.h" />
+    <ClInclude Include="touchmind\model\node\NodeModel.h" />
+    <ClInclude Include="touchmind\converter\NodeModelToTextConverter.h" />
+    <ClInclude Include="touchmind\converter\NodeModelXMLDecoder.h" />
+    <ClInclude Include="touchmind\converter\NodeModelXMLEncoder.h" />
+    <ClInclude Include="touchmind\util\OSVersionChecker.h" />
+    <ClInclude Include="touchmind\view\node\NodeFigureHelper.h" />
+    <ClInclude Include="touchmind\util\ScrollBarHelper.h" />
+    <ClInclude Include="touchmind\view\node\NodeViewManager.h" />
+    <ClInclude Include="stdafx.h" />
+    <ClInclude Include="targetver.h" />
+    <ClInclude Include="touchmind\util\TimeUtil.h" />
+    <ClInclude Include="touchmind\control\StatusBar.h" />
+    <ClInclude Include="touchmind\tsf\TSFManager.h" />
+    <ClInclude Include="touchmind\util\Utils.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="props\boost.props" />
+    <None Include="props\boost_x64.props" />
+    <None Include="props\boost_x86.props" />
+    <None Include="props\DirectX.props" />
+    <None Include="props\DirectX_x64.props" />
+    <None Include="props\DirectX_x86.props" />
+    <None Include="props\gtest_x64.props" />
+    <None Include="props\gtest_x86.props" />
+    <None Include="props\TouchMindLib.props" />
+    <None Include="props\WindowsSDK.props" />
+    <None Include="props\WindowsSDK_x64.props" />
+    <None Include="props\WindowsSDK_x86.props" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

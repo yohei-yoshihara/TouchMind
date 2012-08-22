@@ -1,0 +1,417 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Application xmlns="http://schemas.microsoft.com/windows/2009/Ribbon">
+  <Application.Commands>
+    <Command Name="cmdTabHome" Symbol="cmdTabHome" Id="30000" LabelTitle="ホーム">
+    </Command>
+    <Command Name="GroupClipboard" Symbol="cmdGroupClipboard" Id="30005">
+      <Command.LabelTitle>クリップボード</Command.LabelTitle>
+    </Command>
+    <Command Name="Paste" Symbol="cmdPaste" Id="30009" LabelTitle="貼り付け">
+      <Command.TooltipTitle>貼り付け</Command.TooltipTitle>
+      <Command.TooltipDescription>貼り付け</Command.TooltipDescription>
+      <Command.LargeImages>
+        <Image Id="4000" Source="../TouchMind/res/Paste.bmp"/>
+      </Command.LargeImages>
+    </Command>
+    <Command Name="Cut" Symbol="cmdCut" Id="30010" LabelTitle="切り取り">
+      <Command.TooltipTitle>切り取り</Command.TooltipTitle>
+      <Command.TooltipDescription>切り取り</Command.TooltipDescription>
+      <Command.SmallImages>
+        <Image Source="../TouchMind/res/Cut.bmp"/>
+      </Command.SmallImages>
+    </Command>
+    <Command Name="Copy" Symbol="cmdCopy" Id="30011" LabelTitle="コピー">
+      <Command.TooltipTitle>コピー</Command.TooltipTitle>
+      <Command.TooltipDescription>コピー</Command.TooltipDescription>
+      <Command.SmallImages>
+        <Image Source="../TouchMind/res/Copy.bmp"/>
+      </Command.SmallImages>
+    </Command>
+    <Command Name="Undo" Symbol="cmdUndo" Id="30015">
+      <Command.LabelTitle>
+        <String Id="2020">元に戻す</String>
+      </Command.LabelTitle>
+      <Command.TooltipTitle>元に戻す</Command.TooltipTitle>
+      <Command.TooltipDescription>元に戻す</Command.TooltipDescription>
+      <Command.SmallImages>
+        <Image Source="../TouchMind/res/UndoS.bmp"/>
+      </Command.SmallImages>
+    </Command>
+    <Command Name="FileMenu" Symbol="IDC_FILEMENU"/>
+    <Command Name="MRUList" Symbol="IDC_MRULIST" Id="30016"/>
+    <Command Name="QAT" Symbol="IDC_QAT"/>
+    <!-- AppMenu commands -->
+    
+    <!-- New -->
+    <Command Name="New" Symbol="cmdNew" Id="0xE100" Keytip="N">
+      <Command.LabelTitle>
+        <String Id="2021">新規作成</String>
+      </Command.LabelTitle>
+      <Command.LargeImages>
+        <Image Id="4016" Source="../TouchMind/res/NewL.bmp"/>
+      </Command.LargeImages>
+      <Command.TooltipTitle>新規作成 (Ctrl+N)</Command.TooltipTitle>
+      <Command.TooltipDescription>新しいドキュメントの作成</Command.TooltipDescription>
+    </Command>
+    
+    <Command Name="OpenFileMore" Symbol="IDC_OPENFILEMORE" Id="20500"/>
+    
+    <!-- Open File -->
+    <Command Name="OpenFile" Symbol="cmdOpenFile" Id="0xE101" Keytip="O">
+      <Command.LabelTitle>
+        <String Id="2022">開く</String>
+      </Command.LabelTitle>
+      <Command.LabelDescription>
+        <String Id="2023">ローカルファイルもしくはネットワーク共有からドキュメントを開く</String>
+      </Command.LabelDescription>
+      <Command.LargeImages>
+        <Image Id="4017" Source="../TouchMind/res/OpenFileL.bmp"/>
+      </Command.LargeImages>
+      <Command.TooltipTitle>開く (Ctrl+O)</Command.TooltipTitle>
+      <Command.TooltipDescription>ドキュメントを開く</Command.TooltipDescription>
+    </Command>
+    
+    <Command Name="OpenFreeMind" Symbol="cmdOpenFreeMind" Id="32774">
+      <Command.LabelTitle>
+        <String Id="2024">FreeMind形式を開く</String>
+      </Command.LabelTitle>
+      <Command.LabelDescription>
+        <String Id="2025">ローカルファイルもしくはネットワーク共有からFreeMind形式を開く</String>
+      </Command.LabelDescription>
+      <Command.LargeImages>
+        <Image Id="4018" Source="../TouchMind/res/OpenFileL.bmp"/>
+      </Command.LargeImages>
+    </Command>
+    
+    <!-- Save -->
+    <Command Name="Save" Symbol="cmdSave" Id="0xE103" Keytip="S">
+      <Command.LabelTitle>
+        <String Id="2026">保存</String>
+      </Command.LabelTitle>
+      <Command.LargeImages>
+        <Image Id="4019" Source="../TouchMind/res/SaveL.bmp"/>
+      </Command.LargeImages>
+      <Command.TooltipTitle>保存 (Ctrl+S)</Command.TooltipTitle>
+      <Command.TooltipDescription>現在のドキュメントの保存</Command.TooltipDescription>
+    </Command>
+
+    <Command Name="SaveAs" Symbol="cmdSaveAs" Id="0xE104">
+      <Command.LabelTitle>
+        <String Id="2027">名前を付けて保存</String>
+      </Command.LabelTitle>
+      <Command.LargeImages>
+        <Image Id="4020" Source="../TouchMind/res/SaveAsL.bmp"/>
+      </Command.LargeImages>
+      <Command.TooltipDescription>現在のドキュメントを名前を付けて保存</Command.TooltipDescription>
+    </Command>
+    
+    <Command Name="PrintMore" Symbol="IDC_PRINTMORE" Id="20501"/>
+    <Command Name="Print" Symbol="cmdPrint" Id="57607">
+      <Command.LabelTitle>
+        <String Id="2033">印刷</String>
+      </Command.LabelTitle>
+      <Command.LabelDescription>
+        <String Id="2028">現在のドキュメントの印刷</String>
+      </Command.LabelDescription>
+      <Command.LargeImages>
+        <Image Id="4021" Source="../TouchMind/res/PrintL.bmp"/>
+      </Command.LargeImages>
+    </Command>
+    <Command Name="PrintSetup" Symbol="cmdPrintSetup" Id="57606">
+      <Command.LabelTitle>
+        <String Id="2029">印刷設定</String>
+      </Command.LabelTitle>
+      <Command.LabelDescription>
+        <String Id="2030">印刷レイアウトなどの印刷設定の変更</String>
+      </Command.LabelDescription>
+      <Command.LargeImages>
+        <Image Id="4022" Source="../TouchMind/res/PrintL.bmp"/>
+      </Command.LargeImages>
+    </Command>
+    
+    <Command Name="cmdVersionInfo" Symbol="cmdVersionInfo" Id="20502">
+      <Command.LabelTitle>
+        <String Id="211">バージョン</String>
+      </Command.LabelTitle>
+      <Command.LargeImages>
+        <Image Id="4024" Source="../TouchMind/res/TouchMindL.bmp"/>
+      </Command.LargeImages>
+    </Command>
+    
+    <!-- Exit -->
+    <Command Name="Exit" Symbol="cmdExit" Keytip="X" Id="0xE102">
+      <Command.LabelTitle>
+        <String Id="2031">TouchMindの終了</String>
+      </Command.LabelTitle>
+      <Command.LargeImages>
+        <Image>../TouchMind/res/ExitL.bmp</Image>
+      </Command.LargeImages>
+      <Command.TooltipDescription>アプリケーションを終了します</Command.TooltipDescription>
+    </Command>
+    
+    <!-- context menu -->
+    <Command Name="GroupBasicOperationGroup" Symbol="cmdGroupBasicOperationGroup" Id="30006">
+      <Command.LabelTitle>基本操作</Command.LabelTitle>
+    </Command>
+    <Command Name="cmdContextMap1" Comment="the Context Map for Context 1" Symbol="IDC_CMD_CONTEXTMAP1"/>
+    <Command Name="EditNode" Symbol="cmdEditNode" Id="31001">
+      <Command.LabelTitle>
+        <String Id="3031">テキストの編集</String>
+      </Command.LabelTitle>
+      <Command.TooltipTitle>テキストの編集</Command.TooltipTitle>
+      <Command.TooltipDescription>テキストの編集</Command.TooltipDescription>
+      <Command.LargeImages>
+        <Image Source="../TouchMind/res/EditText64x64.bmp"/>
+      </Command.LargeImages>
+    </Command>
+    <Command Name="DeleteNode" Symbol="cmdDeleteNode" Id="31002">
+      <Command.LabelTitle>
+        <String Id="3032">ノードの削除</String>
+      </Command.LabelTitle>
+      <Command.TooltipTitle>ノードの削除</Command.TooltipTitle>
+      <Command.TooltipDescription>ノードの削除</Command.TooltipDescription>
+    </Command>
+    <Command Name="CreateChildNode" Symbol="cmdCreateChildNode" Id="31003">
+      <Command.LabelTitle>
+        <String Id="3033">子ノードの作成</String>
+      </Command.LabelTitle>
+      <Command.TooltipTitle>子ノードの作成</Command.TooltipTitle>
+      <Command.TooltipDescription>子ノードの作成</Command.TooltipDescription>
+      <Command.LargeImages>
+        <Image Source="../TouchMind/res/NewNode64x64.bmp"/>
+      </Command.LargeImages>
+    </Command>
+    <Command Name="cmdCreateLink" Symbol="cmdCreateLink">
+      <Command.LabelTitle>リンクの作成</Command.LabelTitle>
+      <Command.TooltipTitle>リンクの作成</Command.TooltipTitle>
+      <Command.TooltipDescription>リンクの作成</Command.TooltipDescription>
+      <Command.LargeImages>
+        <Image Source="../TouchMind/res/Link.bmp"/>
+      </Command.LargeImages>
+    </Command>
+    <Command Name="cmdDeleteLink" Symbol="cmdDeleteLink">
+      <Command.LabelTitle>リンクの削除</Command.LabelTitle>
+      <Command.TooltipTitle>リンクの削除</Command.TooltipTitle>
+      <Command.TooltipDescription>リンクの削除</Command.TooltipDescription>
+    </Command>
+    <Command Name="cmdExpandNodes" Symbol="cmdExpandNodes">
+      <Command.LabelTitle>
+        <String Id="209">子ノードの展開</String>
+      </Command.LabelTitle>
+    </Command>
+    <Command Name="cmdCollapseNodes" Symbol="cmdCollapseNodes">
+      <Command.LabelTitle>
+        <String Id="210">子ノードの折りたたみ</String>
+      </Command.LabelTitle>
+    </Command>
+    <!-- FontControl -->
+    <Command Name="cmdFontControlGroup" Symbol="cmdFontControlGroup">
+      <Command.LabelTitle>
+        <String Id="205">フォント</String>
+      </Command.LabelTitle>
+    </Command>
+    <Command Name="cmdFontControl" Symbol="cmdFontControl">
+      <Command.Keytip>
+        <String Id="206">F</String>
+      </Command.Keytip>
+    </Command>
+    <!-- background color control -->
+    <Command Name="cmdBackgroundColorGroup" Symbol="cmdBackgroundColorGroup">
+      <Command.LabelTitle>
+        <String Id="207">カラー</String>
+      </Command.LabelTitle>
+    </Command>
+    <Command Name="cmdBackgroundColor" Symbol="cmdBackgroundColor">
+      <Command.LabelTitle>
+        <String Id="208">背景色</String>
+      </Command.LabelTitle>
+      <Command.LargeImages>
+        <Image>../TouchMind/res/BackgroundColor.bmp</Image>
+      </Command.LargeImages>
+    </Command>
+    <!-- Shapes -->
+    <Command Name="cmdNodeShape" Symbol="cmdNodeShape">
+      <Command.LabelTitle>
+        <String>要素の形状</String>
+      </Command.LabelTitle>
+    </Command>
+    <!-- Line attributes -->
+    <Command Name="cmdLineAttributeGroup" Symbol="cmdLineAttributeGroup">
+      <Command.LabelTitle>ライン属性</Command.LabelTitle>
+    </Command>
+    <Command Name="cmdLineColor" Symbol="cmdLineColor">
+      <Command.LabelTitle>
+        <String>色</String>
+      </Command.LabelTitle>
+    </Command>
+    <Command Name="cmdLineWidth" Symbol="cmdLineWidth">
+      <Command.LabelTitle>
+        <String>幅</String>
+      </Command.LabelTitle>
+    </Command>
+    <Command Name="cmdLineEdgeStyle" Symbol="cmdLineEdgeStyle">
+      <Command.LabelTitle>
+        <String>両端形状</String>
+      </Command.LabelTitle>
+    </Command>
+    <Command Name="cmdLineStyle" Symbol="cmdLineStyle">
+      <Command.LabelTitle>
+        <String>線種</String>
+      </Command.LabelTitle>
+    </Command>
+  </Application.Commands>
+  <Application.Views>
+    <Ribbon>
+      <!-- Application Menu -->
+      <Ribbon.ApplicationMenu>
+        <ApplicationMenu CommandName="FileMenu">
+          <ApplicationMenu.RecentItems>
+            <RecentItems CommandName="MRUList" MaxCount="16" EnablePinning="false"/>
+          </ApplicationMenu.RecentItems>
+          <MenuGroup Class="MajorItems">
+            <Button CommandName="New"/>
+            <!-- Open File SplitButton -->
+            <SplitButton CommandName="OpenFileMore">
+              <SplitButton.ButtonItem>
+                <Button CommandName="OpenFile"/>
+              </SplitButton.ButtonItem>
+              <SplitButton.MenuGroups>
+                <MenuGroup Class="MajorItems">
+                  <Button CommandName="OpenFile"/>
+                  <Button CommandName="OpenFreeMind"/>
+                </MenuGroup>
+              </SplitButton.MenuGroups>
+            </SplitButton>
+            <Button CommandName="Save"/>
+            <Button CommandName="SaveAs"/>
+          </MenuGroup>
+          <MenuGroup Class="MajorItems">
+            <!-- Printing SplitButton -->
+            <SplitButton CommandName="PrintMore">
+              <SplitButton.ButtonItem>
+                <Button CommandName="Print" />
+              </SplitButton.ButtonItem>
+              <SplitButton.MenuGroups>
+                <MenuGroup Class="MajorItems">
+                  <Button CommandName="PrintSetup" />
+                  <Button CommandName="Print" />
+                </MenuGroup>
+              </SplitButton.MenuGroups>
+            </SplitButton>
+          </MenuGroup>
+          <MenuGroup Class="MajorItems">
+            <Button CommandName="cmdVersionInfo"/>
+          </MenuGroup>
+          <MenuGroup Class="MajorItems">
+            <Button CommandName="Exit"/>
+          </MenuGroup>
+        </ApplicationMenu>
+      </Ribbon.ApplicationMenu>
+      <Ribbon.QuickAccessToolbar>
+        <QuickAccessToolbar CommandName="QAT">
+        </QuickAccessToolbar>
+      </Ribbon.QuickAccessToolbar>
+      <Ribbon.Tabs>
+        <Tab CommandName="cmdTabHome">
+          <Group CommandName="GroupClipboard" SizeDefinition="BigButtonsAndSmallButtonsOrInputs">
+            <ControlGroup>
+              <Button CommandName="Paste"/>
+            </ControlGroup>
+            <ControlGroup>
+              <Button CommandName="Cut"/>
+              <Button CommandName="Copy"/>
+              <Button CommandName="Undo"/>
+            </ControlGroup>
+          </Group>
+          <Group CommandName="cmdFontControlGroup" SizeDefinition="OneFontControl">
+            <FontControl CommandName="cmdFontControl" FontType="FontWithColor" ShowVerticalFonts="false"/>
+          </Group>
+          <Group CommandName="cmdBackgroundColorGroup" SizeDefinition="TwoButtons">
+            <DropDownGallery CommandName="cmdNodeShape"
+                             TextPosition="Hide"
+                             Type="Items"
+                             ItemHeight="64"
+                             ItemWidth="64">
+              <DropDownGallery.MenuLayout>
+                <VerticalMenuLayout Gripper="None" />
+              </DropDownGallery.MenuLayout>
+            </DropDownGallery>
+            <DropDownColorPicker ColorTemplate="ThemeColors" CommandName="cmdBackgroundColor" ChipSize="Large"/>
+          </Group>
+          <Group CommandName="cmdLineAttributeGroup" SizeDefinition="FourButtons">
+            <DropDownColorPicker CommandName="cmdLineColor" 
+                                 ColorTemplate="ThemeColors" 
+                                 ChipSize="Large"/>
+            <DropDownGallery CommandName="cmdLineWidth"
+                             TextPosition="Hide"
+                             Type="Items"
+                             ItemHeight="24"
+                             ItemWidth="64">
+              <DropDownGallery.MenuLayout>
+                <VerticalMenuLayout Gripper="None" />
+              </DropDownGallery.MenuLayout>
+            </DropDownGallery>
+            <DropDownGallery CommandName="cmdLineEdgeStyle"
+                             TextPosition="Hide"
+                             Type="Items"
+                             ItemHeight="24"
+                             ItemWidth="64">
+              <DropDownGallery.MenuLayout>
+                <VerticalMenuLayout Gripper="None" />
+              </DropDownGallery.MenuLayout>
+            </DropDownGallery>
+            <DropDownGallery CommandName="cmdLineStyle"
+                             TextPosition="Hide"
+                             Type="Items"
+                             ItemHeight="24"
+                             ItemWidth="64">
+              <DropDownGallery.MenuLayout>
+                <VerticalMenuLayout Gripper="None" />
+              </DropDownGallery.MenuLayout>
+            </DropDownGallery>
+          </Group>
+          <Group CommandName="GroupBasicOperationGroup" SizeDefinition="ThreeButtons">
+            <Button CommandName="EditNode"/>
+            <Button CommandName="CreateChildNode"/>
+            <ToggleButton CommandName="cmdCreateLink"/>
+          </Group>
+        </Tab>
+      </Ribbon.Tabs>
+    </Ribbon>
+    <ContextPopup>
+      <ContextPopup.MiniToolbars>
+        <MiniToolbar Name="myMiniToolbar">
+          <MenuGroup Class="StandardItems">
+            <FontControl CommandName="cmdFontControl" ShowVerticalFonts="false"/>
+          </MenuGroup>
+        </MiniToolbar>
+      </ContextPopup.MiniToolbars>
+      <ContextPopup.ContextMenus>
+        <ContextMenu Name="ContextMenu1">
+          <MenuGroup>
+            <Button CommandName="EditNode"/>
+            <Button CommandName="CreateChildNode"/>
+            <Button CommandName="DeleteNode"/>
+            <Button CommandName="cmdExpandNodes"/>
+            <Button CommandName="cmdCollapseNodes"/>
+          </MenuGroup>
+          <MenuGroup>
+            <ToggleButton CommandName="cmdCreateLink"/>
+            <Button CommandName="cmdDeleteLink"/>
+          </MenuGroup>
+          <MenuGroup>
+            <Button CommandName="Cut"/>
+            <Button CommandName="Copy"/>
+            <Button CommandName="Paste"/>
+            <Button CommandName="Undo"/>
+          </MenuGroup>
+        </ContextMenu>
+      </ContextPopup.ContextMenus>
+      <ContextPopup.ContextMaps>
+        <ContextMap CommandName="cmdContextMap1" 
+                    MiniToolbar="myMiniToolbar" 
+                    ContextMenu="ContextMenu1"/>
+      </ContextPopup.ContextMaps>
+    </ContextPopup>
+  </Application.Views>
+</Application>

@@ -1,0 +1,1 @@
+#include "../TouchMind/Resource.h"
