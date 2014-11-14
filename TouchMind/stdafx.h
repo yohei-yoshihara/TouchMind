@@ -57,7 +57,7 @@
 #include <initguid.h>
 #include <tsattrs.h>
 #include <d3d10_1.h>
-#include <d3dx10math.h>
+#include <DirectXMath.h>
 #include <shlobj.h>
 #include <shobjidl.h>
 #include <shellapi.h>

@@ -2,9 +2,20 @@
 #include <strsafe.h>
 #include "touchmind/logging/Logging.h"
 #include "touchmind/util/OSVersionChecker.h"
+#include <VersionHelpers.h>
 
 touchmind::util::OSVersion touchmind::util::OSVersionChecker::GetOSVersion()
 {
+	if (IsWindows7OrGreater()) {
+		return OSVersion_Windows7;
+	}
+	else if (IsWindowsVistaOrGreater()) {
+		return OSVersion_WindowsVista;
+	}
+	else {
+		return OSVersion_WindowsXP;
+	}
+	/*
     OSVERSIONINFOEX osvi;
     ZeroMemory(&osvi, sizeof(OSVERSIONINFOEX));
     osvi.dwOSVersionInfoSize = sizeof(OSVERSIONINFOEX);
@@ -29,6 +40,7 @@ touchmind::util::OSVersion touchmind::util::OSVersionChecker::GetOSVersion()
         }
     }
     return OSVersion_OlderThanXP;
+	*/
 }
 
 bool touchmind::util::OSVersionChecker::IsVista()

@@ -37,9 +37,7 @@ std::shared_ptr<touchmind::view::link::BaseLinkView> touchmind::view::link::Link
     if (m_views.count(linkId) == 0) {
         linkView = touchmind::view::link::LinkViewFactory::Create(link);
         linkView->SetLinkViewManager(this);
-        m_views.insert(std::make_pair<touchmind::LINK_ID, std::shared_ptr<touchmind::view::link::BaseLinkView>>(
-                           linkId,
-                           linkView));
+		m_views.insert({ linkId, linkView });
     } else {
         linkView = m_views[linkId];
     }

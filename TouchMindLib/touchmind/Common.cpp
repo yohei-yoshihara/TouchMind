@@ -4,9 +4,9 @@
 #include "touchmind/util/ColorUtil.h"
 
 const touchmind::REPAINT_COUNTER touchmind::MODEL_INITIAL_REPAINT_COUNTER = 0;
-const touchmind::REPAINT_COUNTER touchmind::VIEW_INITIAL_REPAINT_COUNTER = UINT64_MAX / 2;
+const touchmind::REPAINT_COUNTER touchmind::VIEW_INITIAL_REPAINT_COUNTER = std::numeric_limits<uint64_t>::max() / 2;
 const touchmind::SAVE_COUNTER touchmind::MODEL_INITIAL_SAVE_COUNTER = 0;
-const touchmind::SAVE_COUNTER touchmind::OPERATION_INITIAL_SAVE_COUNTER = UINT64_MAX / 2;
+const touchmind::SAVE_COUNTER touchmind::OPERATION_INITIAL_SAVE_COUNTER = std::numeric_limits<uint64_t>::max() / 2;
 
 const double touchmind::PI_DOUBLE = 3.14159265358979323846;
 const float  touchmind::PI = static_cast<FLOAT>(touchmind::PI_DOUBLE);

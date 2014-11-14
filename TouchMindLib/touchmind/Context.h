@@ -8,8 +8,8 @@ namespace touchmind
 {
 
 struct Vertex {
-    D3DXVECTOR3 Pos;
-    D3DXVECTOR2 Tex;
+	DirectX::XMFLOAT3 Pos;
+	DirectX::XMFLOAT2 Tex;
 };
 
 class D3DStates
@@ -27,8 +27,11 @@ public:
     D3D10_VIEWPORT viewport;
 };
 
-class Context
+__declspec(align(16)) class Context
 {
+public:
+	void* operator new(size_t size);
+	void operator delete(void* p);
 private:
     HWND m_hwnd;
     // The following variables are created by CreateDeviceIndependentResources
@@ -48,7 +51,7 @@ private:
     ID3D10EffectMatrixVariable *m_pViewVariableNoRef;
     ID3D10EffectMatrixVariable *m_pProjectionVariableNoRef;
     ID3D10EffectShaderResourceVariable *m_pDiffuseVariableNoRef;
-    D3DXMATRIX m_ViewMatrix;
+    DirectX::XMMATRIX m_ViewMatrix;
     ID3D10InputLayout *m_pVertexLayout;
 
     // The following variables are created by RecreateSizedResources
@@ -56,14 +59,14 @@ private:
     ID3D10RenderTargetView *m_pBackBufferRenderTargetView;
     ID3D10Texture2D *m_pDepthStencil;
     ID3D10DepthStencilView *m_pDepthStencilView;
-    D3DXMATRIX m_ProjectionMatrix;
+	DirectX::XMMATRIX m_ProjectionMatrix;
     // Add for D2D texture
     ID3D10Texture2D *m_pD2DTexture2D;
     ID3D10ShaderResourceView *m_pD2DTexture2DResourceView;
     ID2D1RenderTarget *m_pD2DTexture2DRenderTarget;
 
     // The following variables are updated by OnRender
-    D3DXMATRIX m_WorldMatrix;
+	DirectX::XMMATRIX m_WorldMatrix;
 
     // User Application
     IRenderEventListener *m_pRenderEventListener;

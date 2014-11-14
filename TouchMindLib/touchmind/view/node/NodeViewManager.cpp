@@ -96,10 +96,7 @@ public:
             nodeView->SetEditControlManager(m_pEditControlManager);
             nodeView->SetEditControlIndex(editControlIndex);
             nodeView->SetHandled();
-            m_nodeIdToView.insert(
-                std::make_pair<touchmind::NODE_ID, std::shared_ptr<touchmind::view::node::BaseNodeView>>(
-                    node->GetId(),
-                    nodeView));
+            m_nodeIdToView.insert({ node->GetId(), nodeView });
         } else {
             LOG(SEVERITY_LEVEL_WARN) << L"Failed to create an edit control";
         }
@@ -112,10 +109,7 @@ public:
         nodeView->SetEditControlManager(m_pEditControlManager);
         nodeView->SetEditControlIndex(editControlIndex);
         nodeView->SetHandled();
-        m_nodeIdToView.insert(
-            std::make_pair<touchmind::NODE_ID, std::shared_ptr<touchmind::view::node::BaseNodeView>>(
-                node->GetId(),
-                nodeView));
+        m_nodeIdToView.insert({ node->GetId(), nodeView });
     }
 };
 
@@ -163,10 +157,7 @@ public:
                 nodeView->SetEditControlManager(m_pEditControlManager);
                 nodeView->SetEditControlIndex(editControlIndex);
                 nodeView->SetHandled();
-                m_nodeIdToView.insert(
-                    std::make_pair<touchmind::NODE_ID, std::shared_ptr<touchmind::view::node::BaseNodeView>>(
-                        node->GetId(),
-                        nodeView));
+                m_nodeIdToView.insert({ node->GetId(), nodeView });
             } else {
                 LOG(SEVERITY_LEVEL_WARN) << L"Failed to create an edit control";
             }
@@ -245,10 +236,7 @@ void touchmind::view::node::NodeViewManager::DrawPath(
 {
     if (m_nodeIdToPathView.count(node->GetId()) == 0) {
         auto pathView = touchmind::view::path::PathViewFactory::Create(node);
-        m_nodeIdToPathView.insert(
-            std::make_pair<touchmind::NODE_ID, std::shared_ptr<path::BasePathView>>(
-                node->GetId(),
-                pathView));
+        m_nodeIdToPathView.insert({ node->GetId(), pathView });
         pathView->SetConfiguration(m_pConfiguration);
         pathView->SetNodeViewManager(this);
         pathView->SetNodeModel(node);

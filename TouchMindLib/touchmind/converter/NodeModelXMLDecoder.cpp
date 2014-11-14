@@ -86,10 +86,10 @@ HRESULT touchmind::converter::NodeModelXMLDecoder::Decode(
             touchmind::NODE_ID nodeId;
             if (touchmind::StringToNodeId(ws_id, &nodeId) == 0) {
                 if (keepOriginalId) {
-                    idMap->insert(std::make_pair<NODE_ID, NODE_ID>(nodeId, nodeId));
+					idMap->insert({ nodeId, nodeId });
                     node->SetId(nodeId);
                 } else {
-                    idMap->insert(std::make_pair<NODE_ID, NODE_ID>(nodeId, node->GetId()));
+					idMap->insert({ nodeId, node->GetId() });
                 }
             }
         }

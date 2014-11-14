@@ -3,13 +3,13 @@
   <ImportGroup Label="PropertySheets" />
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup>
-    <ExecutablePath>C:\Program Files\Microsoft SDKs\Windows\v7.1\Bin;$(ExecutablePath)</ExecutablePath>
+    <ExecutablePath>C:\Program Files (x86)\Windows Kits\8.0\bin\x86;$(ExecutablePath)</ExecutablePath>
   </PropertyGroup>
   <PropertyGroup>
-    <IncludePath>C:\Program Files\Microsoft SDKs\Windows\v7.1\Include;$(IncludePath)</IncludePath>
+    <IncludePath>C:\Program Files (x86)\Windows Kits\8.1\Include\um;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup>
-    <LibraryPath>C:\Program Files\Microsoft SDKs\Windows\v7.1\Lib;$(LibraryPath)</LibraryPath>
+    <LibraryPath>C:\Program Files (x86)\Windows Kits\8.1\Lib\win8\um\x86;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup />
   <ItemGroup />

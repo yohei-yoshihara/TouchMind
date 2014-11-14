@@ -95,13 +95,13 @@ public:
     // IUICommandHandler (end)
 
     void AddOnExecuteListener(UINT cmdId, OnExecuteListener l) {
-        m_executeListeners.insert(std::make_pair<UINT, OnExecuteListener>(cmdId, l));
+		m_executeListeners.insert({ cmdId, l });
     }
     void AddOnUpdatePropertyListener(UINT cmdId, OnUpdatePropertyListener l) {
-        m_updatePropertyListeners.insert(std::make_pair<UINT, OnUpdatePropertyListener>(cmdId, l));
+		m_updatePropertyListeners.insert({ cmdId, l });
     }
     void AddCommandHandler(UINT cmdId, CComPtr<IUICommandHandler> commandHandler) {
-        m_commandHandlers.insert(std::make_pair<UINT, CComPtr<IUICommandHandler>>(cmdId, commandHandler));
+		m_commandHandlers.insert({ cmdId, commandHandler });
     }
 };
 

@@ -1,11 +1,12 @@
 #include "stdafx.h"
-#include <D3DX10math.h>
 #include "touchmind/Common.h"
 #include "touchmind/logging/Logging.h"
 #include "resource.h"
 #include "Context.h"
 #include "touchmind/animation/AnimationManagerEventHandler.h"
 #include "touchmind/animation/IAnimationStatusChangedListener.h"
+
+using namespace DirectX;
 
 #define TOUCHMIND_CONTEXT_DEBUG
 
@@ -17,10 +18,10 @@ const D3D10_INPUT_ELEMENT_DESC touchmind::Context::s_InputLayout[] = {
 
 /*static*/
 const touchmind::Vertex touchmind::Context::s_VertexArray[] = {
-    { D3DXVECTOR3(-1.0f, -1.0f, 1.0f), D3DXVECTOR2(0.0f, 1.0f) },
-    { D3DXVECTOR3(1.0f, -1.0f, 1.0f), D3DXVECTOR2(1.0f, 1.0f) },
-    { D3DXVECTOR3(1.0f,  1.0f, 1.0f), D3DXVECTOR2(1.0f, 0.0f) },
-    { D3DXVECTOR3(-1.0f,  1.0f, 1.0f), D3DXVECTOR2(0.0f, 0.0f) }
+    { XMFLOAT3(-1.0f, -1.0f, 1.0f), XMFLOAT2(0.0f, 1.0f) },
+	{ XMFLOAT3(1.0f, -1.0f, 1.0f), XMFLOAT2(1.0f, 1.0f) },
+	{ XMFLOAT3(1.0f, 1.0f, 1.0f), XMFLOAT2(1.0f, 0.0f) },
+	{ XMFLOAT3(-1.0f, 1.0f, 1.0f), XMFLOAT2(0.0f, 0.0f) }
 };
 
 /*static*/
@@ -30,6 +31,16 @@ const SHORT touchmind::Context::s_FacesIndexArray[] = {
 };
 
 const UINT touchmind::Context::sc_msaaSampleCount = 4;
+
+void* touchmind::Context::operator new(size_t size)
+{
+	return _aligned_malloc(size, 16);
+}
+
+void  touchmind::Context::operator delete(void* p) 
+{
+	_aligned_free(p);
+}
 
 touchmind::Context::Context(void) :
     m_hwnd(nullptr),
@@ -311,10 +322,11 @@ HRESULT touchmind::Context::_CreateD3DDeviceResources()
         hr = m_pViewVariableNoRef ? S_OK : E_FAIL;
 
         if (SUCCEEDED(hr)) {
-            D3DXVECTOR3 Eye(0.0f, 2.0f, -6.0f);
-            D3DXVECTOR3 At(0.0f, 0.0f, 0.0f);
-            D3DXVECTOR3 Up(0.0f, 1.0f, 0.0f);
-            D3DXMatrixLookAtLH(&m_ViewMatrix, &Eye, &At, &Up);
+            //XMFLOAT3 Eye(0.0f, 2.0f, -6.0f);
+			XMVECTOR Eye = XMVectorSet(0.0f, 2.0f, -6.0f, 0.f);
+			XMVECTOR At = XMVectorSet(0.0f, 0.0f, 0.0f, 0.0f);
+			XMVECTOR Up = XMVectorSet(0.0f, 1.0f, 0.0f, 0.0f);
+			m_ViewMatrix = XMMatrixLookAtLH(Eye, At, Up);
             m_pViewVariableNoRef->SetMatrix((float*) &m_ViewMatrix);
         }
     }
@@ -459,9 +471,8 @@ HRESULT touchmind::Context::_RecreateSizedResources(UINT nWidth, UINT nHeight)
     }
 
     if (SUCCEEDED(hr)) {
-        D3DXMatrixPerspectiveFovLH(
-            &m_ProjectionMatrix,
-            (float) D3DX_PI * 0.24f, // fovy
+		m_ProjectionMatrix = XMMatrixPerspectiveFovLH(
+            (float) XM_PI * 0.24f, // fovy
             nWidth / (float) nHeight, // aspect
             0.1f, // zn
             100.0f // zf
@@ -561,7 +572,7 @@ HRESULT touchmind::Context::OnRender()
     HRESULT hr = S_OK;
     hr = CreateDeviceResources();
     if (SUCCEEDED(hr)) {
-        D3DXMatrixRotationY(&m_WorldMatrix, 0.0f);
+		m_WorldMatrix = XMMatrixRotationY(0.0f);
 
         DXGI_SWAP_CHAIN_DESC swapDesc;
         hr = m_pSwapChain->GetDesc(&swapDesc);

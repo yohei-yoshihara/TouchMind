@@ -6,7 +6,7 @@
 #pragma comment(lib, "windowscodecs.lib")
 #pragma comment(lib, "dxgi.lib")
 #pragma comment(lib, "d3d10_1.lib")
-#pragma comment(lib, "d3dx10.lib")
+//#pragma comment(lib, "d3dx10.lib")
 #pragma comment(lib, "propsys.lib")
 #pragma comment(lib, "uxtheme.lib")
 #pragma comment(lib, "comctl32.lib")

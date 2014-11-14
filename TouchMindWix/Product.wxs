@@ -94,7 +94,7 @@
                       Type="integer" Value="1" KeyPath="yes"/>
       </Component>
     </DirectoryRef>
-
+    <!--
     <DirectoryRef Id="INSTALLLOCATION">
       <Directory Id="DirectXRedistDirectory" Name="DirectX_Jun2010">
         <Component Id="DirectXRedist" Guid="F1211F23-88AE-4bd9-AD5D-2C56A8B88897">
@@ -148,7 +148,7 @@
         </Component>
       </Directory>
     </DirectoryRef>
-
+    -->
     <Feature Id="ProductFeature" Title="TouchMind_WiX" Level="1">
       <ComponentRef Id="TouchMindExe"/>
       <ComponentRef Id="license.rtf"/>
@@ -157,24 +157,28 @@
       <ComponentRef Id="jaJP_touchmindmui.dll.mui"/>
       <ComponentRef Id="ApplicationShortcut"/>
     </Feature>
-
+    <!--
     <Feature Id="DirectXRedist"
               Title="DirectX Runtime June 2010"
               AllowAdvertise="no"
               Display="hidden" Level="1">
       <ComponentRef Id="DirectXRedist"/>
     </Feature>
-
+    -->
+    <!--
     <CustomAction Id="InstallDirectX"
                        FileKey="DXSETUPEXE"
                        ExeCommand="/silent"
                        Execute="deferred"
                        Impersonate="no"
                        Return="check"/>
+                       -->
     <InstallExecuteSequence>
+      <!--
       <Custom Action="InstallDirectX" Before="InstallFinalize">
         <![CDATA[NOT REMOVE]]>
       </Custom>
+      -->
     </InstallExecuteSequence>
 
     
