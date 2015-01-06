@@ -12,8 +12,8 @@ bool touchmind::view::path::impl::DefaultPathView::_CheckValidity()
     if (GetNodeModel().expired()) {
         return false;
     }
-    std::shared_ptr<model::node::NodeModel> node = GetNodeModel().lock();
-    std::shared_ptr<model::node::NodeModel> parent = node->GetParent();
+    auto node = GetNodeModel().lock();
+    auto parent = node->GetParent();
     if (parent == nullptr) {
         return false;
     }
@@ -95,7 +95,7 @@ void touchmind::view::path::impl::DefaultPathView::_CreateDeviceDependentResourc
     ID2D1RenderTarget *pRenderTarget,
     std::shared_ptr<touchmind::model::node::NodeModel> node)
 {
-    std::shared_ptr<model::node::NodeModel> parent = node->GetParent();
+    auto parent = node->GetParent();
     ID2D1Factory *pD2DFactory = pContext->GetD2DFactory();
     PATH_DIRECTION pathDirection;
     touchmind::NODE_SIDE nodePosition = node->GetAncestorPosition();

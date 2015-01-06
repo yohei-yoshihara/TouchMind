@@ -35,8 +35,8 @@ void Dump(std::shared_ptr<NodeModel> root, std::vector<std::shared_ptr<LinkModel
 
 TEST(touchmind_model_MapModel, test_001)
 {
-    std::unique_ptr<operation::FileOperation> fileOperation(new operation::FileOperation());
-    std::unique_ptr<SelectionManager> selectionManager(new SelectionManager());
+    std::unique_ptr<operation::FileOperation> fileOperation = std::make_unique<operation::FileOperation>();
+    std::unique_ptr<SelectionManager> selectionManager = std::make_unique<SelectionManager>();
     std::shared_ptr<MapModel> map =
         std::make_shared<MapModel>();
     map->SetSelectionManager(selectionManager.get());

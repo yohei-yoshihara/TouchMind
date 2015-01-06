@@ -19,9 +19,9 @@ const D3D10_INPUT_ELEMENT_DESC touchmind::Context::s_InputLayout[] = {
 /*static*/
 const touchmind::Vertex touchmind::Context::s_VertexArray[] = {
     { XMFLOAT3(-1.0f, -1.0f, 1.0f), XMFLOAT2(0.0f, 1.0f) },
-	{ XMFLOAT3(1.0f, -1.0f, 1.0f), XMFLOAT2(1.0f, 1.0f) },
-	{ XMFLOAT3(1.0f, 1.0f, 1.0f), XMFLOAT2(1.0f, 0.0f) },
-	{ XMFLOAT3(-1.0f, 1.0f, 1.0f), XMFLOAT2(0.0f, 0.0f) }
+    { XMFLOAT3(1.0f, -1.0f, 1.0f), XMFLOAT2(1.0f, 1.0f) },
+    { XMFLOAT3(1.0f, 1.0f, 1.0f), XMFLOAT2(1.0f, 0.0f) },
+    { XMFLOAT3(-1.0f, 1.0f, 1.0f), XMFLOAT2(0.0f, 0.0f) }
 };
 
 /*static*/
@@ -34,12 +34,12 @@ const UINT touchmind::Context::sc_msaaSampleCount = 4;
 
 void* touchmind::Context::operator new(size_t size)
 {
-	return _aligned_malloc(size, 16);
+    return _aligned_malloc(size, 16);
 }
 
 void  touchmind::Context::operator delete(void* p) 
 {
-	_aligned_free(p);
+    _aligned_free(p);
 }
 
 touchmind::Context::Context(void) :
@@ -172,8 +172,8 @@ HRESULT touchmind::Context::CreateDeviceResources()
 
     GetClientRect(m_hwnd, &rcClient);
 
-    UINT nWidth = abs(rcClient.right - rcClient.left);
-    UINT nHeight = abs(rcClient.bottom - rcClient.top);
+    UINT nWidth = std::abs(rcClient.right - rcClient.left);
+    UINT nHeight = std::abs(rcClient.bottom - rcClient.top);
 
     if (!m_pDevice) {
 #ifdef TOUCHMIND_CONTEXT_DEBUG
@@ -323,10 +323,10 @@ HRESULT touchmind::Context::_CreateD3DDeviceResources()
 
         if (SUCCEEDED(hr)) {
             //XMFLOAT3 Eye(0.0f, 2.0f, -6.0f);
-			XMVECTOR Eye = XMVectorSet(0.0f, 2.0f, -6.0f, 0.f);
-			XMVECTOR At = XMVectorSet(0.0f, 0.0f, 0.0f, 0.0f);
-			XMVECTOR Up = XMVectorSet(0.0f, 1.0f, 0.0f, 0.0f);
-			m_ViewMatrix = XMMatrixLookAtLH(Eye, At, Up);
+            XMVECTOR Eye = XMVectorSet(0.0f, 2.0f, -6.0f, 0.f);
+            XMVECTOR At = XMVectorSet(0.0f, 0.0f, 0.0f, 0.0f);
+            XMVECTOR Up = XMVectorSet(0.0f, 1.0f, 0.0f, 0.0f);
+            m_ViewMatrix = XMMatrixLookAtLH(Eye, At, Up);
             m_pViewVariableNoRef->SetMatrix((float*) &m_ViewMatrix);
         }
     }
@@ -471,7 +471,7 @@ HRESULT touchmind::Context::_RecreateSizedResources(UINT nWidth, UINT nHeight)
     }
 
     if (SUCCEEDED(hr)) {
-		m_ProjectionMatrix = XMMatrixPerspectiveFovLH(
+        m_ProjectionMatrix = XMMatrixPerspectiveFovLH(
             (float) XM_PI * 0.24f, // fovy
             nWidth / (float) nHeight, // aspect
             0.1f, // zn
@@ -572,7 +572,7 @@ HRESULT touchmind::Context::OnRender()
     HRESULT hr = S_OK;
     hr = CreateDeviceResources();
     if (SUCCEEDED(hr)) {
-		m_WorldMatrix = XMMatrixRotationY(0.0f);
+        m_WorldMatrix = XMMatrixRotationY(0.0f);
 
         DXGI_SWAP_CHAIN_DESC swapDesc;
         hr = m_pSwapChain->GetDesc(&swapDesc);

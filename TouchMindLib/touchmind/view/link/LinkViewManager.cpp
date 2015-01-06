@@ -16,7 +16,7 @@ touchmind::view::link::LinkViewManager::LinkViewManager() :
     m_pMapModel(nullptr),
     m_pConfiguration(nullptr),
     m_views(),
-    m_pGaussFilter(new touchmind::filter::GaussFilter()),
+    m_pGaussFilter(std::make_unique<touchmind::filter::GaussFilter>()),
     m_pShadowBrush(nullptr),
     m_pSelectedShadowBrush1(nullptr),
     m_pSelectedShadowBrush2(nullptr)
@@ -37,7 +37,7 @@ std::shared_ptr<touchmind::view::link::BaseLinkView> touchmind::view::link::Link
     if (m_views.count(linkId) == 0) {
         linkView = touchmind::view::link::LinkViewFactory::Create(link);
         linkView->SetLinkViewManager(this);
-		m_views.insert({ linkId, linkView });
+        m_views.insert({ linkId, linkView });
     } else {
         linkView = m_views[linkId];
     }

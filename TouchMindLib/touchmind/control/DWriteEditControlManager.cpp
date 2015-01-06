@@ -406,8 +406,8 @@ void touchmind::control::DWriteEditControlManager::GetFontInfoFromIPropertyStore
         if (lstrcmp(pszFamily, L"")) {
             int len = lstrlen(pszFamily);
             std::vector<wchar_t> fontFamilyName(len + 1);
-            StringCchCopyW(&fontFamilyName.front(), len + 1, pszFamily);
-            pFontInfo->fontFamilyName = &fontFamilyName.front();
+            StringCchCopyW(fontFamilyName.data(), len + 1, pszFamily);
+            pFontInfo->fontFamilyName = fontFamilyName.data();
             pFontInfo->fontFamilyNameStatus = UI_FONTPROPERTIES_SET;
         }
         CoTaskMemFree(pszFamily);

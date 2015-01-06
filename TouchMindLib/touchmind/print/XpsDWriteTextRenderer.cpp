@@ -258,7 +258,7 @@ touchmind::print::XpsDWriteTextRenderer::DrawGlyphRun(
                         glyphMapping.size() > 0) {
                     hr = xpsGlyphsEditor->SetGlyphMappings(
                              static_cast<UINT32>(glyphMapping.size()),
-                             &glyphMapping.front()
+                             glyphMapping.data()
                          );
                 }
             }

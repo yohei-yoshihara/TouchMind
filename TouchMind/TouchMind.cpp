@@ -85,7 +85,7 @@ int WINAPI wWinMain(
     //ULONG numLangs;
     //SetProcessPreferredUILanguages(MUI_LANGUAGE_NAME, L"en-US", &numLangs);
     //SetProcessPreferredUILanguages(MUI_LANGUAGE_NAME, L"de-DE", &numLangs);
-	//SetProcessPreferredUILanguages(MUI_LANGUAGE_NAME, L"nl-NL", &numLangs);
+    //SetProcessPreferredUILanguages(MUI_LANGUAGE_NAME, L"nl-NL", &numLangs);
     if (touchmind::MUI::Initialize() != S_OK) {
         return 3;
     }

@@ -628,7 +628,7 @@ STDMETHODIMP touchmind::control::DWriteEditControlTextStoreACP::GetTextExt(TsVie
         acpEnd - acpStart + 1,
         editControl->GetLayoutRect().left,
         editControl->GetLayoutRect().top,
-        &hitTestMetrics.front(),
+        hitTestMetrics.data(),
         actualCount,
         &actualCount);
 

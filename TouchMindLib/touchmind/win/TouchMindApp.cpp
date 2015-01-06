@@ -46,14 +46,14 @@ const UINT_PTR touchmind::win::TouchMindApp::IDT_STATUSBAR_TIMER = 1;
 touchmind::win::TouchMindApp::TouchMindApp(void) :
     m_hwnd(nullptr),
     m_ribbonHeight(0),
-    m_pCanvasPanel(new CanvasPanel()),
-    m_pConfiguration(new touchmind::Configuration()),
-    m_pTsfManager(new touchmind::tsf::TSFManager()),
-    m_pMruManager(new touchmind::shell::MRUManager()),
-    m_pStatusBar(new touchmind::control::StatusBar()),
-    m_pRibbonFramework(new touchmind::ribbon::RibbonFramework()),
-    m_ribbonRequestDispatcher(new touchmind::ribbon::dispatch::RibbonRequestDispatcher()),
-    m_fileOperation(new touchmind::operation::FileOperation())
+    m_pCanvasPanel(std::make_unique<CanvasPanel>()),
+    m_pConfiguration(std::make_unique<touchmind::Configuration>()),
+    m_pTsfManager(std::make_unique<touchmind::tsf::TSFManager>()),
+    m_pMruManager(std::make_unique<touchmind::shell::MRUManager>()),
+    m_pStatusBar(std::make_unique<touchmind::control::StatusBar>()),
+    m_pRibbonFramework(std::make_unique<touchmind::ribbon::RibbonFramework>()),
+    m_ribbonRequestDispatcher(std::make_unique<touchmind::ribbon::dispatch::RibbonRequestDispatcher>()),
+    m_fileOperation(std::make_unique<touchmind::operation::FileOperation>())
 {
     std::wstring defaultRootElementText = touchmind::MUI::GetString(IDS_ROOT_ELEMENT_TEXT);
     touchmind::model::MapModel::SetDefaultRootNodeText(defaultRootElementText);

@@ -183,7 +183,7 @@ HRESULT touchmind::view::GeometryBuilder::CreateDiagonalGradientBrush(
 {
     CComPtr<ID2D1GradientStopCollection> pGradientStopCollection = nullptr;
     CHK_RES(pGradientStopCollection, pRenderTarget->CreateGradientStopCollection(
-                &gradientStops.front(),
+                gradientStops.data(),
                 static_cast<UINT>(gradientStops.size()),
                 D2D1_GAMMA_1_0,
                 D2D1_EXTEND_MODE_CLAMP,
@@ -205,7 +205,7 @@ HRESULT touchmind::view::GeometryBuilder::CreateVerticalGradientBrush(
 {
     CComPtr<ID2D1GradientStopCollection> pGradientStopCollection = nullptr;
     CHK_RES(pGradientStopCollection, pRenderTarget->CreateGradientStopCollection(
-                &gradientStops.front(),
+                gradientStops.data(),
                 static_cast<UINT>(gradientStops.size()),
                 D2D1_GAMMA_1_0,
                 D2D1_EXTEND_MODE_CLAMP,

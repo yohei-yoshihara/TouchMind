@@ -10,26 +10,26 @@ float TAPOFFSET_Y[NUMBER_OF_WEIGHTS]; // 1 / HEIGHT, 2 / HEIGHT, ..., index 0 is
 Texture2D texDiffuse;
 SamplerState samDiffuse
 {
-	Filter = MIN_MAG_MIP_LINEAR;
-	AddressU = Clamp;
-	AddressV = Clamp;
+    Filter = MIN_MAG_MIP_LINEAR;
+    AddressU = Clamp;
+    AddressV = Clamp;
 };
 
 struct InputVS
 {
-	float4 pos   : POSITION;
-	float2 tex   : TEXCOORD0;
+    float4 pos   : POSITION;
+    float2 tex   : TEXCOORD0;
 };
 
 struct OutputVS
 {
-	float4 pos   : SV_POSITION;
-	float2 tex   : TEXCOORD0;
+    float4 pos   : SV_POSITION;
+    float2 tex   : TEXCOORD0;
 };
 
 OutputVS VS_Pass1(InputVS inVert)
 {
-	return inVert;
+    return inVert;
 }
 
 float4 PS_Pass1(OutputVS inPixel) : SV_TARGET

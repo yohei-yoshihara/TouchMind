@@ -8,8 +8,8 @@ namespace touchmind
 {
 
 struct Vertex {
-	DirectX::XMFLOAT3 Pos;
-	DirectX::XMFLOAT2 Tex;
+    DirectX::XMFLOAT3 Pos;
+    DirectX::XMFLOAT2 Tex;
 };
 
 class D3DStates
@@ -30,8 +30,8 @@ public:
 __declspec(align(16)) class Context
 {
 public:
-	void* operator new(size_t size);
-	void operator delete(void* p);
+    void* operator new(size_t size);
+    void operator delete(void* p);
 private:
     HWND m_hwnd;
     // The following variables are created by CreateDeviceIndependentResources
@@ -59,14 +59,14 @@ private:
     ID3D10RenderTargetView *m_pBackBufferRenderTargetView;
     ID3D10Texture2D *m_pDepthStencil;
     ID3D10DepthStencilView *m_pDepthStencilView;
-	DirectX::XMMATRIX m_ProjectionMatrix;
+    DirectX::XMMATRIX m_ProjectionMatrix;
     // Add for D2D texture
     ID3D10Texture2D *m_pD2DTexture2D;
     ID3D10ShaderResourceView *m_pD2DTexture2DResourceView;
     ID2D1RenderTarget *m_pD2DTexture2DRenderTarget;
 
     // The following variables are updated by OnRender
-	DirectX::XMMATRIX m_WorldMatrix;
+    DirectX::XMMATRIX m_WorldMatrix;
 
     // User Application
     IRenderEventListener *m_pRenderEventListener;

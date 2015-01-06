@@ -172,7 +172,7 @@ touchmind::view::node::NodeViewManager::NodeViewManager() :
     m_pConfiguration(nullptr),
     m_pMapModel(nullptr),
     m_pEditControlManager(nullptr),
-    m_pGaussFilter(new touchmind::filter::GaussFilter()),
+    m_pGaussFilter(std::make_unique<touchmind::filter::GaussFilter>()),
     m_pNodeShadowBrush(nullptr),
     m_pSelectedNodeShadowBrush1(nullptr),
     m_pSelectedNodeShadowBrush2(nullptr)

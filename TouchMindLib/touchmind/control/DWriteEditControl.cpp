@@ -241,10 +241,10 @@ void touchmind::control::DWriteEditControl::_GetFontAttributes(IN IDWriteTextLay
     hr = pTextLayout->GetFontFamilyNameLength(textRange.startPosition, &fontFamilyNameLength, &actualTextRange);
     if (SUCCEEDED(hr)) {
         std::vector<wchar_t> fontFamilyName(fontFamilyNameLength + 1);
-        hr = pTextLayout->GetFontFamilyName(textRange.startPosition, &fontFamilyName.front(), fontFamilyNameLength + 1, &actualTextRange);
+        hr = pTextLayout->GetFontFamilyName(textRange.startPosition, fontFamilyName.data(), fontFamilyNameLength + 1, &actualTextRange);
         LONG actualEndPos = actualTextRange.startPosition + actualTextRange.length - 1;
         if (SUCCEEDED(hr)) {
-            pFontInfo->fontFamilyName = &fontFamilyName.front();
+            pFontInfo->fontFamilyName = fontFamilyName.data();
             pFontInfo->fontFamilyNameStatus = endPos <= actualEndPos ? UI_FONTPROPERTIES_SET : UI_FONTPROPERTIES_NOTAVAILABLE;
         }
     }
@@ -254,10 +254,10 @@ void touchmind::control::DWriteEditControl::_GetFontAttributes(IN IDWriteTextLay
     hr = pTextLayout->GetLocaleNameLength(textRange.startPosition, &localeNameLength, &actualTextRange);
     if (SUCCEEDED(hr)) {
         std::vector<wchar_t> localeName(localeNameLength + 1);
-        hr = pTextLayout->GetLocaleName(textRange.startPosition, &localeName.front(), localeNameLength + 1, &actualTextRange);
+        hr = pTextLayout->GetLocaleName(textRange.startPosition, localeName.data(), localeNameLength + 1, &actualTextRange);
         LONG actualEndPos = actualTextRange.startPosition + actualTextRange.length - 1;
         if (SUCCEEDED(hr)) {
-            pFontInfo->localeName = &localeName.front();
+            pFontInfo->localeName = localeName.data();
             pFontInfo->localeNameStatus = endPos <= actualEndPos ? UI_FONTPROPERTIES_SET : UI_FONTPROPERTIES_NOTAVAILABLE;
         }
     }
@@ -439,7 +439,7 @@ void touchmind::control::DWriteEditControl::RenderTextWithCompositionUnderline( 
                          ca.endPos - ca.startPos,
                          x,
                          y,
-                         &hitTestMetrics.front(),
+                         hitTestMetrics.data(),
                          actualHitTextCount,
                          &actualHitTextCount
                      );
@@ -608,7 +608,7 @@ void touchmind::control::DWriteEditControl::RenderHighlight( ID2D1RenderTarget *
                 acpEnd - acpStart,
                 x,
                 y,
-                &hitTestMetrics.front(),
+                hitTestMetrics.data(),
                 actualHitTextCount,
                 &actualHitTextCount
             );
@@ -995,7 +995,7 @@ void touchmind::control::DWriteEditControl::GetLineMetrics(OUT std::vector<DWRIT
     m_pDWriteTextLayout->GetMetrics(&textMetrics);
 
     lineMetrics.resize(textMetrics.lineCount);
-    m_pDWriteTextLayout->GetLineMetrics(&lineMetrics.front(), textMetrics.lineCount, &textMetrics.lineCount);
+    m_pDWriteTextLayout->GetLineMetrics(lineMetrics.data(), textMetrics.lineCount, &textMetrics.lineCount);
 }
 
 /// <summary>get a line number of the acp</summary>
@@ -1036,7 +1036,7 @@ bool touchmind::control::DWriteEditControl::CalculateNewCaretPositionForUpDown(D
 
     *caretPosition = (currentActiveSelEnd != TS_AE_END ? acpStart : acpEnd);
 
-    GetLineFromPosition(&lineMetrics.front(),
+    GetLineFromPosition(lineMetrics.data(),
                         static_cast<UINT32>(lineMetrics.size()),
                         *caretPosition,
                         &line,

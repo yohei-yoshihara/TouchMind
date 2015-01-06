@@ -143,7 +143,7 @@ HRESULT touchmind::shell::Clipboard::PasteNodeModel(
     HRESULT hr = _InitializeClipboard();
     if (SUCCEEDED(hr)) {
         int formatId = GetPriorityClipboardFormat(
-                           &m_pFormatPriorityList.front(),
+                           m_pFormatPriorityList.data(),
                            static_cast<int>(m_pFormatPriorityList.size()));
         if (formatId >= 0) {
             if (formatId == m_touchMindClipboardFormatId) {

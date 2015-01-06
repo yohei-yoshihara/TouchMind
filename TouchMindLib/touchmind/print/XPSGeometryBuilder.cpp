@@ -53,7 +53,10 @@ void touchmind::print::XPSGeometryBuilder::CalculateTransformMatrix(
     xpsMatrix.m32 = matrix._32;
 }
 
-void touchmind::print::XPSGeometryBuilder::CreateRoundedRectangleGeometry( IXpsOMObjectFactory *pXpsFactory, const XPS_RECT &rect, FLOAT r, OUT IXpsOMGeometryFigure **ppXpsFigure )
+void touchmind::print::XPSGeometryBuilder::CreateRoundedRectangleGeometry(
+    IXpsOMObjectFactory *pXpsFactory, 
+    const XPS_RECT &rect, FLOAT r, 
+    OUT IXpsOMGeometryFigure **ppXpsFigure )
 {
     XPS_POINT startPoint;
     startPoint.x = rect.x;
@@ -196,9 +199,9 @@ void touchmind::print::XPSGeometryBuilder::CreatePathGeometryFromPoints(
     CHK_HR((*ppXpsFigure)->SetSegments(
                static_cast<UINT32>(segmentTypes.size()),
                static_cast<UINT32>(segmentData.size()),
-               &segmentTypes.front(),
-               &segmentData.front(),
-               &segmentStrokes.front()));
+               segmentTypes.data(),
+               segmentData.data(),
+               segmentStrokes.data()));
 }
 
 void touchmind::print::XPSGeometryBuilder::CreateCircleGeometry(
