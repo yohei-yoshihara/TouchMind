@@ -1,6 +1,6 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2013
+Microsoft Visual Studio Solution File, Format Version 14.00
+# Visual Studio 2015
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TouchMind", "TouchMind\TouchMind.vcxproj", "{2994E98A-0595-4E4E-9103-6FBD27978054}"
 	ProjectSection(ProjectDependencies) = postProject
 		{AB2E7E63-A202-4025-BCE5-C5FE52285D93} = {AB2E7E63-A202-4025-BCE5-C5FE52285D93}
