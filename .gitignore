@@ -18,6 +18,7 @@
 *.vcxproj.filters
 *.cache
 *.bml
+*.opensdf
 ribbonres.h
 ribbonres.rc
 [Dd]ebug/

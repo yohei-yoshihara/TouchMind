@@ -471,7 +471,7 @@ LRESULT CALLBACK touchmind::win::TouchMindApp::WndProc(
         LPCREATESTRUCT pcs = (LPCREATESTRUCT) lParam;
         touchmind::win::TouchMindApp *pTouchMindApp = reinterpret_cast<touchmind::win::TouchMindApp*>(pcs->lpCreateParams);
 
-        ::SetWindowLongPtrW(hwnd, GWLP_USERDATA, PtrToUlong(pTouchMindApp));
+        ::SetWindowLongPtrW(hwnd, GWLP_USERDATA, reinterpret_cast<LONG_PTR>(pTouchMindApp));
 
         result = 1;
     } else {

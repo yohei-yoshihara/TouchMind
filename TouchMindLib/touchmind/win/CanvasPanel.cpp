@@ -32,6 +32,8 @@
 #include "touchmind/converter/NodeModelXMLEncoder.h"
 #include "touchmind/converter/NodeModelXMLDecoder.h"
 
+bool touchmind::win::CanvasPanel::s_hasDestroyed = false;
+
 LRESULT CALLBACK touchmind::win::CanvasPanel::WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
 #ifdef _DEBUG
@@ -47,7 +49,7 @@ LRESULT CALLBACK touchmind::win::CanvasPanel::WndProc(HWND hWnd, UINT message, W
         ::SetWindowLongPtrW(
             hWnd,
             GWLP_USERDATA,
-            PtrToUlong(pCanvasPanel)
+            reinterpret_cast<LONG_PTR>(pCanvasPanel)
         );
 
         pCanvasPanel->OnCreate();
@@ -59,7 +61,7 @@ LRESULT CALLBACK touchmind::win::CanvasPanel::WndProc(HWND hWnd, UINT message, W
                                      hWnd,
                                      GWLP_USERDATA
                                  )));
-        if (pCanvasPanel) {
+        if (s_hasDestroyed == false && pCanvasPanel) {
             bool eaten = false;
             if (pCanvasPanel->m_pEditControlManager != nullptr) {
                 pCanvasPanel->m_pEditControlManager->WndProc(hWnd, message, wParam, lParam, &eaten);
@@ -217,6 +219,7 @@ touchmind::win::CanvasPanel::CanvasPanel(void) :
 
 touchmind::win::CanvasPanel::~CanvasPanel(void)
 {
+    s_hasDestroyed = true;
 }
 
 void touchmind::win::CanvasPanel::Initialize(UINT ribbonHeight)
