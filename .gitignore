@@ -4,6 +4,7 @@
 #*.dll
 #*.lib
 *.fxo
+*.orig
 *.com
 *.dll.config
 *.exe

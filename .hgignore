@@ -1,12 +1,11 @@
 syntax: glob
 
-GameofLife3D/work/
-
 # compiled source #
 ###################
 
 #*.dll
 #*.lib
+*.fxo
 *.orig
 *.com
 *.dll.config
@@ -22,10 +21,12 @@ GameofLife3D/work/
 *.vcxproj.filters
 *.cache
 *.bml
+*.opensdf
 ribbonres.h
 ribbonres.rc
 [Dd]ebug/
 [Rr]elease/
+.git/
 
 # VS Upgrade stuff #
 ####################
