@@ -4,7 +4,7 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup>
     <IncludePath>$(SolutionDir)\TouchMindLib_Test\gtest\include;$(IncludePath)</IncludePath>
-    <LibraryPath>$(SolutionDir)\TouchMindLib_Test\gtest\lib\x64\static;$(LibraryPath)</LibraryPath>
+    <LibraryPath>$(SolutionDir)\TouchMindLib_Test\gtest\lib\x64;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup />
   <ItemGroup />
