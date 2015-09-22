@@ -30,7 +30,6 @@ class CanvasPanel :
     public touchmind::animation::IAnimationStatusChangedListener
 {
 private:
-    static bool s_hasDestroyed;
     CANVAS_STATE m_canvasState;
     bool m_isInitialized;
     HWND m_hwnd;

@@ -580,7 +580,6 @@ LRESULT CALLBACK touchmind::win::TouchMindApp::WndProc(
                 break;
             case WM_DESTROY: {
                 pTouchMindApp->m_pCanvasPanel->OnDestroy();
-                pTouchMindApp->m_pCanvasPanel.reset();
                 pTouchMindApp->GetRibbonFramework()->Destroy();
                 LOG(SEVERITY_LEVEL_INFO) << L"exit application";
                 PostQuitMessage(0);
