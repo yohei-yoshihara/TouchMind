@@ -272,7 +272,6 @@
     <None Include="res\RightArrowLine.bmp" />
     <None Include="res\RoundedRect.bmp" />
     <None Include="res\TouchMindL.bmp" />
-    <None Include="TODO.txt" />
     <None Include="TouchMind_File.ico" />
     <None Include="res\Copy.bmp" />
     <None Include="res\Cut.bmp" />

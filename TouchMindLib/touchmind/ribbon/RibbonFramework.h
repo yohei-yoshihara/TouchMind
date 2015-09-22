@@ -3,45 +3,42 @@
 
 #include "forwarddecl.h"
 
-namespace touchmind
-{
-namespace ribbon
-{
+namespace touchmind {
+  namespace ribbon {
 
-class RibbonFramework
-{
-private:
-    IUIFramework *m_pFramework;
-    CComPtr<RibbonCommandHandler> m_pRibbonCommandHandler;
-    std::wstring m_resourceName;
-    HWND m_hWnd;
-    CComPtr<IUIImageFromBitmap> m_pifbFactory;
+    class RibbonFramework {
+    private:
+      IUIFramework *m_pFramework;
+      CComPtr<RibbonCommandHandler> m_pRibbonCommandHandler;
+      std::wstring m_resourceName;
+      HWND m_hWnd;
+      CComPtr<IUIImageFromBitmap> m_pifbFactory;
 
-public:
-    RibbonFramework();
-    virtual ~RibbonFramework();
-    HRESULT Initialize(HWND hWnd, touchmind::win::TouchMindApp* pTouchMindApp);
-    void SetResourceName(const std::wstring &resourceName) {
+    public:
+      RibbonFramework();
+      virtual ~RibbonFramework();
+      HRESULT Initialize(HWND hWnd, touchmind::win::TouchMindApp *pTouchMindApp);
+      void SetResourceName(const std::wstring &resourceName) {
         m_resourceName = resourceName;
-    }
-    RibbonCommandHandler* GetRibbonCommandHandler() const {
+      }
+      RibbonCommandHandler *GetRibbonCommandHandler() const {
         return m_pRibbonCommandHandler;
-    }
-    IUIFramework* GetFramework() const {
+      }
+      IUIFramework *GetFramework() const {
         return m_pFramework;
-    }
-    UINT GetRibbonHeight();
-    HWND GetHWnd() const {
+      }
+      UINT GetRibbonHeight();
+      HWND GetHWnd() const {
         return m_hWnd;
-    }
-    void Destroy();
-    HRESULT CreateUIImageFromBitmapResource(IN LPCTSTR resource, OUT IUIImage **ppImage);
-    IUIImageFromBitmap* GetUIImageFromBitmap() const {
+      }
+      void Destroy();
+      HRESULT CreateUIImageFromBitmapResource(IN LPCTSTR resource, OUT IUIImage **ppImage);
+      IUIImageFromBitmap *GetUIImageFromBitmap() const {
         return m_pifbFactory;
-    }
-};
+      }
+    };
 
-} // ribbon
+  } // ribbon
 } // touchmind
 
 #endif // TOUCHMIND_RIBBON_RIBBONFACTORY_H_

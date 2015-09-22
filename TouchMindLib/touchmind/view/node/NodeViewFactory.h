@@ -3,23 +3,21 @@
 
 #include "forwarddecl.h"
 
-namespace touchmind
-{
-namespace view
-{
-namespace node
-{
+namespace touchmind {
+  namespace view {
+    namespace node {
 
-class NodeViewFactory
-{
-private:
-    NodeViewFactory() {}
-public:
-    static std::shared_ptr<view::node::BaseNodeView> Create(const std::shared_ptr<model::node::NodeModel> &node);
-};
+      class NodeViewFactory {
+      private:
+        NodeViewFactory() {
+        }
 
-} // node
-} // view
+      public:
+        static std::shared_ptr<view::node::BaseNodeView> Create(const std::shared_ptr<model::node::NodeModel> &node);
+      };
+
+    } // node
+  } // view
 } // touchmind
 
 #endif // TOUCHMIND_VIEW_NODE_NODEVIEWFACTORY_H_

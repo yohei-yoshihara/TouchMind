@@ -133,12 +133,11 @@
 #define __SAFEACQUIRE
 
 template <typename InterfaceType>
-inline InterfaceType* SafeAcquire(InterfaceType* newObject)
-{
-    if (newObject != nullptr)
-        newObject->AddRef();
+inline InterfaceType *SafeAcquire(InterfaceType *newObject) {
+  if (newObject != nullptr)
+    newObject->AddRef();
 
-    return newObject;
+  return newObject;
 }
 
 #endif // __SAFEACQUIRE
@@ -148,30 +147,33 @@ inline InterfaceType* SafeAcquire(InterfaceType* newObject)
 #ifndef __SAFERELEASE
 #define __SAFERELEASE
 
-template<class Interface>
-inline void SafeRelease(
-    Interface **ppInterfaceToRelease
-)
-{
-    if (*ppInterfaceToRelease != nullptr) {
+template <class Interface>
+inline void SafeRelease(Interface **ppInterfaceToRelease) {
+  if (*ppInterfaceToRelease != nullptr) {
 #ifdef DEBUG_GPU_RESOURCE
-        LOG(SEVERITY_LEVEL_INFO) << L"[GPU RESOURCE] Release [" << typeid((*ppInterfaceToRelease)).name() << "][" << std::hex << *ppInterfaceToRelease << L"]" << std::dec;
+    LOG(SEVERITY_LEVEL_INFO) << L"[GPU RESOURCE] Release [" << typeid((*ppInterfaceToRelease)).name() << "]["
+                             << std::hex << *ppInterfaceToRelease << L"]" << std::dec;
 #endif
-        (*ppInterfaceToRelease)->Release();
+    (*ppInterfaceToRelease)->Release();
 
-        (*ppInterfaceToRelease) = nullptr;
-    }
+    (*ppInterfaceToRelease) = nullptr;
+  }
 }
 
 #endif // __SAFERELEASE
 
 // Assert
 #ifndef Assert
-#if defined( DEBUG ) || defined( _DEBUG )
-#define Assert(b) do {if (!(b)) {OutputDebugStringA("Assert: " #b "\n");}} while(0)
+#if defined(DEBUG) || defined(_DEBUG)
+#define Assert(b)                                                                                                      \
+  do {                                                                                                                 \
+    if (!(b)) {                                                                                                        \
+      OutputDebugStringA("Assert: " #b "\n");                                                                          \
+    }                                                                                                                  \
+  } while (0)
 #else
 #define Assert(b)
-#endif //DEBUG || _DEBUG
+#endif // DEBUG || _DEBUG
 #endif
 
 #include <assert.h>
@@ -194,5 +196,5 @@ EXTERN_C IMAGE_DOS_HEADER __ImageBase;
 #undef max
 #undef GetFirstChild
 
-#pragma warning(disable: 4714) // disable inline warning
-#pragma warning(disable: 4481) // disable override warning
+#pragma warning(disable : 4714) // disable inline warning
+#pragma warning(disable : 4481) // disable override warning

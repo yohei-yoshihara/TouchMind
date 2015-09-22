@@ -3,24 +3,20 @@
 
 #include "touchmind/model/node/NodeModel.h"
 
-namespace touchmind
-{
-namespace layout
-{
+namespace touchmind {
+  namespace layout {
 
-/**
- * calculate width and height of a given tree node's text.
- */
-class ITextSizeProvider
-{
-public:
-    virtual void Calculate(
-        IN const std::shared_ptr<model::node::NodeModel> &node,
-        OUT FLOAT *pWidth,
-        OUT FLOAT *pHeight) = 0;
-};
+    /**
+     * calculate width and height of a given tree node's text.
+     */
+    class ITextSizeProvider {
+    public:
+      virtual void Calculate(IN const std::shared_ptr<model::node::NodeModel> &node, OUT FLOAT *pWidth,
+                             OUT FLOAT *pHeight)
+          = 0;
+    };
 
-} // layout
+  } // layout
 } // touchmind
 
 #endif // TOUCHMIND_LAYOUT_ITEXTLAYOUTPROVIDER_H_

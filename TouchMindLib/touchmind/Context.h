@@ -4,35 +4,33 @@
 #include "forwarddecl.h"
 #include "touchmind/Common.h"
 
-namespace touchmind
-{
+namespace touchmind {
 
-struct Vertex {
+  struct Vertex {
     DirectX::XMFLOAT3 Pos;
     DirectX::XMFLOAT2 Tex;
-};
+  };
 
-class D3DStates
-{
-public:
-    D3DStates():
-        pRenderTargetViews(nullptr),
-        pDepthStencilView(nullptr),
-        viewport()
-    {}
+  class D3DStates {
+  public:
+    D3DStates()
+        : pRenderTargetViews(nullptr)
+        , pDepthStencilView(nullptr)
+        , viewport() {
+    }
     // OMGetRenderTargets (Currently only one render target view supported)
     ID3D10RenderTargetView *pRenderTargetViews;
     ID3D10DepthStencilView *pDepthStencilView;
     // RSGetViewports (Currently only one viewport supported)
     D3D10_VIEWPORT viewport;
-};
+  };
 
-__declspec(align(16)) class Context
-{
-public:
-    void* operator new(size_t size);
-    void operator delete(void* p);
-private:
+  __declspec(align(16)) class Context {
+  public:
+    void *operator new(size_t size);
+    void operator delete(void *p);
+
+  private:
     HWND m_hwnd;
     // The following variables are created by CreateDeviceIndependentResources
     ID2D1Factory *m_pD2DFactory;
@@ -55,7 +53,7 @@ private:
     ID3D10InputLayout *m_pVertexLayout;
 
     // The following variables are created by RecreateSizedResources
-    //ID2D1RenderTarget *m_pBackBufferRenderTarget;
+    // ID2D1RenderTarget *m_pBackBufferRenderTarget;
     ID3D10RenderTargetView *m_pBackBufferRenderTargetView;
     ID3D10Texture2D *m_pDepthStencil;
     ID3D10DepthStencilView *m_pDepthStencilView;
@@ -86,59 +84,47 @@ private:
     CComPtr<IUIAnimationTransitionLibrary> m_pTransitionLibrary;
     touchmind::animation::IAnimationStatusChangedListener *m_animationStatusChangedListener;
 
-protected:
-    HRESULT _CreateD3DDevice(
-        IDXGIAdapter *pAdapter,
-        D3D10_DRIVER_TYPE driverType,
-        UINT flags,
-        ID3D10Device1 **ppDevice);
+  protected:
+    HRESULT _CreateD3DDevice(IDXGIAdapter *pAdapter, D3D10_DRIVER_TYPE driverType, UINT flags,
+                             ID3D10Device1 **ppDevice);
     HRESULT _CreateD3DDeviceResources();
     HRESULT _InitializeAnimation();
 
-public:
+  public:
     static const D3D10_INPUT_ELEMENT_DESC s_InputLayout[];
     static const touchmind::Vertex s_VertexArray[];
     static const SHORT s_FacesIndexArray[];
     static const UINT sc_msaaSampleCount;
-    static HRESULT LoadResourceBitmap(
-        ID2D1RenderTarget *pRenderTarget,
-        IWICImagingFactory *pIWICFactory,
-        PCWSTR resourceName,
-        PCWSTR resourceType,
-        UINT destinationWidth,
-        UINT destinationHeight,
-        ID2D1Bitmap **ppBitmap);
-    static HRESULT LoadResourceShader(
-        ID3D10Device *pDevice,
-        PCWSTR pszResource,
-        ID3D10Effect **ppShader);
+    static HRESULT LoadResourceBitmap(ID2D1RenderTarget *pRenderTarget, IWICImagingFactory *pIWICFactory,
+                                      PCWSTR resourceName, PCWSTR resourceType, UINT destinationWidth,
+                                      UINT destinationHeight, ID2D1Bitmap **ppBitmap);
+    static HRESULT LoadResourceShader(ID3D10Device *pDevice, PCWSTR pszResource, ID3D10Effect **ppShader);
 
     Context(void);
     virtual ~Context(void);
     void SetHWnd(HWND hwnd) {
-        m_hwnd = hwnd;
+      m_hwnd = hwnd;
     }
     HWND GetHWnd() const {
-        return m_hwnd;
+      return m_hwnd;
     }
-    void SetRenderEventListener(
-        IRenderEventListener *pRenderEventListener) {
-        m_pRenderEventListener = pRenderEventListener;
+    void SetRenderEventListener(IRenderEventListener *pRenderEventListener) {
+      m_pRenderEventListener = pRenderEventListener;
     }
-    ID3D10Device* GetD3D10Device() const {
-        return m_pDevice;
+    ID3D10Device *GetD3D10Device() const {
+      return m_pDevice;
     }
-    ID2D1Factory* GetD2DFactory() const {
-        return m_pD2DFactory;
+    ID2D1Factory *GetD2DFactory() const {
+      return m_pD2DFactory;
     }
-    IWICImagingFactory* GetWICImagingFactory() const {
-        return m_pWICFactory;
+    IWICImagingFactory *GetWICImagingFactory() const {
+      return m_pWICFactory;
     }
-    IDWriteFactory* GetDWriteFactory() const {
-        return m_pDWriteFactory;
+    IDWriteFactory *GetDWriteFactory() const {
+      return m_pDWriteFactory;
     }
-    ID2D1RenderTarget* GetD2DRenderTarget() const {
-        return m_pD2DTexture2DRenderTarget;
+    ID2D1RenderTarget *GetD2DRenderTarget() const {
+      return m_pD2DTexture2DRenderTarget;
     }
     HRESULT CreateDeviceIndependentResources();
     HRESULT CreateDeviceResources();
@@ -146,66 +132,45 @@ public:
     void OnResize(UINT width, UINT height);
     HRESULT _RecreateSizedResources(UINT nWidth, UINT nHeight);
     void DiscardDeviceResources();
-    HRESULT CreateTexture2D(
-        UINT width,
-        UINT height,
-        OUT ID3D10Texture2D **ppTexture2D);
-    HRESULT CreateD2DRenderTargetFromTexture2D(
-        ID3D10Texture2D *pTexure2D,
-        ID2D1RenderTarget **ppRenderTarget);
-    HRESULT CreateD2DSharedBitmapFromTexture2D(
-        ID2D1RenderTarget *pRenderTarget,
-        ID3D10Texture2D *pTexure2D,
-        ID2D1Bitmap **ppBitmap);
+    HRESULT CreateTexture2D(UINT width, UINT height, OUT ID3D10Texture2D **ppTexture2D);
+    HRESULT CreateD2DRenderTargetFromTexture2D(ID3D10Texture2D *pTexure2D, ID2D1RenderTarget **ppRenderTarget);
+    HRESULT CreateD2DSharedBitmapFromTexture2D(ID2D1RenderTarget *pRenderTarget, ID3D10Texture2D *pTexure2D,
+                                               ID2D1Bitmap **ppBitmap);
     HRESULT CreateVertexAndIndexBuffer();
     void SetIndexBuffer();
     void PushStates();
     void PopStates();
 
     // Animation
-    void SetAnimationStatusChangedListener(touchmind::animation::IAnimationStatusChangedListener *animationStatusChangedListener) {
-        m_animationStatusChangedListener = animationStatusChangedListener;
+    void SetAnimationStatusChangedListener(
+        touchmind::animation::IAnimationStatusChangedListener *animationStatusChangedListener) {
+      m_animationStatusChangedListener = animationStatusChangedListener;
     }
-    IUIAnimationManager* GetAnimationManager() const {
-        return m_pAnimationManager;
+    IUIAnimationManager *GetAnimationManager() const {
+      return m_pAnimationManager;
     }
-    IUIAnimationTimer* GetAnimationTimer() const {
-        return m_pAnimationTimer;
+    IUIAnimationTimer *GetAnimationTimer() const {
+      return m_pAnimationTimer;
     }
-    IUIAnimationTransitionLibrary* GetAnimationTransitionLibrary() const {
-        return m_pTransitionLibrary;
+    IUIAnimationTransitionLibrary *GetAnimationTransitionLibrary() const {
+      return m_pTransitionLibrary;
     }
-};
+  };
 
-class IRenderEventListener
-{
-public:
-    virtual HRESULT CreateDeviceIndependentResources(
-        Context *pContext,
-        ID2D1Factory *pD2DFactory,
-        IWICImagingFactory *pWICFactory,
-        IDWriteFactory *pDWriteFactory) = 0;
-    virtual HRESULT CreateD3DResources(
-        Context *pContext,
-        ID3D10Device *pDevice) = 0;
-    virtual HRESULT CreateD2DResources(
-        Context *pContext,
-        ID2D1Factory *pD2DFactory,
-        ID2D1RenderTarget *pRenderTarget) = 0;
-    virtual HRESULT Render2D(
-        Context *pContext,
-        ID2D1RenderTarget *pRenderTarget) = 0;
-    virtual HRESULT PrepareRender3D(
-        Context *pContext,
-        ID3D10Device *pDevice) = 0;
-    virtual HRESULT Render3D(
-        Context *pContext,
-        ID3D10Device *pDevice) = 0;
-    virtual HRESULT AfterRender3D(
-        Context *pContext,
-        ID2D1RenderTarget *pRenderTarget) = 0;
+  class IRenderEventListener {
+  public:
+    virtual HRESULT CreateDeviceIndependentResources(Context *pContext, ID2D1Factory *pD2DFactory,
+                                                     IWICImagingFactory *pWICFactory, IDWriteFactory *pDWriteFactory)
+        = 0;
+    virtual HRESULT CreateD3DResources(Context *pContext, ID3D10Device *pDevice) = 0;
+    virtual HRESULT CreateD2DResources(Context *pContext, ID2D1Factory *pD2DFactory, ID2D1RenderTarget *pRenderTarget)
+        = 0;
+    virtual HRESULT Render2D(Context *pContext, ID2D1RenderTarget *pRenderTarget) = 0;
+    virtual HRESULT PrepareRender3D(Context *pContext, ID3D10Device *pDevice) = 0;
+    virtual HRESULT Render3D(Context *pContext, ID3D10Device *pDevice) = 0;
+    virtual HRESULT AfterRender3D(Context *pContext, ID2D1RenderTarget *pRenderTarget) = 0;
     virtual void DiscardDeviceResources() = 0;
-};
+  };
 
 } // touchmind
 

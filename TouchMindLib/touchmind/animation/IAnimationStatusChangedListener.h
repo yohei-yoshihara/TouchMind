@@ -3,20 +3,17 @@
 
 #include "forwarddecl.h"
 
-namespace touchmind
-{
-namespace animation
-{
+namespace touchmind {
+  namespace animation {
 
-class IAnimationStatusChangedListener
-{
-public:
-    virtual HRESULT OnAnimationStatusChanged(
-        UI_ANIMATION_MANAGER_STATUS newStatus,
-        UI_ANIMATION_MANAGER_STATUS previousStatus) = 0;
-};
+    class IAnimationStatusChangedListener {
+    public:
+      virtual HRESULT OnAnimationStatusChanged(UI_ANIMATION_MANAGER_STATUS newStatus,
+                                               UI_ANIMATION_MANAGER_STATUS previousStatus)
+          = 0;
+    };
 
-} // animation
+  } // animation
 } // touchmind
 
 #endif // TOUCHMIND_ANIMATION_IANIMATIONSTATUSCHANGEDLISTENER_H_

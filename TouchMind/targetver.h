@@ -15,5 +15,3 @@
 #ifndef _WIN32_IE
 #define _WIN32_IE 0x0800
 #endif
-
-

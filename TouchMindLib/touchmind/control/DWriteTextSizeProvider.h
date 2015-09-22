@@ -5,31 +5,28 @@
 #include "touchmind/layout/ITextSizeProvider.h"
 #include "touchmind/view/node/NodeViewManager.h"
 
-namespace touchmind
-{
-namespace control
-{
+namespace touchmind {
+  namespace control {
 
-class DWriteTextSizeProvider :
-    public touchmind::layout::ITextSizeProvider
-{
-private:
-    touchmind::view::node::NodeViewManager *m_pNodeViewManager;
-    touchmind::control::DWriteEditControlManager *m_pEditControlManager;
+    class DWriteTextSizeProvider : public touchmind::layout::ITextSizeProvider {
+    private:
+      touchmind::view::node::NodeViewManager *m_pNodeViewManager;
+      touchmind::control::DWriteEditControlManager *m_pEditControlManager;
 
-public:
-    DWriteTextSizeProvider(void);
-    virtual ~DWriteTextSizeProvider(void);
-    void SetNodeViewManager(touchmind::view::node::NodeViewManager *pNodeViewManager) {
+    public:
+      DWriteTextSizeProvider(void);
+      virtual ~DWriteTextSizeProvider(void);
+      void SetNodeViewManager(touchmind::view::node::NodeViewManager *pNodeViewManager) {
         m_pNodeViewManager = pNodeViewManager;
-    }
-    void SetEditControlManager(touchmind::control::DWriteEditControlManager *pEditControlManager) {
+      }
+      void SetEditControlManager(touchmind::control::DWriteEditControlManager *pEditControlManager) {
         m_pEditControlManager = pEditControlManager;
-    }
-    virtual void Calculate(IN const std::shared_ptr<touchmind::model::node::NodeModel> &node, OUT FLOAT *pWidth, OUT FLOAT *pHeight);
-};
+      }
+      virtual void Calculate(IN const std::shared_ptr<touchmind::model::node::NodeModel> &node, OUT FLOAT *pWidth,
+                             OUT FLOAT *pHeight);
+    };
 
-} // control
+  } // control
 } // touchmind
 
 #endif // TOUCHMIND_CONTROL_DWRITETEXTSIZEPROVIDER_H_

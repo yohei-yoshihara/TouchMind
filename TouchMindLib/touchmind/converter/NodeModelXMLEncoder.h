@@ -9,22 +9,17 @@
 #endif
 #include <msxml6.h>
 
-namespace touchmind
-{
-namespace converter
-{
-class NodeModelXMLEncoder
-{
-public:
-    NodeModelXMLEncoder(void);
-    ~NodeModelXMLEncoder(void);
+namespace touchmind {
+  namespace converter {
+    class NodeModelXMLEncoder {
+    public:
+      NodeModelXMLEncoder(void);
+      ~NodeModelXMLEncoder(void);
 
-    HRESULT Encode(
-        IN std::shared_ptr<touchmind::model::node::NodeModel> node,
-        IN MSXML::IXMLDOMDocumentPtr pXMLDoc,
-        OUT MSXML::IXMLDOMElementPtr &pElement);
-};
-} // converter
+      HRESULT Encode(IN std::shared_ptr<touchmind::model::node::NodeModel> node, IN MSXML::IXMLDOMDocumentPtr pXMLDoc,
+                     OUT MSXML::IXMLDOMElementPtr &pElement);
+    };
+  } // converter
 } // touchmind
 
 #endif // TOUCHMIND_MODEL_NODEMODELXMLENCODER_H_
