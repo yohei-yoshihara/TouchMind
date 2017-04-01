@@ -22,7 +22,7 @@ TouchMind works on Windows 10/8/7 and Vista(with Platform Update).
 
 # Build
 
-1. Install Visual Studio 2017 Community Edition.
+1. Install Visual Studio 2017 Community Edition. (C++ Desktop Application with MFC and ATL components)
 2. Install [Boost 1.64b2 Windows binaries](https://sourceforge.net/projects/boost/files/boost-binaries/1.64.0_b2/)
    (boost_1_64_0_b2-msvc-14.1-32.exe and boost_1_64_0_b2-msvc-14.1-64.exe).
 3. Install [WiX Toolset 3.11](http://wixtoolset.org/).
@@ -32,7 +32,7 @@ TouchMind works on Windows 10/8/7 and Vista(with Platform Update).
 
 MIT License
 
-Copyright 2017, Yohei Yoshihara
+Copyright 2017 Yohei Yoshihara
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 
