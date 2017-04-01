@@ -25,6 +25,7 @@ ribbonres.rc
 [Dd]ebug/
 [Rr]elease/
 .hg/
+.vs/
 
 # VS Upgrade stuff #
 ####################

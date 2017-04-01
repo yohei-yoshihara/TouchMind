@@ -22,8 +22,20 @@ TouchMind works on Windows 10/8/7 and Vista(with Platform Update).
 
 # Build
 
-1. Install Visual Studio 2015 Community Edition.
-2. Install [Boost 1.59 Windows binaries](http://sourceforge.net/projects/boost/files/boost-binaries/1.59.0/)
-   (boost_1_59_0-msvc-14.0-64.exe and boost_1_59_0-msvc-14.0-32.exe).
-3. Install [WiX Toolset 3.10](http://wixtoolset.org/).
+1. Install Visual Studio 2017 Community Edition.
+2. Install [Boost 1.64b2 Windows binaries](https://sourceforge.net/projects/boost/files/boost-binaries/1.64.0_b2/)
+   (boost_1_64_0_b2-msvc-14.1-32.exe and boost_1_64_0_b2-msvc-14.1-64.exe).
+3. Install [WiX Toolset 3.11](http://wixtoolset.org/).
 4. Open "TouchMind.sln".
+
+# License
+
+MIT License
+
+Copyright 2017, Yohei Yoshihara
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.

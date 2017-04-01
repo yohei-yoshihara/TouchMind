@@ -3,10 +3,10 @@
   <ImportGroup Label="PropertySheets" />
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup>
-    <IncludePath>C:\local\boost_1_59_0;$(IncludePath)</IncludePath>
+    <IncludePath>C:\local\boost_1_64_0_b2;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup>
-    <LibraryPath>C:\local\boost_1_59_0\lib64-msvc-14.0;$(LibraryPath)</LibraryPath>
+    <LibraryPath>C:\local\boost_1_64_0_b2\lib64-msvc-14.1;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup />
   <ItemGroup />
