@@ -98,7 +98,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
     <PostBuildEvent>
-      <Command>..\TouchMind\mui.bat ..\Debug 0x0413 nl-NL nl_nl 1</Command>
+      <Command>start /wait ..\TouchMind\mui.bat ..\Debug 0x0413 nl-NL nl_nl 1</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -133,7 +133,7 @@
       <OptimizeReferences>true</OptimizeReferences>
     </Link>
     <PostBuildEvent>
-      <Command>..\TouchMind\mui.bat ..\Release 0x0413 nl-NL nl_nl 1</Command>
+      <Command>start /wait ..\TouchMind\mui.bat ..\Release 0x0413 nl-NL nl_nl 1</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
