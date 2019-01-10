@@ -80,8 +80,8 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, PWSTR lpCmdLin
     return 2;
   }
 
-  // ULONG numLangs;
-  // SetProcessPreferredUILanguages(MUI_LANGUAGE_NAME, L"en-US", &numLangs);
+   ULONG numLangs;
+   SetProcessPreferredUILanguages(MUI_LANGUAGE_NAME, L"en-US", &numLangs);
   // SetProcessPreferredUILanguages(MUI_LANGUAGE_NAME, L"de-DE", &numLangs);
   // SetProcessPreferredUILanguages(MUI_LANGUAGE_NAME, L"nl-NL", &numLangs);
   if (touchmind::MUI::Initialize() != S_OK) {

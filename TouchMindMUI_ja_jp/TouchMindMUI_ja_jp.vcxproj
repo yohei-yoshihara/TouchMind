@@ -22,7 +22,7 @@
     <ProjectGuid>{AB2E7E63-A202-4025-BCE5-C5FE52285D93}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
     <RootNamespace>TouchMindMUI_ja_jp</RootNamespace>
-    <WindowsTargetPlatformVersion>10.0.14393.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0.17763.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -98,7 +98,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
     <PostBuildEvent>
-      <Command>..\TouchMind\mui.bat ..\Debug 0x0411 ja-JP ja_jp 1</Command>
+      <Command>start /wait ..\TouchMind\mui.bat ..\Debug 0x0411 ja-JP ja_jp 1</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -114,7 +114,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
     <PostBuildEvent>
-      <Command>..\TouchMind\mui_x64.bat ..\x64\Debug 0x0411 ja-JP ja_jp 1</Command>
+      <Command>start /wait ..\TouchMind\mui_x64.bat ..\x64\Debug 0x0411 ja-JP ja_jp 1</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -133,7 +133,7 @@
       <OptimizeReferences>true</OptimizeReferences>
     </Link>
     <PostBuildEvent>
-      <Command>..\TouchMind\mui.bat ..\Release 0x0411 ja-JP ja_jp 1</Command>
+      <Command>start /wait ..\TouchMind\mui.bat ..\Release 0x0411 ja-JP ja_jp 1</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -152,7 +152,7 @@
       <OptimizeReferences>true</OptimizeReferences>
     </Link>
     <PostBuildEvent>
-      <Command>..\TouchMind\mui_x64.bat ..\x64\Release 0x0411 ja-JP ja_jp 1</Command>
+      <Command>start /wait ..\TouchMind\mui_x64.bat ..\x64\Release 0x0411 ja-JP ja_jp 1</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>

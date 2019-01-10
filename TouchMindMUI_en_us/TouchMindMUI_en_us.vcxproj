@@ -22,7 +22,7 @@
     <ProjectGuid>{85522DA8-045B-4732-993D-FC24FD18140A}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
     <RootNamespace>TouchMindMUI_en_us</RootNamespace>
-    <WindowsTargetPlatformVersion>10.0.14393.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0.17763.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -97,7 +97,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
     <PostBuildEvent>
-      <Command>..\TouchMind\mui.bat ..\Debug 0x0409 en-US en_us 0</Command>
+      <Command>strat /wait ..\TouchMind\mui.bat ..\Debug 0x0409 en-US en_us 0</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -112,7 +112,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
     <PostBuildEvent>
-      <Command>..\TouchMind\mui_x64.bat ..\x64\Debug 0x0409 en-US en_us 0</Command>
+      <Command>start /wait ..\TouchMind\mui_x64.bat ..\x64\Debug 0x0409 en-US en_us 0</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -131,7 +131,7 @@
       <OptimizeReferences>true</OptimizeReferences>
     </Link>
     <PostBuildEvent>
-      <Command>..\TouchMind\mui.bat ..\Release 0x0409 en-US en_us 0</Command>
+      <Command>start /wait ..\TouchMind\mui.bat ..\Release 0x0409 en-US en_us 0</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -150,7 +150,7 @@
       <OptimizeReferences>true</OptimizeReferences>
     </Link>
     <PostBuildEvent>
-      <Command>..\TouchMind\mui_x64.bat ..\x64\Release 0x0409 en-US en_us 0</Command>
+      <Command>start /wait ..\TouchMind\mui_x64.bat ..\x64\Release 0x0409 en-US en_us 0</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>

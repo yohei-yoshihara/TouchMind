@@ -1,6 +1,6 @@
 TouchMind
 =========
-
+![Screenshot](/screenshots/blob/master/screenshot_small1.png?raw=true "screenshot")
 TouchMind is a tree node map editor.
 
 <p>TouchMind is the project to evaluate the latest Windows technologies. Currently, the following technologies are used:</p>
@@ -22,10 +22,10 @@ TouchMind works on Windows 10/8/7 and Vista(with Platform Update).
 
 # Build
 
-1. Install Visual Studio 2017 Community Edition. (C++ Desktop Application with MFC and ATL components)
-2. Install [Boost 1.64b2 Windows binaries](https://sourceforge.net/projects/boost/files/boost-binaries/1.64.0_b2/)
-   (boost_1_64_0_b2-msvc-14.1-32.exe and boost_1_64_0_b2-msvc-14.1-64.exe).
-3. Install [WiX Toolset 3.11](http://wixtoolset.org/).
+1. Install Visual Studio 2017 Community Edition. (with C++ Desktop Application Development, MFC(for ATL), C++/CLI and Windows SDK(10.0.17763.0))
+2. Install [Boost 1.69 Windows binaries](https://sourceforge.net/projects/boost/files/boost-binaries/1.69.0/)
+   (boost_1_69_0-msvc-14.1-32.exe and boost_1_69_0-msvc-14.1-64.exe).
+3. Install [WiX Toolset 3.11](http://wixtoolset.org/) and [Wix Toolset Visual Studio 2017 Extension](https://marketplace.visualstudio.com/items?itemName=RobMensching.WixToolsetVisualStudio2017Extension).
 4. Open "TouchMind.sln".
 
 # License

@@ -2,7 +2,7 @@
 <Include>
   
   <?define ProductName="TouchMind" ?>
-  <?define ProductVersion="1.0.1.0" ?>
+  <?define ProductVersion="1.0.2.0" ?>
   <?define ProductManufacturer="Yohei Yoshihara" ?>
   
   <?if $(var.Platform) = x64 ?>

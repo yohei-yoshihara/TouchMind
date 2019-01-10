@@ -28,3 +28,4 @@ muirct.exe -c .\%LIB_PREFIX%.dll -v 2 -e .\%LANG_NAME%\%LIB_PREFIX%.dll.mui
 IF EXIST .\%LIB_PREFIX%_dummy.dll del .\%LIB_PREFIX%_dummy.dll
 
 popd
+exit 0
