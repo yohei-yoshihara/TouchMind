@@ -1,6 +1,7 @@
 TouchMind
 =========
-![Screenshot](/screenshots/blob/master/screenshot_small1.png?raw=true "screenshot")
+![Screenshot](/blob/master/screenshots/blob/master/screenshot_small1.png?raw=true "screenshot")
+
 TouchMind is a tree node map editor.
 
 <p>TouchMind is the project to evaluate the latest Windows technologies. Currently, the following technologies are used:</p>
