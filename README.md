@@ -1,6 +1,6 @@
 TouchMind
 =========
-![Screenshot](/blob/master/screenshots/blob/master/screenshot_small1.png?raw=true "screenshot")
+![Screenshot](/blob/master/screenshot_small1.png?raw=true "screenshot")
 
 TouchMind is a tree node map editor.
 
