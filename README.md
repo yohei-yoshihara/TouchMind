@@ -4,7 +4,8 @@ TouchMind
 
 TouchMind is a tree node map editor.
 
-<p>TouchMind is the project to evaluate the latest Windows technologies. Currently, the following technologies are used:</p>
+TouchMind is the project to evaluate the latest Windows technologies. Currently, the following technologies are used:
+
 - C++ 14
 - Direct2D
 - HLSL (using Direct2D's Direct3D interoperability)
