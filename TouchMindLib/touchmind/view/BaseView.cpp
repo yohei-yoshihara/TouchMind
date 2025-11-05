@@ -1,4 +1,4 @@
-#include "stdafx.h"
+﻿#include "stdafx.h"
 #include "touchmind/model/BaseModel.h"
 #include "touchmind/view/BaseView.h"
 

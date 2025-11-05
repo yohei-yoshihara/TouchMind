@@ -1,4 +1,4 @@
-#include "StdAfx.h"
+﻿#include "StdAfx.h"
 #include "touchmind/Common.h"
 #include "touchmind/logging/Logging.h"
 #include "touchmind/model/node/NodeModel.h"
@@ -41,7 +41,7 @@ namespace touchmind {
 
         m_pXPSPrint->_PrintNode(node);
         if (FAILED(hr)) {
-          LOG(SEVERITY_LEVEL_WARN) << L"_PrintNodeBody failed at node(" << node->GetId() << L", hr = " << hr;
+          SPDLOG_WARN(L"_PrintNodeBody failed at node({}), hr = {:x}", node->GetId(), hr);
           return touchmind::VISITOR_RESULT_STOP;
         }
 
@@ -58,10 +58,10 @@ namespace touchmind {
             pTextLayout->Draw(nullptr, pTextRenderer, node->GetX() + m_pXPSPrint->GetConfiguration()->GetInsets().left,
                               node->GetY() + m_pXPSPrint->GetConfiguration()->GetInsets().top);
           } else {
-            LOG(SEVERITY_LEVEL_WARN) << L"TextLayout is null";
+            SPDLOG_WARN(L"TextLayout is null");
           }
         } else {
-          LOG(SEVERITY_LEVEL_WARN) << L"Could not found EditControl for Node(" << node->GetId() << L")";
+          SPDLOG_WARN(L"Could not found EditControl for Node({})", node->GetId());
         }
         return touchmind::VISITOR_RESULT_CONTINUE;
       }
@@ -112,7 +112,7 @@ touchmind::print::XPSPrint::~XPSPrint(void) {
 }
 
 void touchmind::print::XPSPrint::Initialize() {
-  CHK_RES(m_pXpsFactory, CoCreateInstance(__uuidof(XpsOMObjectFactory), NULL, CLSCTX_INPROC_SERVER,
+  THROW_IF_FAILED(CoCreateInstance(__uuidof(XpsOMObjectFactory), NULL, CLSCTX_INPROC_SERVER,
                                           __uuidof(IXpsOMObjectFactory), reinterpret_cast<LPVOID *>(&m_pXpsFactory)));
 }
 
@@ -127,9 +127,10 @@ void touchmind::print::XPSPrint::Print(touchmind::model::MapModel *pMapModel) {
 }
 
 void touchmind::print::XPSPrint::_ShowPrintDlg() {
-  CHK_FATAL_NULL(m_pPDX = static_cast<LPPRINTDLGEX>(GlobalAlloc(GPTR, sizeof(PRINTDLGEX))));
+  THROW_IF_NULL_ALLOC(m_pPDX = static_cast<LPPRINTDLGEX>(GlobalAlloc(GPTR, sizeof(PRINTDLGEX))));
 
-  CHK_FATAL_NULL(m_pPageRanges = static_cast<LPPRINTPAGERANGE>(GlobalAlloc(GPTR, 10 * sizeof(PRINTPAGERANGE))));
+  THROW_IF_NULL_ALLOC(m_pPageRanges = static_cast<LPPRINTPAGERANGE>(
+                          GlobalAlloc(GPTR, 10 * sizeof(PRINTPAGERANGE))));
 
   m_pPDX->lStructSize = sizeof(PRINTDLGEX);
   m_pPDX->hwndOwner = m_parentHWnd;
@@ -153,7 +154,7 @@ void touchmind::print::XPSPrint::_ShowPrintDlg() {
   m_pPDX->nStartPage = START_PAGE_GENERAL;
   m_pPDX->dwResultAction = 0;
 
-  CHK_HR(::PrintDlgEx(m_pPDX));
+  THROW_IF_FAILED(::PrintDlgEx(m_pPDX));
 
   if (m_pPDX->dwResultAction == PD_RESULT_PRINT || m_pPDX->dwResultAction == PD_RESULT_APPLY) {
     LPDEVNAMES devnames = (LPDEVNAMES)GlobalLock(m_pPDX->hDevNames);
@@ -170,7 +171,7 @@ void touchmind::print::XPSPrint::_PrintMapModel(const touchmind::model::MapModel
   _CreateCanvas();
 
   m_pTextRenderer = nullptr;
-  CHK_HR(XpsDWriteTextRenderer::CreateInstance(m_pXpsFactory, &m_pTextRenderer));
+  THROW_IF_FAILED(XpsDWriteTextRenderer::CreateInstance(m_pXpsFactory, &m_pTextRenderer));
   m_pTextRenderer->SetXpsCanvas(m_pXpsCanvas);
   m_pTextRenderer->SetXpsDictionary(m_pXpsDictionary);
   m_pTextRenderer->SetXpsResources(m_pXpsResources);
@@ -179,7 +180,7 @@ void touchmind::print::XPSPrint::_PrintMapModel(const touchmind::model::MapModel
   _PrintLinks(pMapModel);
 
   HANDLE completionEvent = ::CreateEvent(NULL, TRUE, FALSE, NULL);
-  CHK_FATAL_NULL(completionEvent);
+  THROW_IF_NULL_ALLOC(completionEvent);
 
   IXpsPrintJob *job = nullptr;
   IXpsPrintJobStream *jobStream = nullptr;
@@ -195,13 +196,13 @@ void touchmind::print::XPSPrint::_PrintMapModel(const touchmind::model::MapModel
 #endif
                         );
   if (FAILED(hr)) {
-    LOG(SEVERITY_LEVEL_ERROR) << L"StartXpsPrintJob failed, hr = " << std::hex << hr;
+    SPDLOG_ERROR(L"StartXpsPrintJob failed, hr = {:x}", hr);
   }
 
   if (SUCCEEDED(hr)) {
     hr = m_pXpsPackage->WriteToStream(jobStream, FALSE);
     if (FAILED(hr)) {
-      LOG(SEVERITY_LEVEL_ERROR) << L"IXpsOMPackage::WriteToStream failed, hr = " << std::hex << hr;
+      SPDLOG_ERROR(L"IXpsOMPackage::WriteToStream failed, hr = {:x}", hr);
     }
   }
 
@@ -247,59 +248,64 @@ void touchmind::print::XPSPrint::_PrintMapModel(const touchmind::model::MapModel
 
 void touchmind::print::XPSPrint::_CreateCanvas() {
   // create a package
-  CHK_RES(m_pXpsPackage, m_pXpsFactory->CreatePackage(&m_pXpsPackage));
+  THROW_IF_FAILED(m_pXpsFactory->CreatePackage(&m_pXpsPackage));
 
   // create a document sequence
   CComPtr<IOpcPartUri> opcPartUri = nullptr;
-  CHK_RES(opcPartUri, m_pXpsFactory->CreatePartUri(L"/FixedDocumentSequence.fdseq", &opcPartUri));
+  THROW_IF_FAILED(m_pXpsFactory->CreatePartUri(L"/FixedDocumentSequence.fdseq",
+                                               &opcPartUri));
 
   CComPtr<IXpsOMDocumentSequence> xpsFDS = nullptr;
-  CHK_RES(xpsFDS, m_pXpsFactory->CreateDocumentSequence(opcPartUri, &xpsFDS));
+  THROW_IF_FAILED(m_pXpsFactory->CreateDocumentSequence(opcPartUri, &xpsFDS));
 
   // create a document
   opcPartUri = nullptr;
-  CHK_RES(opcPartUri, m_pXpsFactory->CreatePartUri(L"/Documents/1/FixedDocument.fdoc", &opcPartUri));
+  THROW_IF_FAILED(m_pXpsFactory->CreatePartUri(
+                      L"/Documents/1/FixedDocument.fdoc", &opcPartUri));
 
   CComPtr<IXpsOMDocument> xpsFD = nullptr;
-  CHK_RES(xpsFD, m_pXpsFactory->CreateDocument(opcPartUri, &xpsFD));
+  THROW_IF_FAILED(m_pXpsFactory->CreateDocument(opcPartUri, &xpsFD));
 
   // create a page reference
   CComPtr<IXpsOMPageReference> xpsPageRef = nullptr;
-  CHK_RES(xpsPageRef, m_pXpsFactory->CreatePageReference(&m_pageSize, &xpsPageRef));
+  THROW_IF_FAILED(m_pXpsFactory->CreatePageReference(&m_pageSize, &xpsPageRef));
 
   // create a page
   opcPartUri = nullptr;
-  CHK_RES(opcPartUri, m_pXpsFactory->CreatePartUri(L"/Documents/1/Pages/1.fpage", &opcPartUri));
+  THROW_IF_FAILED(m_pXpsFactory->CreatePartUri(
+                                  L"/Documents/1/Pages/1.fpage", &opcPartUri));
 
   CComPtr<IXpsOMPage> xpsPage = nullptr;
-  CHK_RES(xpsPage, m_pXpsFactory->CreatePage(&m_pageSize, nullptr, opcPartUri, &xpsPage));
+  THROW_IF_FAILED(m_pXpsFactory->CreatePage(&m_pageSize, nullptr,
+                                                     opcPartUri, &xpsPage));
   opcPartUri = nullptr;
 
-  CHK_HR(m_pXpsPackage->SetDocumentSequence(xpsFDS));
+  THROW_IF_FAILED(m_pXpsPackage->SetDocumentSequence(xpsFDS));
 
   CComPtr<IXpsOMDocumentCollection> fixedDocuments = nullptr;
-  CHK_HR(xpsFDS->GetDocuments(&fixedDocuments));
-  CHK_HR(fixedDocuments->Append(xpsFD));
+  THROW_IF_FAILED(xpsFDS->GetDocuments(&fixedDocuments));
+  THROW_IF_FAILED(fixedDocuments->Append(xpsFD));
 
   CComPtr<IXpsOMPageReferenceCollection> pageRefs = nullptr;
-  CHK_HR(xpsFD->GetPageReferences(&pageRefs));
-  CHK_HR(pageRefs->Append(xpsPageRef));
-  CHK_HR(xpsPageRef->SetPage(xpsPage));
-  CHK_HR(xpsPage->SetLanguage(m_language.c_str()));
+  THROW_IF_FAILED(xpsFD->GetPageReferences(&pageRefs));
+  THROW_IF_FAILED(pageRefs->Append(xpsPageRef));
+  THROW_IF_FAILED(xpsPageRef->SetPage(xpsPage));
+  THROW_IF_FAILED(xpsPage->SetLanguage(m_language.c_str()));
 
   CComPtr<IXpsOMVisualCollection> pageVisuals = nullptr;
-  CHK_HR(xpsPage->GetVisuals(&pageVisuals));
-  CHK_HR(m_pXpsFactory->CreateCanvas(&m_pXpsCanvas));
-  CHK_HR(pageVisuals->Append(m_pXpsCanvas));
+  THROW_IF_FAILED(xpsPage->GetVisuals(&pageVisuals));
+  THROW_IF_FAILED(m_pXpsFactory->CreateCanvas(&m_pXpsCanvas));
+  THROW_IF_FAILED(pageVisuals->Append(m_pXpsCanvas));
 
-  CHK_HR(m_pXpsFactory->CreatePartResources(&m_pXpsResources));
+  THROW_IF_FAILED(m_pXpsFactory->CreatePartResources(&m_pXpsResources));
 
   // Create dictionary and add to canvas
-  CHK_HR(m_pXpsFactory->CreateDictionary(&m_pXpsDictionary));
-  CHK_HR(m_pXpsCanvas->SetDictionaryLocal(m_pXpsDictionary));
+  THROW_IF_FAILED(m_pXpsFactory->CreateDictionary(&m_pXpsDictionary));
+  THROW_IF_FAILED(m_pXpsCanvas->SetDictionaryLocal(m_pXpsDictionary));
 
   CComPtr<IXpsOMMatrixTransform> pMatrixTransform = nullptr;
-  CHK_RES(pMatrixTransform, m_pXpsFactory->CreateMatrixTransform(&m_xpsMatrix, &pMatrixTransform));
+  THROW_IF_FAILED(m_pXpsFactory->CreateMatrixTransform(
+                                        &m_xpsMatrix, &pMatrixTransform));
   m_pXpsCanvas->SetTransformLocal(pMatrixTransform);
 }
 
@@ -313,7 +319,7 @@ void touchmind::print::XPSPrint::_PrintNodes(const std::shared_ptr<touchmind::mo
 
 void touchmind::print::XPSPrint::_PrintNode(const std::shared_ptr<touchmind::model::node::NodeModel> &node) {
   CComPtr<IXpsOMVisualCollection> canvasVisuals = nullptr;
-  CHK_RES(canvasVisuals, m_pXpsCanvas->GetVisuals(&canvasVisuals));
+  THROW_IF_FAILED(m_pXpsCanvas->GetVisuals(&canvasVisuals));
 
   CComPtr<IXpsOMSolidColorBrush> fillBrush = nullptr;
   COLORREF bgColor = touchmind::util::ColorUtil::ToColorref(node->GetBackgroundColor());
@@ -323,7 +329,8 @@ void touchmind::print::XPSPrint::_PrintNode(const std::shared_ptr<touchmind::mod
   bodyColor.value.sRGB.red = GetRValue(bgColor);
   bodyColor.value.sRGB.green = GetGValue(bgColor);
   bodyColor.value.sRGB.blue = GetBValue(bgColor);
-  CHK_RES(fillBrush, m_pXpsFactory->CreateSolidColorBrush(&bodyColor, nullptr, &fillBrush));
+  THROW_IF_FAILED(m_pXpsFactory->CreateSolidColorBrush(
+                                 &bodyColor, nullptr, &fillBrush));
 
   CComPtr<IXpsOMSolidColorBrush> strokeBrush = nullptr;
   ZeroMemory(&bodyColor, sizeof(bodyColor));
@@ -332,7 +339,8 @@ void touchmind::print::XPSPrint::_PrintNode(const std::shared_ptr<touchmind::mod
   bodyColor.value.sRGB.red = 0;
   bodyColor.value.sRGB.green = 0;
   bodyColor.value.sRGB.blue = 0;
-  CHK_RES(strokeBrush, m_pXpsFactory->CreateSolidColorBrush(&bodyColor, nullptr, &strokeBrush));
+  THROW_IF_FAILED(m_pXpsFactory->CreateSolidColorBrush(
+                                   &bodyColor, nullptr, &strokeBrush));
 
   XPS_RECT rect = {node->GetX(), node->GetY(), node->GetWidth(), node->GetHeight()};
   CComPtr<IXpsOMGeometryFigure> xpsFigure = nullptr;
@@ -343,18 +351,18 @@ void touchmind::print::XPSPrint::_PrintNode(const std::shared_ptr<touchmind::mod
   }
 
   CComPtr<IXpsOMGeometry> xpsGeometry = nullptr;
-  CHK_RES(xpsGeometry, m_pXpsFactory->CreateGeometry(&xpsGeometry));
+  THROW_IF_FAILED(m_pXpsFactory->CreateGeometry(&xpsGeometry));
 
   CComPtr<IXpsOMGeometryFigureCollection> xpsFigureCollection = nullptr;
-  CHK_HR(xpsGeometry->GetFigures(&xpsFigureCollection));
-  CHK_HR(xpsFigureCollection->Append(xpsFigure));
+  THROW_IF_FAILED(xpsGeometry->GetFigures(&xpsFigureCollection));
+  THROW_IF_FAILED(xpsFigureCollection->Append(xpsFigure));
 
   CComPtr<IXpsOMPath> path = nullptr;
-  CHK_RES(path, m_pXpsFactory->CreatePath(&path));
-  CHK_HR(path->SetFillBrushLocal(fillBrush));
-  CHK_HR(path->SetStrokeBrushLocal(strokeBrush));
-  CHK_HR(path->SetGeometryLocal(xpsGeometry));
-  CHK_HR(canvasVisuals->Append(path));
+  THROW_IF_FAILED(m_pXpsFactory->CreatePath(&path));
+  THROW_IF_FAILED(path->SetFillBrushLocal(fillBrush));
+  THROW_IF_FAILED(path->SetStrokeBrushLocal(strokeBrush));
+  THROW_IF_FAILED(path->SetGeometryLocal(xpsGeometry));
+  THROW_IF_FAILED(canvasVisuals->Append(path));
 }
 
 void touchmind::print::XPSPrint::_PrintChildrenPaths(const std::shared_ptr<touchmind::model::node::NodeModel> &node) {
@@ -388,7 +396,7 @@ void touchmind::print::XPSPrint::_PrintPath(const std::shared_ptr<touchmind::mod
   auto path = child->GetPathModel();
 
   CComPtr<IXpsOMVisualCollection> canvasVisuals = nullptr;
-  CHK_HR(m_pXpsCanvas->GetVisuals(&canvasVisuals));
+  THROW_IF_FAILED(m_pXpsCanvas->GetVisuals(&canvasVisuals));
 
   COLORREF colorref = util::ColorUtil::ToColorref(path->GetColor());
   CComPtr<IXpsOMSolidColorBrush> strokeBrush = nullptr;
@@ -398,43 +406,44 @@ void touchmind::print::XPSPrint::_PrintPath(const std::shared_ptr<touchmind::mod
   bodyColor.value.sRGB.red = GetRValue(colorref);
   bodyColor.value.sRGB.green = GetGValue(colorref);
   bodyColor.value.sRGB.blue = GetBValue(colorref);
-  CHK_RES(strokeBrush, m_pXpsFactory->CreateSolidColorBrush(&bodyColor, nullptr, &strokeBrush));
+  THROW_IF_FAILED(m_pXpsFactory->CreateSolidColorBrush(
+                                   &bodyColor, nullptr, &strokeBrush));
 
   CComPtr<IXpsOMGeometryFigure> xpsFigure = nullptr;
   XPSGeometryBuilder::CreateCurvePathGeometry(m_pXpsFactory, curvePoints, &xpsFigure);
 
   CComPtr<IXpsOMGeometry> xpsGeometry = nullptr;
-  CHK_RES(xpsGeometry, m_pXpsFactory->CreateGeometry(&xpsGeometry));
+  THROW_IF_FAILED(m_pXpsFactory->CreateGeometry(&xpsGeometry));
 
   CComPtr<IXpsOMGeometryFigureCollection> xpsFigureCollection = nullptr;
-  CHK_HR(xpsGeometry->GetFigures(&xpsFigureCollection));
-  CHK_HR(xpsFigureCollection->Append(xpsFigure));
+  THROW_IF_FAILED(xpsGeometry->GetFigures(&xpsFigureCollection));
+  THROW_IF_FAILED(xpsFigureCollection->Append(xpsFigure));
 
   CComPtr<IXpsOMPath> xpsPath = nullptr;
-  CHK_RES(xpsPath, m_pXpsFactory->CreatePath(&xpsPath));
-  CHK_HR(xpsPath->SetStrokeBrushLocal(strokeBrush));
-  CHK_HR(xpsPath->SetGeometryLocal(xpsGeometry));
-  CHK_HR(xpsPath->SetStrokeThickness(path->GetWidthAsValue()));
+  THROW_IF_FAILED(m_pXpsFactory->CreatePath(&xpsPath));
+  THROW_IF_FAILED(xpsPath->SetStrokeBrushLocal(strokeBrush));
+  THROW_IF_FAILED(xpsPath->SetGeometryLocal(xpsGeometry));
+  THROW_IF_FAILED(xpsPath->SetStrokeThickness(path->GetWidthAsValue()));
   if (path->GetStyle() == LINE_STYLE_DOTTED) {
     xpsPath->SetStrokeDashCap(XPS_DASH_CAP_ROUND);
     xpsPath->SetStrokeDashOffset(0.25f);
     CComPtr<IXpsOMDashCollection> pDashCollection = nullptr;
-    CHK_HR(xpsPath->GetStrokeDashes(&pDashCollection));
+    THROW_IF_FAILED(xpsPath->GetStrokeDashes(&pDashCollection));
     XPS_DASH dash;
     dash.length = 0.0f;
     dash.gap = 2.0f;
-    CHK_HR(pDashCollection->Append(&dash));
+    THROW_IF_FAILED(pDashCollection->Append(&dash));
   } else if (path->GetStyle() == LINE_STYLE_DASHED) {
     xpsPath->SetStrokeDashCap(XPS_DASH_CAP_ROUND);
     xpsPath->SetStrokeDashOffset(1.0f);
     CComPtr<IXpsOMDashCollection> pDashCollection = nullptr;
-    CHK_HR(xpsPath->GetStrokeDashes(&pDashCollection));
+    THROW_IF_FAILED(xpsPath->GetStrokeDashes(&pDashCollection));
     XPS_DASH dash;
     dash.length = 2.0f;
     dash.gap = 2.0f;
-    CHK_HR(pDashCollection->Append(&dash));
+    THROW_IF_FAILED(pDashCollection->Append(&dash));
   }
-  CHK_HR(canvasVisuals->Append(xpsPath));
+  THROW_IF_FAILED(canvasVisuals->Append(xpsPath));
 }
 
 void touchmind::print::XPSPrint::_DiscardResources() {
@@ -466,7 +475,7 @@ void touchmind::print::XPSPrint::_PrintLinks(const touchmind::model::MapModel *p
 
 void touchmind::print::XPSPrint::_PrintLink(const std::shared_ptr<touchmind::model::link::LinkModel> &link) {
   CComPtr<IXpsOMVisualCollection> canvasVisuals = nullptr;
-  CHK_HR(m_pXpsCanvas->GetVisuals(&canvasVisuals));
+  THROW_IF_FAILED(m_pXpsCanvas->GetVisuals(&canvasVisuals));
 
   COLORREF colorref = util::ColorUtil::ToColorref(link->GetLineColor());
   CComPtr<IXpsOMSolidColorBrush> strokeBrush = nullptr;
@@ -476,7 +485,8 @@ void touchmind::print::XPSPrint::_PrintLink(const std::shared_ptr<touchmind::mod
   bodyColor.value.sRGB.red = GetRValue(colorref);
   bodyColor.value.sRGB.green = GetGValue(colorref);
   bodyColor.value.sRGB.blue = GetBValue(colorref);
-  CHK_RES(strokeBrush, m_pXpsFactory->CreateSolidColorBrush(&bodyColor, nullptr, &strokeBrush));
+  THROW_IF_FAILED(m_pXpsFactory->CreateSolidColorBrush(
+                                   &bodyColor, nullptr, &strokeBrush));
 
   model::CurvePoints curvePoints;
   view::GeometryBuilder::CalculateLink(link, curvePoints);
@@ -485,37 +495,37 @@ void touchmind::print::XPSPrint::_PrintLink(const std::shared_ptr<touchmind::mod
   XPSGeometryBuilder::CreateCurvePathGeometry(m_pXpsFactory, curvePoints, &xpsFigure);
 
   CComPtr<IXpsOMGeometry> xpsGeometry = nullptr;
-  CHK_RES(xpsGeometry, m_pXpsFactory->CreateGeometry(&xpsGeometry));
+  THROW_IF_FAILED(m_pXpsFactory->CreateGeometry(&xpsGeometry));
 
   CComPtr<IXpsOMGeometryFigureCollection> xpsFigureCollection = nullptr;
-  CHK_HR(xpsGeometry->GetFigures(&xpsFigureCollection));
-  CHK_HR(xpsFigureCollection->Append(xpsFigure));
+  THROW_IF_FAILED(xpsGeometry->GetFigures(&xpsFigureCollection));
+  THROW_IF_FAILED(xpsFigureCollection->Append(xpsFigure));
 
   CComPtr<IXpsOMPath> xpsPath = nullptr;
-  CHK_RES(xpsPath, m_pXpsFactory->CreatePath(&xpsPath));
-  CHK_HR(xpsPath->SetStrokeBrushLocal(strokeBrush));
-  CHK_HR(xpsPath->SetGeometryLocal(xpsGeometry));
-  CHK_HR(xpsPath->SetStrokeThickness(link->GetLineWidthAsValue()));
+  THROW_IF_FAILED(m_pXpsFactory->CreatePath(&xpsPath));
+  THROW_IF_FAILED(xpsPath->SetStrokeBrushLocal(strokeBrush));
+  THROW_IF_FAILED(xpsPath->SetGeometryLocal(xpsGeometry));
+  THROW_IF_FAILED(xpsPath->SetStrokeThickness(link->GetLineWidthAsValue()));
   if (link->GetLineStyle() == LINE_STYLE_DOTTED) {
     xpsPath->SetStrokeDashCap(XPS_DASH_CAP_ROUND);
     xpsPath->SetStrokeDashOffset(0.25f);
     CComPtr<IXpsOMDashCollection> pDashCollection = nullptr;
-    CHK_HR(xpsPath->GetStrokeDashes(&pDashCollection));
+    THROW_IF_FAILED(xpsPath->GetStrokeDashes(&pDashCollection));
     XPS_DASH dash;
     dash.length = 0.0f;
     dash.gap = 2.0f;
-    CHK_HR(pDashCollection->Append(&dash));
+    THROW_IF_FAILED(pDashCollection->Append(&dash));
   } else if (link->GetLineStyle() == LINE_STYLE_DASHED) {
     xpsPath->SetStrokeDashCap(XPS_DASH_CAP_ROUND);
     xpsPath->SetStrokeDashOffset(1.0f);
     CComPtr<IXpsOMDashCollection> pDashCollection = nullptr;
-    CHK_HR(xpsPath->GetStrokeDashes(&pDashCollection));
+    THROW_IF_FAILED(xpsPath->GetStrokeDashes(&pDashCollection));
     XPS_DASH dash;
     dash.length = 2.0f;
     dash.gap = 2.0f;
-    CHK_HR(pDashCollection->Append(&dash));
+    THROW_IF_FAILED(pDashCollection->Append(&dash));
   }
-  CHK_HR(canvasVisuals->Append(xpsPath));
+  THROW_IF_FAILED(canvasVisuals->Append(xpsPath));
 
   _PrintLinkEdge(link, EDGE_ID_1);
   _PrintLinkEdge(link, EDGE_ID_2);
@@ -533,7 +543,7 @@ void touchmind::print::XPSPrint::_PrintLinkEdge(const std::shared_ptr<touchmind:
   NODE_SIDE nodeSide = link->GetNode(edgeId)->GetAncestorPosition();
 
   CComPtr<IXpsOMVisualCollection> canvasVisuals = nullptr;
-  CHK_HR(m_pXpsCanvas->GetVisuals(&canvasVisuals));
+  THROW_IF_FAILED(m_pXpsCanvas->GetVisuals(&canvasVisuals));
 
   COLORREF colorref = util::ColorUtil::ToColorref(link->GetLineColor());
   CComPtr<IXpsOMSolidColorBrush> strokeBrush = nullptr;
@@ -543,7 +553,8 @@ void touchmind::print::XPSPrint::_PrintLinkEdge(const std::shared_ptr<touchmind:
   bodyColor.value.sRGB.red = GetRValue(colorref);
   bodyColor.value.sRGB.green = GetGValue(colorref);
   bodyColor.value.sRGB.blue = GetBValue(colorref);
-  CHK_RES(strokeBrush, m_pXpsFactory->CreateSolidColorBrush(&bodyColor, nullptr, &strokeBrush));
+  THROW_IF_FAILED(m_pXpsFactory->CreateSolidColorBrush(
+                                   &bodyColor, nullptr, &strokeBrush));
 
   CComPtr<IXpsOMGeometryFigure> xpsFigure = nullptr;
   if (linkEdge->GetStyle() == EDGE_STYLE_CIRCLE) {
@@ -559,15 +570,15 @@ void touchmind::print::XPSPrint::_PrintLinkEdge(const std::shared_ptr<touchmind:
   }
 
   CComPtr<IXpsOMGeometry> xpsGeometry = nullptr;
-  CHK_RES(xpsGeometry, m_pXpsFactory->CreateGeometry(&xpsGeometry));
+  THROW_IF_FAILED(m_pXpsFactory->CreateGeometry(&xpsGeometry));
 
   CComPtr<IXpsOMGeometryFigureCollection> xpsFigureCollection = nullptr;
-  CHK_HR(xpsGeometry->GetFigures(&xpsFigureCollection));
-  CHK_HR(xpsFigureCollection->Append(xpsFigure));
+  THROW_IF_FAILED(xpsGeometry->GetFigures(&xpsFigureCollection));
+  THROW_IF_FAILED(xpsFigureCollection->Append(xpsFigure));
 
   CComPtr<IXpsOMPath> xpsPath = nullptr;
-  CHK_RES(xpsPath, m_pXpsFactory->CreatePath(&xpsPath));
-  CHK_HR(xpsPath->SetFillBrushLocal(strokeBrush));
-  CHK_HR(xpsPath->SetGeometryLocal(xpsGeometry));
-  CHK_HR(canvasVisuals->Append(xpsPath));
+  THROW_IF_FAILED(m_pXpsFactory->CreatePath(&xpsPath));
+  THROW_IF_FAILED(xpsPath->SetFillBrushLocal(strokeBrush));
+  THROW_IF_FAILED(xpsPath->SetGeometryLocal(xpsGeometry));
+  THROW_IF_FAILED(canvasVisuals->Append(xpsPath));
 }

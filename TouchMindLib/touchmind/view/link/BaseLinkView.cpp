@@ -1,4 +1,4 @@
-#include "stdafx.h"
+﻿#include "stdafx.h"
 #include "touchmind/model/node/NodeModel.h"
 #include "touchmind/model/link/LinkModel.h"
 #include "touchmind/model/linkedge/LinkEdgeModel.h"

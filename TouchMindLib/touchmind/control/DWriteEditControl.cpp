@@ -1,4 +1,4 @@
-#include "StdAfx.h"
+ï»¿#include "StdAfx.h"
 #include "touchmind/logging/Logging.h"
 #include "touchmind/Common.h"
 #include "touchmind/Configuration.h"
@@ -88,7 +88,7 @@ HRESULT touchmind::control::DWriteEditControl::Initialize(const std::wstring &te
 
   hr = m_pManager->GetThreadMgr()->CreateDocumentMgr(&m_pDocMgr);
   if (FAILED(hr)) {
-    LOG(SEVERITY_LEVEL_FATAL) << L"Failed to create document manager, hr = " << hr;
+    SPDLOG_ERROR(L"Failed to create document manager, hr = {:x}", hr);
     return hr;
   }
 
@@ -96,14 +96,14 @@ HRESULT touchmind::control::DWriteEditControl::Initialize(const std::wstring &te
   hr = m_pDocMgr->CreateContext(m_pManager->GetClientId(), 0, static_cast<ITextStoreACP *>(m_pTextStoreACP),
                                 &m_pTfContext, &m_editCookie);
   if (FAILED(hr)) {
-    LOG(SEVERITY_LEVEL_FATAL) << L"Failed to create context, hr = " << hr;
+    SPDLOG_ERROR(L"Failed to create context, hr = {:x}", hr);
     return hr;
   }
 
   // push the context onto the document stack
   hr = m_pDocMgr->Push(m_pTfContext);
   if (FAILED(hr)) {
-    LOG(SEVERITY_LEVEL_FATAL) << L"Failed to push context, hr = " << hr;
+    SPDLOG_ERROR(L"Failed to push context, hr = {:x}", hr);
     return hr;
   }
 
@@ -138,7 +138,7 @@ HRESULT touchmind::control::DWriteEditControl::InitializeTextFormat() {
                            << std::dec;
 #endif
   if (FAILED(hr)) {
-    LOG(SEVERITY_LEVEL_FATAL) << L"failed to create text format, hr = " << hr;
+    SPDLOG_ERROR(L"failed to create text format, hr = {:x}", hr);
     m_pDWriteTextFormat = nullptr;
     return hr;
   }
@@ -164,7 +164,7 @@ void touchmind::control::DWriteEditControl::_RecreateLayout() {
                              << std::dec;
 #endif
     if (FAILED(hr)) {
-      LOG(SEVERITY_LEVEL_FATAL) << L"failed to create text layout, hr = " << hr;
+      SPDLOG_ERROR(L"failed to create text layout, hr = {:x}", hr);
     }
   } else {
     IDWriteTextLayout *oldTextLayout = m_pDWriteTextLayout;
@@ -175,7 +175,7 @@ void touchmind::control::DWriteEditControl::_RecreateLayout() {
                              << std::dec;
 #endif
     if (FAILED(hr)) {
-      LOG(SEVERITY_LEVEL_FATAL) << L"failed to create text layout, hr = " << hr;
+      SPDLOG_ERROR(L"failed to create text layout, hr = {:x}", hr);
     }
     SafeRelease(&oldTextLayout);
   }
@@ -359,7 +359,7 @@ void touchmind::control::DWriteEditControl::_SetFontAttributes(
         hr = pTextLayout->SetDrawingEffect(pBrush, textRange);
       }
     } else {
-      LOG(SEVERITY_LEVEL_ERROR) << L"null render target";
+      SPDLOG_ERROR(L"null render target");
     }
     SafeRelease(&pBrush);
   }
@@ -383,7 +383,7 @@ void touchmind::control::DWriteEditControl::RenderTextWithCompositionUnderline(I
   LOG(SEVERITY_LEVEL_INFO) << L"[GPU RESOURCE] IDWriteTextLayout = [" << std::hex << pTextLayout << L"]" << std::dec;
 #endif
   if (FAILED(hr)) {
-    LOG(SEVERITY_LEVEL_ERROR) << L"CreateTextLayout failed, hr = " << hr;
+    SPDLOG_ERROR(L"CreateTextLayout failed, hr = {:x}", hr);
     return;
   }
   CopyGlobalProperties(m_pDWriteTextLayout, pTextLayout);
@@ -400,7 +400,7 @@ void touchmind::control::DWriteEditControl::RenderTextWithCompositionUnderline(I
         hr = m_pDWriteTextLayout->HitTestTextRange(ca.startPos, ca.endPos - ca.startPos, x, y, hitTestMetrics.data(),
                                                    actualHitTextCount, &actualHitTextCount);
         if (FAILED(hr)) {
-          LOG(SEVERITY_LEVEL_ERROR) << L"HitTestTextRange failed, hr = " << hr;
+          SPDLOG_ERROR(L"HitTestTextRange failed, hr = {:x}", hr);
           continue;
         }
         for (std::size_t i = 0; i < actualHitTextCount; ++i) {
@@ -425,7 +425,7 @@ void touchmind::control::DWriteEditControl::RenderTextWithCompositionUnderline(I
                                      << L"]" << std::dec;
 #endif
             if (FAILED(hr)) {
-              LOG(SEVERITY_LEVEL_ERROR) << L"CreateSolidColorBrush failed, hr = " << hr;
+              SPDLOG_ERROR(L"CreateSolidColorBrush failed, hr = {:x}", hr);
               pLineColorBrush = nullptr;
             }
           }
@@ -452,7 +452,7 @@ void touchmind::control::DWriteEditControl::RenderTextWithCompositionUnderline(I
               textRange.length = ca.endPos - ca.startPos;
               pTextLayout->SetDrawingEffect(pTextColorBrush, textRange);
             } else {
-              LOG(SEVERITY_LEVEL_ERROR) << L"CreateSolidColorBrush failed, hr = " << hr;
+              SPDLOG_ERROR(L"CreateSolidColorBrush failed, hr = {:x}", hr);
             }
             SafeRelease(&pTextColorBrush);
           }
@@ -474,7 +474,7 @@ void touchmind::control::DWriteEditControl::RenderTextWithCompositionUnderline(I
                                      << L"]" << std::dec;
 #endif
             if (FAILED(hr)) {
-              LOG(SEVERITY_LEVEL_ERROR) << L"CreateSolidColorBrush failed, hr = " << hr;
+              SPDLOG_ERROR(L"CreateSolidColorBrush failed, hr = {:x}", hr);
               pBackgroundColorBrush = nullptr;
             }
           }
@@ -615,7 +615,7 @@ LRESULT CALLBACK touchmind::control::DWriteEditControl::WndProc(HWND hwnd, UINT 
 void touchmind::control::DWriteEditControl::SetFocus() {
   HRESULT hr = m_pManager->GetThreadMgr()->SetFocus(m_pDocMgr);
   if (FAILED(hr)) {
-    LOG(SEVERITY_LEVEL_ERROR) << L"set focus on thread mgr failed";
+    SPDLOG_ERROR(L"set focus on thread mgr failed");
     return;
   }
   CreateCaret();
@@ -650,7 +650,7 @@ void touchmind::control::DWriteEditControl::CreateCaret() {
   _CalculateCaretSizeAndPosition(&caretPosInModel, &hitTestMetrics);
 
   if (::CreateCaret(m_hWnd, (HBITMAP) nullptr, 0, (int)hitTestMetrics.height) == 0) {
-    LOG(SEVERITY_LEVEL_ERROR) << L"CreateCaret failed";
+    SPDLOG_ERROR(L"CreateCaret failed");
     return;
   }
 
@@ -672,7 +672,7 @@ void touchmind::control::DWriteEditControl::UpdateCaret() {
     _CalculateCaretSizeAndPosition(&caretPosInModel, &hitTestMetrics);
 
     if (::CreateCaret(m_hWnd, (HBITMAP) nullptr, 0, (int)hitTestMetrics.height) == 0) {
-      LOG(SEVERITY_LEVEL_ERROR) << L"CreateCaret failed";
+      SPDLOG_ERROR(L"CreateCaret failed");
       return;
     }
 
@@ -1221,7 +1221,7 @@ void touchmind::control::DWriteEditControl::NotifySelectionHasChanged() {
 
 /// <summary>change selection</summary>
 /// set a new selection when a user select a text by mouse or keyboard
-/// this method is invoked by OnMouseEventsAOnKeyDown_CursorUpDownAOnKeyDown_CursorLeftRight
+/// this method is invoked by OnMouseEventsã€OnKeyDown_CursorUpDownã€OnKeyDown_CursorLeftRight
 HRESULT touchmind::control::DWriteEditControl::_SetSelection(LONG acpStart, LONG acpEnd, TsActiveSelEnd activeSelEnd) {
   HRESULT hr = m_pTextStoreACP->ChangeACPWithoutLock(acpStart, acpEnd, activeSelEnd);
   return hr;
@@ -1509,7 +1509,7 @@ HRESULT touchmind::control::DWriteEditControl::CreateDeviceResources(ID2D1Render
                              << std::dec;
 #endif
     if (FAILED(hr)) {
-      LOG(SEVERITY_LEVEL_ERROR) << L"Failed to create foreground color brush, hr = " << hr;
+      SPDLOG_ERROR(L"Failed to create foreground color brush, hr = {:x}", hr);
     }
   }
   if (m_pBackgroundBrush == nullptr) {
@@ -1519,7 +1519,7 @@ HRESULT touchmind::control::DWriteEditControl::CreateDeviceResources(ID2D1Render
                              << std::dec;
 #endif
     if (FAILED(hr)) {
-      LOG(SEVERITY_LEVEL_ERROR) << L"Failed to create background color brush, hr = " << hr;
+      SPDLOG_ERROR(L"Failed to create background color brush, hr = {:x}", hr);
     }
   }
   if (m_pBorderLineBrush == nullptr) {
@@ -1529,7 +1529,7 @@ HRESULT touchmind::control::DWriteEditControl::CreateDeviceResources(ID2D1Render
                              << std::dec;
 #endif
     if (FAILED(hr)) {
-      LOG(SEVERITY_LEVEL_ERROR) << L"Failed to create border line color brush, hr = " << hr;
+      SPDLOG_ERROR(L"Failed to create border line color brush, hr = {:x}", hr);
     }
   }
 
@@ -1540,7 +1540,7 @@ HRESULT touchmind::control::DWriteEditControl::CreateDeviceResources(ID2D1Render
                              << L"]" << std::dec;
 #endif
     if (FAILED(hr)) {
-      LOG(SEVERITY_LEVEL_ERROR) << L"Failed to create foreground color brush for edit, hr = " << hr;
+      SPDLOG_ERROR(L"Failed to create foreground color brush for edit, hr = {:x}", hr);
     }
   }
   if (m_pBackgroundBrushForEdit == nullptr) {
@@ -1550,7 +1550,7 @@ HRESULT touchmind::control::DWriteEditControl::CreateDeviceResources(ID2D1Render
                              << L"]" << std::dec;
 #endif
     if (FAILED(hr)) {
-      LOG(SEVERITY_LEVEL_ERROR) << L"Failed to create background color brush for edit, hr = " << hr;
+      SPDLOG_ERROR(L"Failed to create background color brush for edit, hr = {:x}", hr);
     }
   }
   if (m_pBorderLineBrushForEdit == nullptr) {
@@ -1560,7 +1560,7 @@ HRESULT touchmind::control::DWriteEditControl::CreateDeviceResources(ID2D1Render
                              << L"]" << std::dec;
 #endif
     if (FAILED(hr)) {
-      LOG(SEVERITY_LEVEL_ERROR) << L"Failed to create border line color brush for edit, hr = " << hr;
+      SPDLOG_ERROR(L"Failed to create border line color brush for edit, hr = {:x}", hr);
     }
   }
 
@@ -1571,7 +1571,7 @@ HRESULT touchmind::control::DWriteEditControl::CreateDeviceResources(ID2D1Render
                              << std::dec;
 #endif
     if (FAILED(hr)) {
-      LOG(SEVERITY_LEVEL_ERROR) << L"Failed to create highlight color brush, hr = " << hr;
+      SPDLOG_ERROR(L"Failed to create highlight color brush, hr = {:x}", hr);
     }
   }
   if (m_pCompositionUnderlineBrush == nullptr) {
@@ -1581,7 +1581,7 @@ HRESULT touchmind::control::DWriteEditControl::CreateDeviceResources(ID2D1Render
                              << L"]" << std::dec;
 #endif
     if (FAILED(hr)) {
-      LOG(SEVERITY_LEVEL_ERROR) << L"Failed to create composition underline color brush, hr = " << hr;
+      SPDLOG_ERROR(L"Failed to create composition underline color brush, hr = {:x}", hr);
     }
   }
   return hr;
@@ -1600,7 +1600,7 @@ HRESULT touchmind::control::DWriteEditControl::CreateDeviceIndependentResources(
                            << m_pCompositionSolidUnderlineStrokeStyle << L"]" << std::dec;
 #endif
   if (FAILED(hr)) {
-    LOG(SEVERITY_LEVEL_ERROR) << L"Failed to create solid stroke style, hr = " << hr;
+    SPDLOG_ERROR(L"Failed to create solid stroke style, hr = {:x}", hr);
   }
 
   hr = pD2DFactory->CreateStrokeStyle(D2D1::StrokeStyleProperties(D2D1_CAP_STYLE_ROUND, D2D1_CAP_STYLE_ROUND,
@@ -1612,7 +1612,7 @@ HRESULT touchmind::control::DWriteEditControl::CreateDeviceIndependentResources(
                            << m_pCompositionDotUnderlineStrokeStyle << L"]" << std::dec;
 #endif
   if (FAILED(hr)) {
-    LOG(SEVERITY_LEVEL_ERROR) << L"Failed to create dot stroke style, hr = " << hr;
+    SPDLOG_ERROR(L"Failed to create dot stroke style, hr = {:x}", hr);
   }
 
   hr = pD2DFactory->CreateStrokeStyle(D2D1::StrokeStyleProperties(D2D1_CAP_STYLE_FLAT, D2D1_CAP_STYLE_FLAT,
@@ -1624,7 +1624,7 @@ HRESULT touchmind::control::DWriteEditControl::CreateDeviceIndependentResources(
                            << m_pCompositionDashUnderlineStrokeStyle << L"]" << std::dec;
 #endif
   if (FAILED(hr)) {
-    LOG(SEVERITY_LEVEL_ERROR) << L"Failed to create dash stroke style, hr = " << hr;
+    SPDLOG_ERROR(L"Failed to create dash stroke style, hr = {:x}", hr);
   }
 
   hr = pD2DFactory->CreateStrokeStyle(D2D1::StrokeStyleProperties(D2D1_CAP_STYLE_FLAT, D2D1_CAP_STYLE_FLAT,
@@ -1636,7 +1636,7 @@ HRESULT touchmind::control::DWriteEditControl::CreateDeviceIndependentResources(
                            << m_pCompositionSquiggleUnderlineStrokeStyle << L"]" << std::dec;
 #endif
   if (FAILED(hr)) {
-    LOG(SEVERITY_LEVEL_ERROR) << L"Failed to create dash dot stroke style, hr = " << hr;
+    SPDLOG_ERROR(L"Failed to create dash dot stroke style, hr = {:x}", hr);
   }
 
   return hr;

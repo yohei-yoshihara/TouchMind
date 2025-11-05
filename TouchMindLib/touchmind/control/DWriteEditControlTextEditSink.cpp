@@ -1,4 +1,4 @@
-#include "StdAfx.h"
+﻿#include "StdAfx.h"
 #include "touchmind/Common.h"
 #include "touchmind/logging/Logging.h"
 #include "DWriteEditControl.h"
@@ -115,13 +115,13 @@ HRESULT touchmind::control::DWriteEditControlTextEditSink::Advise(ITfContext *pT
   ITfSource *source = nullptr;
   hr = pTfContext->QueryInterface(IID_ITfSource, (void **)&source);
   if (FAILED(hr)) {
-    LOG(SEVERITY_LEVEL_ERROR) << L"QueryInterface failed";
+    SPDLOG_ERROR(L"QueryInterface failed");
   }
 
   if (SUCCEEDED(hr)) {
     hr = source->AdviseSink(IID_ITfTextEditSink, (ITfTextEditSink *)this, &m_editCookie);
     if (FAILED(hr)) {
-      LOG(SEVERITY_LEVEL_ERROR) << L"AdviseSink failed";
+      SPDLOG_ERROR(L"AdviseSink failed");
     }
   }
   SafeRelease(&source);
@@ -137,12 +137,12 @@ HRESULT touchmind::control::DWriteEditControlTextEditSink::Unadvise(ITfContext *
   ITfSource *source = nullptr;
   hr = pTfContext->QueryInterface(IID_ITfSource, (void **)&source);
   if (FAILED(hr)) {
-    LOG(SEVERITY_LEVEL_ERROR) << L"QueryInterface failed";
+    SPDLOG_ERROR(L"QueryInterface failed");
   }
   if (SUCCEEDED(hr)) {
     hr = source->UnadviseSink(m_editCookie);
     if (FAILED(hr)) {
-      LOG(SEVERITY_LEVEL_ERROR) << L"UnadviseSink failed";
+      SPDLOG_ERROR(L"UnadviseSink failed");
     }
   }
   SafeRelease(&source);

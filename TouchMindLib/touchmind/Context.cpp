@@ -1,4 +1,4 @@
-#include "stdafx.h"
+﻿#include "stdafx.h"
 #include "touchmind/Common.h"
 #include "touchmind/logging/Logging.h"
 #include "resource.h"
@@ -73,16 +73,9 @@ touchmind::Context::Context(void)
     , m_pAnimationTimer(nullptr)
     , m_pTransitionLibrary(nullptr)
     , m_animationStatusChangedListener(nullptr) {
-#ifdef TOUCHMIND_CONTEXT_DEBUG
-  LOG_ENTER;
-  LOG_LEAVE;
-#endif
 }
 
 touchmind::Context::~Context(void) {
-#ifdef TOUCHMIND_CONTEXT_DEBUG
-  LOG_ENTER;
-#endif
   // The following variables are created by CreateD3DDeviceResources
   SafeRelease(&m_pRasterizerState);
   SafeRelease(&m_pDefaultEffect);
@@ -108,15 +101,9 @@ touchmind::Context::~Context(void) {
   // The following variables are created by CreateDeviceResources
   SafeRelease(&m_pSwapChain);
   SafeRelease(&m_pDevice);
-#ifdef TOUCHMIND_CONTEXT_DEBUG
-  LOG_LEAVE;
-#endif
 }
 
 void touchmind::Context::DiscardDeviceResources() {
-#ifdef TOUCHMIND_CONTEXT_DEBUG
-  LOG_ENTER;
-#endif
   if (m_pRenderEventListener != nullptr) {
     m_pRenderEventListener->DiscardDeviceResources();
   }
@@ -137,15 +124,9 @@ void touchmind::Context::DiscardDeviceResources() {
   // The following variables are created by CreateDeviceResources
   SafeRelease(&m_pSwapChain);
   SafeRelease(&m_pDevice);
-#ifdef TOUCHMIND_CONTEXT_DEBUG
-  LOG_LEAVE;
-#endif
 }
 
 HRESULT touchmind::Context::CreateDeviceResources() {
-#ifdef TOUCHMIND_CONTEXT_DEBUG
-  LOG_ENTER;
-#endif
   HRESULT hr = S_OK;
   RECT rcClient;
   ID3D10Device1 *pDevice = nullptr;
@@ -155,7 +136,7 @@ HRESULT touchmind::Context::CreateDeviceResources() {
   IDXGISurface *pSurface = nullptr;
 
   if (m_hwnd == nullptr) {
-    LOG(SEVERITY_LEVEL_WARN) << L"HWND has not been set.";
+    SPDLOG_ERROR(L"HWND has not been set.");
     return S_FALSE;
   }
 
@@ -165,23 +146,18 @@ HRESULT touchmind::Context::CreateDeviceResources() {
   UINT nHeight = std::abs(rcClient.bottom - rcClient.top);
 
   if (!m_pDevice) {
-#ifdef TOUCHMIND_CONTEXT_DEBUG
-    LOG(SEVERITY_LEVEL_DEBUG) << L"Creating D3D Device.";
-#endif
 #ifdef _DEBUG
-    // GMA950 doesn't work with D3D10_CREATE_DEVICE_DEBUG
     UINT nDeviceFlags = D3D10_CREATE_DEVICE_BGRA_SUPPORT | D3D10_CREATE_DEVICE_DEBUG;
-// UINT nDeviceFlags = D3D10_CREATE_DEVICE_BGRA_SUPPORT;
 #else
     UINT nDeviceFlags = D3D10_CREATE_DEVICE_BGRA_SUPPORT;
 #endif
     hr = _CreateD3DDevice(nullptr, D3D10_DRIVER_TYPE_HARDWARE, nDeviceFlags, &pDevice);
 
     if (FAILED(hr)) {
-      LOG(SEVERITY_LEVEL_INFO) << L"Creating hardware support D3D10 device was failed. Try D3D10_DRIVER_TYPE_WARP.";
+      SPDLOG_WARN(L"Creating hardware support D3D10 device was failed. Try D3D10_DRIVER_TYPE_WARP.");
       hr = _CreateD3DDevice(nullptr, D3D10_DRIVER_TYPE_WARP, nDeviceFlags, &pDevice);
       if (FAILED(hr)) {
-        LOG(SEVERITY_LEVEL_FATAL) << L"Creating D3D10 device was failed.";
+        SPDLOG_ERROR(L"Creating D3D10 device was failed.");
         return hr;
       }
     }
@@ -215,11 +191,8 @@ HRESULT touchmind::Context::CreateDeviceResources() {
       swapDesc.Windowed = TRUE;
 
       hr = pDXGIFactory->CreateSwapChain(m_pDevice, &swapDesc, &m_pSwapChain);
-#ifdef DEBUG_GPU_RESOURCE
-      LOG(SEVERITY_LEVEL_INFO) << L"[GPU RESOURCE] IDXGISwapChain = [" << std::hex << m_pSwapChain << L"]" << std::dec;
-#endif
       if (FAILED(hr)) {
-        LOG(SEVERITY_LEVEL_FATAL) << L"Creating swap chain was failed.";
+        SPDLOG_ERROR(L"Creating swap chain was failed.");
         return hr;
       }
     }
@@ -242,16 +215,10 @@ HRESULT touchmind::Context::CreateDeviceResources() {
   SafeRelease(&pAdapter);
   SafeRelease(&pDXGIFactory);
   SafeRelease(&pSurface);
-#ifdef TOUCHMIND_CONTEXT_DEBUG
-  LOG_LEAVE_HRESULT(hr);
-#endif
   return hr;
 }
 
 HRESULT touchmind::Context::_CreateD3DDeviceResources() {
-#ifdef TOUCHMIND_CONTEXT_DEBUG
-  LOG_ENTER;
-#endif
   HRESULT hr = S_OK;
 
   D3D10_RASTERIZER_DESC rsDesc;
@@ -267,10 +234,6 @@ HRESULT touchmind::Context::_CreateD3DDeviceResources() {
   rsDesc.SlopeScaledDepthBias = 0;
 
   hr = m_pDevice->CreateRasterizerState(&rsDesc, &m_pRasterizerState);
-#ifdef DEBUG_GPU_RESOURCE
-  LOG(SEVERITY_LEVEL_INFO) << L"[GPU RESOURCE] ID3D10RasterizerState = [" << std::hex << m_pRasterizerState << L"]"
-                           << std::dec;
-#endif
   if (SUCCEEDED(hr)) {
     m_pDevice->RSSetState(m_pRasterizerState);
     m_pDevice->IASetPrimitiveTopology(D3D10_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
@@ -321,25 +284,14 @@ HRESULT touchmind::Context::_CreateD3DDeviceResources() {
 
     hr = m_pDevice->CreateInputLayout(s_InputLayout, numElements, PassDesc.pIAInputSignature,
                                       PassDesc.IAInputSignatureSize, &m_pVertexLayout);
-#ifdef DEBUG_GPU_RESOURCE
-    LOG(SEVERITY_LEVEL_INFO) << L"[GPU RESOURCE] ID3D10InputLayout = [" << std::hex << m_pVertexLayout << L"]"
-                             << std::dec;
-#endif
     if (SUCCEEDED(hr)) {
       m_pDevice->IASetInputLayout(m_pVertexLayout);
     }
   }
-
-#ifdef TOUCHMIND_CONTEXT_DEBUG
-  LOG_LEAVE_HRESULT(hr);
-#endif
   return hr;
 }
 
 HRESULT touchmind::Context::_RecreateSizedResources(UINT nWidth, UINT nHeight) {
-#ifdef TOUCHMIND_CONTEXT_DEBUG
-  LOG_ENTER_ARG(L"width = " << nWidth << L", height = " << nHeight);
-#endif
   HRESULT hr = S_OK;
   IDXGISurface *pBackBuffer = nullptr;
   ID3D10Resource *pBackBufferResource = nullptr;
@@ -350,7 +302,7 @@ HRESULT touchmind::Context::_RecreateSizedResources(UINT nWidth, UINT nHeight) {
 
   hr = m_pSwapChain->ResizeBuffers(1, nWidth, nHeight, DXGI_FORMAT_B8G8R8A8_UNORM, 0);
   if (FAILED(hr)) {
-    LOG(SEVERITY_LEVEL_FATAL) << L"resize the swap chain failed. hr = " << hr;
+    SPDLOG_ERROR(L"resize the swap chain failed. hr = {:x}", hr);
   }
 
   if (SUCCEEDED(hr)) {
@@ -369,19 +321,15 @@ HRESULT touchmind::Context::_RecreateSizedResources(UINT nWidth, UINT nHeight) {
 
     SafeRelease(&m_pDepthStencil);
     hr = m_pDevice->CreateTexture2D(&texDesc, nullptr, &m_pDepthStencil);
-#ifdef DEBUG_GPU_RESOURCE
-    LOG(SEVERITY_LEVEL_INFO) << L"[GPU RESOURCE] ID3D10Texture2D = [" << std::hex << m_pDepthStencil << L"]"
-                             << std::dec;
-#endif
     if (FAILED(hr)) {
-      LOG(SEVERITY_LEVEL_FATAL) << L"creating a depth stencil texture was failed. hr = " << hr;
+      SPDLOG_ERROR(L"creating a depth stencil texture was failed. hr = {:x}", hr);
     }
   }
 
   if (SUCCEEDED(hr)) {
     hr = m_pSwapChain->GetBuffer(0, IID_PPV_ARGS(&pBackBufferResource));
     if (FAILED(hr)) {
-      LOG(SEVERITY_LEVEL_FATAL) << L"getting a buffer from the swap chain was failed. hr = " << hr;
+      SPDLOG_ERROR(L"getting a buffer from the swap chain was failed. hr = {:x}", hr);
     }
   }
   if (SUCCEEDED(hr)) {
@@ -392,12 +340,8 @@ HRESULT touchmind::Context::_RecreateSizedResources(UINT nWidth, UINT nHeight) {
 
     SafeRelease(&m_pBackBufferRenderTargetView);
     hr = m_pDevice->CreateRenderTargetView(pBackBufferResource, &renderDesc, &m_pBackBufferRenderTargetView);
-#ifdef DEBUG_GPU_RESOURCE
-    LOG(SEVERITY_LEVEL_INFO) << L"[GPU RESOURCE] ID3D10RenderTargetView = [" << std::hex
-                             << m_pBackBufferRenderTargetView << L"]" << std::dec;
-#endif
     if (FAILED(hr)) {
-      LOG(SEVERITY_LEVEL_FATAL) << L"creating a render taget view was failed. hr = " << hr;
+      SPDLOG_ERROR(L"creating a render taget view was failed. hr = {:x}", hr);
     }
   }
   if (SUCCEEDED(hr)) {
@@ -409,12 +353,8 @@ HRESULT touchmind::Context::_RecreateSizedResources(UINT nWidth, UINT nHeight) {
 
     SafeRelease(&m_pDepthStencilView);
     hr = m_pDevice->CreateDepthStencilView(m_pDepthStencil, &depthViewDesc, &m_pDepthStencilView);
-#ifdef DEBUG_GPU_RESOURCE
-    LOG(SEVERITY_LEVEL_INFO) << L"[GPU RESOURCE] ID3D10DepthStencilView = [" << std::hex << m_pDepthStencilView << L"]"
-                             << std::dec;
-#endif
     if (FAILED(hr)) {
-      LOG(SEVERITY_LEVEL_FATAL) << L"creating depth stencil view was failed. hr = " << hr;
+      SPDLOG_ERROR(L"creating depth stencil view was failed. hr = {:x}", hr);
     }
   }
   if (SUCCEEDED(hr)) {
@@ -434,7 +374,7 @@ HRESULT touchmind::Context::_RecreateSizedResources(UINT nWidth, UINT nHeight) {
 
     hr = m_pSwapChain->GetBuffer(0, IID_PPV_ARGS(&pBackBuffer));
     if (FAILED(hr)) {
-      LOG(SEVERITY_LEVEL_FATAL) << L"getting a buffer from the swap chain was failed. hr = " << hr;
+      SPDLOG_ERROR(L"getting a buffer from the swap chain was failed. hr = {:x}", hr);
     }
   }
 
@@ -446,7 +386,7 @@ HRESULT touchmind::Context::_RecreateSizedResources(UINT nWidth, UINT nHeight) {
                                                   );
     hr = m_pProjectionVariableNoRef->SetMatrix((float *)&m_ProjectionMatrix);
     if (FAILED(hr)) {
-      LOG(SEVERITY_LEVEL_FATAL) << L"setting a projection matrix was failed. hr = " << hr;
+      SPDLOG_ERROR(L"setting a projection matrix was failed. hr = {:x}", hr);
     }
   }
 
@@ -466,12 +406,8 @@ HRESULT touchmind::Context::_RecreateSizedResources(UINT nWidth, UINT nHeight) {
 
     SafeRelease(&m_pD2DTexture2D);
     hr = m_pDevice->CreateTexture2D(&texDesc, nullptr, &m_pD2DTexture2D);
-#ifdef DEBUG_GPU_RESOURCE
-    LOG(SEVERITY_LEVEL_INFO) << L"[GPU RESOURCE] ID3D10Texture2D = [" << std::hex << m_pD2DTexture2D << L"]"
-                             << std::dec;
-#endif
     if (FAILED(hr)) {
-      LOG(SEVERITY_LEVEL_FATAL) << L"creating a texture2D for Direct2D was failed. hr = " << hr;
+      SPDLOG_ERROR(L"creating a texture2D for Direct2D was failed. hr = {:x}", hr);
     }
 
     D3D10_SHADER_RESOURCE_VIEW_DESC srvDesc;
@@ -482,12 +418,8 @@ HRESULT touchmind::Context::_RecreateSizedResources(UINT nWidth, UINT nHeight) {
     if (SUCCEEDED(hr)) {
       SafeRelease(&m_pD2DTexture2DResourceView);
       hr = m_pDevice->CreateShaderResourceView(m_pD2DTexture2D, nullptr, &m_pD2DTexture2DResourceView);
-#ifdef DEBUG_GPU_RESOURCE
-      LOG(SEVERITY_LEVEL_INFO) << L"[GPU RESOURCE] ID3D10ShaderResourceView = [" << std::hex
-                               << m_pD2DTexture2DResourceView << L"]" << std::dec;
-#endif
       if (FAILED(hr)) {
-        LOG(SEVERITY_LEVEL_FATAL) << L"creating a shader resource view for Direct2D was failed. hr = " << hr;
+        SPDLOG_ERROR(L"creating a shader resource view for Direct2D was failed. hr = {:x}", hr);
       }
     }
 
@@ -507,12 +439,8 @@ HRESULT touchmind::Context::_RecreateSizedResources(UINT nWidth, UINT nHeight) {
     if (SUCCEEDED(hr)) {
       SafeRelease(&m_pD2DTexture2DRenderTarget);
       hr = m_pD2DFactory->CreateDxgiSurfaceRenderTarget(pDxgiSurface1, &props, &m_pD2DTexture2DRenderTarget);
-#ifdef DEBUG_GPU_RESOURCE
-      LOG(SEVERITY_LEVEL_INFO) << L"[GPU RESOURCE] ID2D1RenderTarget = [" << std::hex << m_pD2DTexture2DRenderTarget
-                               << L"]" << std::dec;
-#endif
       if (FAILED(hr)) {
-        LOG(SEVERITY_LEVEL_FATAL) << L"creating a DXGI surface render target for Direct2D was failed. hr = " << hr;
+        SPDLOG_ERROR(L"creating a DXGI surface render target for Direct2D was failed. hr = {:x}", hr);
       }
     }
     SafeRelease(&pDxgiSurface1);
@@ -520,16 +448,10 @@ HRESULT touchmind::Context::_RecreateSizedResources(UINT nWidth, UINT nHeight) {
 
   SafeRelease(&pBackBuffer);
   SafeRelease(&pBackBufferResource);
-#ifdef TOUCHMIND_CONTEXT_DEBUG
-  LOG_LEAVE_HRESULT(hr);
-#endif
   return hr;
 }
 
 HRESULT touchmind::Context::OnRender() {
-#ifdef TOUCHMIND_CONTEXT_DEBUG
-  LOG_ENTER;
-#endif
   HRESULT hr = S_OK;
   hr = CreateDeviceResources();
   if (SUCCEEDED(hr)) {
@@ -578,31 +500,19 @@ HRESULT touchmind::Context::OnRender() {
 
     DiscardDeviceResources();
   }
-#ifdef TOUCHMIND_CONTEXT_DEBUG
-  LOG_LEAVE_HRESULT(hr);
-#endif
   return hr;
 }
 
 void touchmind::Context::OnResize(UINT width, UINT height) {
-#ifdef TOUCHMIND_CONTEXT_DEBUG
-  LOG_ENTER;
-#endif
   if (!m_pDevice) {
     CreateDeviceResources();
   } else {
     _RecreateSizedResources(width, height);
   }
-#ifdef TOUCHMIND_CONTEXT_DEBUG
-  LOG_LEAVE;
-#endif
 }
 
 HRESULT touchmind::Context::_CreateD3DDevice(IDXGIAdapter *pAdapter, D3D10_DRIVER_TYPE driverType, UINT flags,
                                              ID3D10Device1 **ppDevice) {
-#ifdef TOUCHMIND_CONTEXT_DEBUG
-  LOG_ENTER;
-#endif
   HRESULT hr = S_OK;
 
   static const D3D10_FEATURE_LEVEL1 levelAttempts[] = {
@@ -620,19 +530,12 @@ HRESULT touchmind::Context::_CreateD3DDevice(IDXGIAdapter *pAdapter, D3D10_DRIVE
       break;
     }
   }
-
-#ifdef TOUCHMIND_CONTEXT_DEBUG
-  LOG_LEAVE_HRESULT(hr);
-#endif
   return hr;
 }
 
 HRESULT touchmind::Context::LoadResourceBitmap(ID2D1RenderTarget *pRenderTarget, IWICImagingFactory *pIWICFactory,
                                                PCWSTR resourceName, PCWSTR resourceType, UINT destinationWidth,
                                                UINT destinationHeight, ID2D1Bitmap **ppBitmap) {
-#ifdef TOUCHMIND_CONTEXT_DEBUG
-  LOG_ENTER;
-#endif
   HRESULT hr = S_OK;
   IWICBitmapDecoder *pDecoder = nullptr;
   IWICBitmapFrameDecode *pSource = nullptr;
@@ -661,27 +564,18 @@ HRESULT touchmind::Context::LoadResourceBitmap(ID2D1RenderTarget *pRenderTarget,
   }
   if (SUCCEEDED(hr)) {
     hr = pIWICFactory->CreateStream(&pStream);
-#ifdef DEBUG_GPU_RESOURCE
-    LOG(SEVERITY_LEVEL_INFO) << L"[GPU RESOURCE] IWICStream = [" << std::hex << pStream << L"]" << std::dec;
-#endif
   }
   if (SUCCEEDED(hr)) {
     hr = pStream->InitializeFromMemory(reinterpret_cast<BYTE *>(pImageFile), imageFileSize);
   }
   if (SUCCEEDED(hr)) {
     hr = pIWICFactory->CreateDecoderFromStream(pStream, nullptr, WICDecodeMetadataCacheOnLoad, &pDecoder);
-#ifdef DEBUG_GPU_RESOURCE
-    LOG(SEVERITY_LEVEL_INFO) << L"[GPU RESOURCE] IWICBitmapDecoder = [" << std::hex << pDecoder << L"]" << std::dec;
-#endif
   }
   if (SUCCEEDED(hr)) {
     hr = pDecoder->GetFrame(0, &pSource);
   }
   if (SUCCEEDED(hr)) {
     hr = pIWICFactory->CreateFormatConverter(&pConverter);
-#ifdef DEBUG_GPU_RESOURCE
-    LOG(SEVERITY_LEVEL_INFO) << L"[GPU RESOURCE] IWICFormatConverter = [" << std::hex << pConverter << L"]" << std::dec;
-#endif
   }
   if (SUCCEEDED(hr)) {
     if (destinationWidth != 0 || destinationHeight != 0) {
@@ -697,9 +591,6 @@ HRESULT touchmind::Context::LoadResourceBitmap(ID2D1RenderTarget *pRenderTarget,
         }
 
         hr = pIWICFactory->CreateBitmapScaler(&pScaler);
-#ifdef DEBUG_GPU_RESOURCE
-        LOG(SEVERITY_LEVEL_INFO) << L"[GPU RESOURCE] IWICBitmapScaler = [" << std::hex << pScaler << L"]" << std::dec;
-#endif
         if (SUCCEEDED(hr)) {
           hr = pScaler->Initialize(pSource, destinationWidth, destinationHeight, WICBitmapInterpolationModeCubic);
           if (SUCCEEDED(hr)) {
@@ -715,9 +606,6 @@ HRESULT touchmind::Context::LoadResourceBitmap(ID2D1RenderTarget *pRenderTarget,
   }
   if (SUCCEEDED(hr)) {
     hr = pRenderTarget->CreateBitmapFromWicBitmap(pConverter, nullptr, ppBitmap);
-#ifdef DEBUG_OUTPUT_GPU_RESOURCE
-    LOG(SEVERITY_LEVEL_INFO) << L"[GPU RESOURCE] ID2D1Bitmap = [" << std::hex << *ppBitmap << L"]" << std::dec;
-#endif
   }
 
   SafeRelease(&pDecoder);
@@ -725,17 +613,10 @@ HRESULT touchmind::Context::LoadResourceBitmap(ID2D1RenderTarget *pRenderTarget,
   SafeRelease(&pStream);
   SafeRelease(&pConverter);
   SafeRelease(&pScaler);
-
-#ifdef TOUCHMIND_CONTEXT_DEBUG
-  LOG_LEAVE_HRESULT(hr);
-#endif
   return hr;
 }
 
 HRESULT touchmind::Context::LoadResourceShader(ID3D10Device *pDevice, PCWSTR pszResource, ID3D10Effect **ppShader) {
-#ifdef TOUCHMIND_CONTEXT_DEBUG
-  LOG_ENTER;
-#endif
   HRESULT hr;
 
   HRSRC hResource = ::FindResource(HINST_THISCOMPONENT, pszResource, RT_RCDATA);
@@ -755,17 +636,10 @@ HRESULT touchmind::Context::LoadResourceShader(ID3D10Device *pDevice, PCWSTR psz
       }
     }
   }
-
-#ifdef TOUCHMIND_CONTEXT_DEBUG
-  LOG_LEAVE_HRESULT(hr);
-#endif
   return hr;
 }
 
 HRESULT touchmind::Context::CreateDeviceIndependentResources() {
-#ifdef TOUCHMIND_CONTEXT_DEBUG
-  LOG_ENTER;
-#endif
   HRESULT hr;
 
   D2D1_FACTORY_OPTIONS factoryOptions;
@@ -775,25 +649,15 @@ HRESULT touchmind::Context::CreateDeviceIndependentResources() {
   factoryOptions.debugLevel = D2D1_DEBUG_LEVEL_NONE;
 #endif
   hr = D2D1CreateFactory(D2D1_FACTORY_TYPE_SINGLE_THREADED, factoryOptions, &m_pD2DFactory);
-#ifdef DEBUG_GPU_RESOURCE
-  LOG(SEVERITY_LEVEL_INFO) << L"[GPU RESOURCE] ID2D1Factory = [" << std::hex << m_pD2DFactory << L"]" << std::dec;
-#endif
   if (SUCCEEDED(hr)) {
     // Create a WIC factory
     hr = CoCreateInstance(CLSID_WICImagingFactory, nullptr, CLSCTX_INPROC_SERVER, IID_IWICImagingFactory,
                           reinterpret_cast<void **>(&m_pWICFactory));
-#ifdef DEBUG_GPU_RESOURCE
-    LOG(SEVERITY_LEVEL_INFO) << L"[GPU RESOURCE] IWICImageFactory = [" << std::hex << m_pWICFactory << L"]" << std::dec;
-#endif
   }
   if (SUCCEEDED(hr)) {
     // Create DWrite factory
     hr = DWriteCreateFactory(DWRITE_FACTORY_TYPE_SHARED, __uuidof(m_pDWriteFactory),
                              reinterpret_cast<IUnknown **>(&m_pDWriteFactory));
-#ifdef DEBUG_GPU_RESOURCE
-    LOG(SEVERITY_LEVEL_INFO) << L"[GPU RESOURCE] IDWriteFactory = [" << std::hex << m_pDWriteFactory << L"]"
-                             << std::dec;
-#endif
   }
 
   if (SUCCEEDED(hr)) {
@@ -803,18 +667,10 @@ HRESULT touchmind::Context::CreateDeviceIndependentResources() {
   if (SUCCEEDED(hr) && m_pRenderEventListener != nullptr) {
     hr = m_pRenderEventListener->CreateDeviceIndependentResources(this, m_pD2DFactory, m_pWICFactory, m_pDWriteFactory);
   }
-
-#ifdef TOUCHMIND_CONTEXT_DEBUG
-  LOG_LEAVE_HRESULT(hr);
-#endif
   return hr;
 }
 
 HRESULT touchmind::Context::CreateTexture2D(UINT width, UINT height, OUT ID3D10Texture2D **ppTexture2D) {
-#ifdef TOUCHMIND_CONTEXT_DEBUG
-  LOG_ENTER;
-#endif
-  HRESULT hr;
   D3D10_TEXTURE2D_DESC texDescForSource;
   texDescForSource.ArraySize = 1;
   texDescForSource.BindFlags = D3D10_BIND_RENDER_TARGET | D3D10_BIND_SHADER_RESOURCE;
@@ -827,22 +683,12 @@ HRESULT touchmind::Context::CreateTexture2D(UINT width, UINT height, OUT ID3D10T
   texDescForSource.SampleDesc.Count = 1;
   texDescForSource.SampleDesc.Quality = 0;
   texDescForSource.Usage = D3D10_USAGE_DEFAULT;
-  hr = m_pDevice->CreateTexture2D(&texDescForSource, nullptr, ppTexture2D);
-#ifdef DEBUG_OUTPUT_GPU_RESOURCE
-  LOG(SEVERITY_LEVEL_INFO) << L"[GPU RESOURCE] ID3D10Texture2D = [" << std::hex << *ppTexture2D << L"]" << std::dec;
-#endif
-
-#ifdef TOUCHMIND_CONTEXT_DEBUG
-  LOG_LEAVE_HRESULT(hr);
-#endif
+  HRESULT hr = m_pDevice->CreateTexture2D(&texDescForSource, nullptr, ppTexture2D);
   return hr;
 }
 
 HRESULT touchmind::Context::CreateD2DRenderTargetFromTexture2D(ID3D10Texture2D *pTexure2D,
                                                                ID2D1RenderTarget **ppRenderTarget) {
-#ifdef TOUCHMIND_CONTEXT_DEBUG
-  LOG_ENTER;
-#endif
   HRESULT hr = S_OK;
   IDXGISurface *pDxgiSurface1 = nullptr;
   hr = pTexure2D->QueryInterface(&pDxgiSurface1);
@@ -851,26 +697,15 @@ HRESULT touchmind::Context::CreateD2DRenderTargetFromTexture2D(ID3D10Texture2D *
       D2D1_RENDER_TARGET_TYPE_DEFAULT, D2D1::PixelFormat(DXGI_FORMAT_UNKNOWN, D2D1_ALPHA_MODE_PREMULTIPLIED), 96, 96);
   if (SUCCEEDED(hr)) {
     hr = m_pD2DFactory->CreateDxgiSurfaceRenderTarget(pDxgiSurface1, &props, ppRenderTarget);
-#ifdef DEBUG_OUTPUT_GPU_RESOURCE
-    LOG(SEVERITY_LEVEL_INFO) << L"[GPU RESOURCE] ID2D1RenderTarget = [" << std::hex << *ppRenderTarget << L"]"
-                             << std::dec;
-#endif
     if (FAILED(hr)) {
-      LOG(SEVERITY_LEVEL_ERROR) << L"failed to create ID2D1RenderTarget, hr = " << hr;
+      SPDLOG_ERROR(L"failed to create ID2D1RenderTarget, hr = {:x}", hr);
     }
   }
   SafeRelease(&pDxgiSurface1);
-
-#ifdef TOUCHMIND_CONTEXT_DEBUG
-  LOG_LEAVE_HRESULT(hr);
-#endif
   return hr;
 }
 
 HRESULT touchmind::Context::CreateVertexAndIndexBuffer() {
-#ifdef TOUCHMIND_CONTEXT_DEBUG
-  LOG_ENTER;
-#endif
   HRESULT hr;
   D3D10_BUFFER_DESC bd;
   bd.Usage = D3D10_USAGE_DEFAULT;
@@ -882,9 +717,6 @@ HRESULT touchmind::Context::CreateVertexAndIndexBuffer() {
   InitData.pSysMem = s_VertexArray;
 
   hr = m_pDevice->CreateBuffer(&bd, &InitData, &m_pVertexBuffer);
-#ifdef DEBUG_GPU_RESOURCE
-  LOG(SEVERITY_LEVEL_INFO) << L"[GPU RESOURCE] ID3D10Buffer = [" << std::hex << m_pVertexBuffer << L"]" << std::dec;
-#endif
   if (SUCCEEDED(hr)) {
     // Set vertex buffer
     UINT stride = sizeof(touchmind::Vertex);
@@ -896,55 +728,33 @@ HRESULT touchmind::Context::CreateVertexAndIndexBuffer() {
                                   &pVertexBuffer, &stride, &offset);
   }
   if (SUCCEEDED(hr)) {
-    D3D10_BUFFER_DESC bd;
-    bd.Usage = D3D10_USAGE_DEFAULT;
-    bd.ByteWidth = sizeof(s_FacesIndexArray);
-    bd.BindFlags = D3D10_BIND_INDEX_BUFFER;
-    bd.CPUAccessFlags = 0;
-    bd.MiscFlags = 0;
-    D3D10_SUBRESOURCE_DATA InitData;
-    InitData.pSysMem = s_FacesIndexArray;
+    D3D10_BUFFER_DESC bufferDesc;
+    bufferDesc.Usage = D3D10_USAGE_DEFAULT;
+    bufferDesc.ByteWidth = sizeof(s_FacesIndexArray);
+    bufferDesc.BindFlags = D3D10_BIND_INDEX_BUFFER;
+    bufferDesc.CPUAccessFlags = 0;
+    bufferDesc.MiscFlags = 0;
+    D3D10_SUBRESOURCE_DATA initData;
+    initData.pSysMem = s_FacesIndexArray;
 
-    hr = m_pDevice->CreateBuffer(&bd, &InitData, &m_pFacesIndexBuffer);
-#ifdef DEBUG_GPU_RESOURCE
-    LOG(SEVERITY_LEVEL_INFO) << L"[GPU RESOURCE] ID3D10Buffer = [" << std::hex << m_pFacesIndexBuffer << L"]"
-                             << std::dec;
-#endif
+    hr = m_pDevice->CreateBuffer(&bufferDesc, &initData, &m_pFacesIndexBuffer);
   }
-#ifdef TOUCHMIND_CONTEXT_DEBUG
-  LOG_LEAVE;
-#endif
   return hr;
 }
 
 void touchmind::Context::SetIndexBuffer() {
-#ifdef TOUCHMIND_CONTEXT_DEBUG
-  LOG_ENTER;
-#endif
   m_pDevice->IASetIndexBuffer(m_pFacesIndexBuffer, DXGI_FORMAT_R16_UINT, 0);
-#ifdef TOUCHMIND_CONTEXT_DEBUG
-  LOG_LEAVE;
-#endif
 }
 
 void touchmind::Context::PushStates() {
-#ifdef TOUCHMIND_CONTEXT_DEBUG
-  LOG_ENTER;
-#endif
   D3DStates d3dState;
   m_pDevice->OMGetRenderTargets(1, &d3dState.pRenderTargetViews, &d3dState.pDepthStencilView);
   UINT numViewports = 1;
   m_pDevice->RSGetViewports(&numViewports, &d3dState.viewport);
   m_vD3DStates.push_back(d3dState);
-#ifdef TOUCHMIND_CONTEXT_DEBUG
-  LOG_LEAVE;
-#endif
 }
 
 void touchmind::Context::PopStates() {
-#ifdef TOUCHMIND_CONTEXT_DEBUG
-  LOG_ENTER;
-#endif
   D3DStates d3dState = m_vD3DStates[m_vD3DStates.size() - 1];
 
   m_pDevice->OMSetRenderTargets(1, &d3dState.pRenderTargetViews, d3dState.pDepthStencilView);
@@ -953,16 +763,10 @@ void touchmind::Context::PopStates() {
   m_pDevice->RSSetViewports(1, &d3dState.viewport);
 
   m_vD3DStates.pop_back();
-#ifdef TOUCHMIND_CONTEXT_DEBUG
-  LOG_LEAVE;
-#endif
 }
 
 HRESULT touchmind::Context::CreateD2DSharedBitmapFromTexture2D(ID2D1RenderTarget *pRenderTarget,
                                                                ID3D10Texture2D *pTexure2D, ID2D1Bitmap **ppBitmap) {
-#ifdef TOUCHMIND_CONTEXT_DEBUG
-  LOG_ENTER;
-#endif
   HRESULT hr = S_OK;
   IDXGISurface *pDxgiSurface = nullptr;
   hr = pTexure2D->QueryInterface(&pDxgiSurface);
@@ -972,21 +776,12 @@ HRESULT touchmind::Context::CreateD2DSharedBitmapFromTexture2D(ID2D1RenderTarget
     bitmapProp.dpiY = 96;
     bitmapProp.pixelFormat = D2D1::PixelFormat(DXGI_FORMAT_B8G8R8A8_UNORM, D2D1_ALPHA_MODE_PREMULTIPLIED);
     hr = pRenderTarget->CreateSharedBitmap(__uuidof(IDXGISurface), pDxgiSurface, &bitmapProp, ppBitmap);
-#ifdef DEBUG_OUTPUT_GPU_RESOURCE
-    LOG(SEVERITY_LEVEL_INFO) << L"[GPU RESOURCE] ID2D1Bitmap = [" << std::hex << *ppBitmap << L"]" << std::dec;
-#endif
     SafeRelease(&pDxgiSurface);
   }
-#ifdef TOUCHMIND_CONTEXT_DEBUG
-  LOG_LEAVE_HRESULT(hr);
-#endif
   return hr;
 }
 
 HRESULT touchmind::Context::_InitializeAnimation() {
-#ifdef TOUCHMIND_CONTEXT_DEBUG
-  LOG_ENTER;
-#endif
   HRESULT hr = S_OK;
   hr = CoCreateInstance(CLSID_UIAnimationManager, nullptr, CLSCTX_INPROC_SERVER, IID_PPV_ARGS(&m_pAnimationManager));
   if (SUCCEEDED(hr)) {
@@ -1016,8 +811,5 @@ HRESULT touchmind::Context::_InitializeAnimation() {
   }
 
   m_pAnimationTimer->Enable();
-#ifdef TOUCHMIND_CONTEXT_DEBUG
-  LOG_LEAVE_HRESULT(hr);
-#endif
   return hr;
 }

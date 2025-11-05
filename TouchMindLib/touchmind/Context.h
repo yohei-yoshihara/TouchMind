@@ -1,4 +1,4 @@
-#ifndef TOUCHMIND_CONTEXT_H_
+﻿#ifndef TOUCHMIND_CONTEXT_H_
 #define TOUCHMIND_CONTEXT_H_
 
 #include "forwarddecl.h"

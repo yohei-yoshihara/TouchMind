@@ -1,4 +1,4 @@
-#include "stdafx.h"
+﻿#include "stdafx.h"
 #include "touchmind/print/PrintTicketHelper.h"
 
 void touchmind::print::PrintTicketHelper::CreatePrintTicket(const std::wstring &deviceName, LPPRINTDLGEX pPDX,
@@ -8,7 +8,7 @@ void touchmind::print::PrintTicketHelper::CreatePrintTicket(const std::wstring &
   if (SUCCEEDED(hr)) {
     hr = PTOpenProvider(deviceName.c_str(), 1, &phProvider);
     if (FAILED(hr)) {
-      LOG(SEVERITY_LEVEL_ERROR) << L"PTOpenProvider failed, hr = " << std::hex << hr;
+      SPDLOG_ERROR(L"PTOpenProvider failed, hr = {:x}", hr);
     }
   }
 
@@ -16,7 +16,7 @@ void touchmind::print::PrintTicketHelper::CreatePrintTicket(const std::wstring &
   if (SUCCEEDED(hr)) {
     hr = CreateStreamOnHGlobal(nullptr, TRUE, &pPrintTicketStream);
     if (FAILED(hr)) {
-      LOG(SEVERITY_LEVEL_ERROR) << L"CreateStreamOnHGlobal failed, hr = " << std::hex << hr;
+      SPDLOG_ERROR(L"CreateStreamOnHGlobal failed, hr = {:x}", hr);
     }
   }
 
@@ -25,7 +25,7 @@ void touchmind::print::PrintTicketHelper::CreatePrintTicket(const std::wstring &
   if (SUCCEEDED(hr)) {
     hr = PTConvertDevModeToPrintTicket(phProvider, cbDevmode, pDevmode, kPTJobScope, pPrintTicketStream);
     if (FAILED(hr)) {
-      LOG(SEVERITY_LEVEL_ERROR) << L"PTConvertDevModeToPrintTicket failed, hr = " << std::hex << hr;
+      SPDLOG_ERROR(L"PTConvertDevModeToPrintTicket failed, hr = {:x}", hr);
     }
   }
   GlobalUnlock(pDevmode);
@@ -34,14 +34,14 @@ void touchmind::print::PrintTicketHelper::CreatePrintTicket(const std::wstring &
   if (SUCCEEDED(hr)) {
     hr = pPrintTicketStream->Seek(liZero, STREAM_SEEK_SET, nullptr);
     if (FAILED(hr)) {
-      LOG(SEVERITY_LEVEL_ERROR) << L"IStream::Seek failed, hr = " << std::hex << hr;
+      SPDLOG_ERROR(L"IStream::Seek failed, hr = {:x}", hr);
     }
   }
 
   if (SUCCEEDED(hr)) {
     WritePrintTicket(pPrintTicketStream, printTicketStream);
     if (FAILED(hr)) {
-      LOG(SEVERITY_LEVEL_ERROR) << L"WritePrintTicket failed, hr = " << std::hex << hr;
+      SPDLOG_ERROR(L"WritePrintTicket failed, hr = {:x}", hr);
     }
   }
   SafeRelease(&pPrintTicketStream);
@@ -57,7 +57,7 @@ void touchmind::print::PrintTicketHelper::WritePrintTicket(IStream *pStream, IXp
   while (true) {
     hr = pStream->Read(buf, 1024, &cbRead);
     if (FAILED(hr)) {
-      LOG(SEVERITY_LEVEL_ERROR) << L"IStream::Read failed, hr = " << std::hex << hr;
+      SPDLOG_ERROR(L"IStream::Read failed, hr = {:x}", hr);
       break;
     }
     if (cbRead == 0) {
@@ -66,12 +66,12 @@ void touchmind::print::PrintTicketHelper::WritePrintTicket(IStream *pStream, IXp
     }
     hr = pPrintStream->Write(buf, cbRead, &cbWritten);
     if (FAILED(hr)) {
-      LOG(SEVERITY_LEVEL_ERROR) << L"IXpsPrintJobStream::Write failed, hr = " << std::hex << hr;
+      SPDLOG_ERROR(L"IXpsPrintJobStream::Write failed, hr = {:x}", hr);
       break;
     }
     if (cbRead != cbWritten) {
-      LOG(SEVERITY_LEVEL_ERROR) << L"IXpsPrintJobStream::Write failed, could not write all the data, read bytes = "
-                                << cbRead << L", write bytes = " << cbWritten;
+      SPDLOG_ERROR(L"IXpsPrintJobStream::Write failed, could not write all the data, read bytes = {}, write bytes = {}",
+                                cbRead, cbWritten);
       hr = E_FAIL;
       break;
     }

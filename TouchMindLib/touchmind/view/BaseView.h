@@ -1,4 +1,4 @@
-#ifndef TOUCHMIND_VIEW_BASEVIEW_H_
+﻿#ifndef TOUCHMIND_VIEW_BASEVIEW_H_
 #define TOUCHMIND_VIEW_BASEVIEW_H_
 
 #include "forwarddecl.h"

@@ -1,4 +1,4 @@
-#include "stdafx.h"
+﻿#include "stdafx.h"
 #include "stdafx.h"
 #include "touchmind/Common.h"
 #include "touchmind/Context.h"
@@ -91,16 +91,13 @@ void touchmind::view::link::LinkViewManager::CreateSharedDeviceResources(touchmi
                                                                          ID2D1RenderTarget *pRenderTarget) {
   UNREFERENCED_PARAMETER(pContext);
   m_pShadowBrush = nullptr;
-  CHK_RES(m_pShadowBrush,
-          pRenderTarget->CreateSolidColorBrush(m_pConfiguration->GetDefaultShadowColor(), &m_pShadowBrush));
+  THROW_IF_FAILED(pRenderTarget->CreateSolidColorBrush(m_pConfiguration->GetDefaultShadowColor(), &m_pShadowBrush));
 
   m_pSelectedShadowBrush1 = nullptr;
-  CHK_RES(m_pSelectedShadowBrush1,
-          pRenderTarget->CreateSolidColorBrush(m_pConfiguration->GetDefaultSelectedColor1(), &m_pSelectedShadowBrush1));
+  THROW_IF_FAILED(pRenderTarget->CreateSolidColorBrush(m_pConfiguration->GetDefaultSelectedColor1(), &m_pSelectedShadowBrush1));
 
   m_pSelectedShadowBrush2 = nullptr;
-  CHK_RES(m_pSelectedShadowBrush2,
-          pRenderTarget->CreateSolidColorBrush(m_pConfiguration->GetDefaultSelectedColor2(), &m_pSelectedShadowBrush2));
+  THROW_IF_FAILED(pRenderTarget->CreateSolidColorBrush(m_pConfiguration->GetDefaultSelectedColor2(), &m_pSelectedShadowBrush2));
 }
 
 void touchmind::view::link::LinkViewManager::DiscardSharedDeviceResources() {

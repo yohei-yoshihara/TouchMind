@@ -1,4 +1,4 @@
-#ifndef TOUCHMIND_MODEL_LINKMODEL_H_
+﻿#ifndef TOUCHMIND_MODEL_LINKMODEL_H_
 #define TOUCHMIND_MODEL_LINKMODEL_H_
 
 #include "forwarddecl.h"

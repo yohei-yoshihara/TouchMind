@@ -41,7 +41,7 @@ namespace touchmind {
       }
       static LINE_STYLE ToLineStyle(const std::wstring &s) {
         std::wstring _s(s);
-        std::transform(_s.begin(), _s.end(), _s.begin(), std::toupper);
+        std::transform(_s.begin(), _s.end(), _s.begin(), std::towupper);
         if (s == L"DASHED") {
           return LINE_STYLE_DASHED;
         } else if (s == L"DOTTED") {

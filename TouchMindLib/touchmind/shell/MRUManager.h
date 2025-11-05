@@ -1,4 +1,4 @@
-#ifndef TOUCHMIND_MRUMANAGER_H_
+﻿#ifndef TOUCHMIND_MRUMANAGER_H_
 #define TOUCHMIND_MRUMANAGER_H_
 
 namespace touchmind {

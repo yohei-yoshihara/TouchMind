@@ -1,4 +1,4 @@
-#ifndef TOUCHMIND_WIN_TOUCHMINDAPP_H_
+﻿#ifndef TOUCHMIND_WIN_TOUCHMINDAPP_H_
 #define TOUCHMIND_WIN_TOUCHMINDAPP_H_
 
 #include "forwarddecl.h"

@@ -1,4 +1,4 @@
-#include "StdAfx.h"
+﻿#include "StdAfx.h"
 #include "touchmind/Common.h"
 #include "FileAssociation.h"
 #include <Strsafe.h>

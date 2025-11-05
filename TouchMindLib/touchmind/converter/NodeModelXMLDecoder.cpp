@@ -1,4 +1,4 @@
-#include "StdAfx.h"
+﻿#include "StdAfx.h"
 #include "touchmind/Common.h"
 #include "touchmind/Configuration.h"
 #include "touchmind/converter/NodeModelXMLDecoder.h"
@@ -8,44 +8,44 @@
 #include "touchmind/model/link/LinkModel.h"
 #include "touchmind/model/linkedge/LinkEdgeModel.h"
 
-const static _bstr_t s_tmm(L"tmm");
-const static _bstr_t s_version(L"version");
-const static _bstr_t s_node(L"node");
-const static _bstr_t s_id(L"id");
-const static _bstr_t s_position(L"position");
-const static _variant_t v_positionLeftValue(L"left");
-const static _bstr_t s_positionLeftValue(L"left");
-const static _variant_t v_positionRightValue(L"right");
-const static _bstr_t s_positionRightValue(L"right");
-const static _bstr_t s_createdTime(L"createdTime");
-const static _bstr_t s_modifiedTime(L"modifiedTime");
-const static _bstr_t s_backgroundColor(L"backgroundColor");
-const static _bstr_t s_text(L"text");
-const static _bstr_t s_fontAttributes(L"fontAttributes");
-const static _bstr_t s_fontAttribute(L"fontAttribute");
-const static _bstr_t s_startPosition(L"startPosition");
-const static _bstr_t s_length(L"length");
-const static _bstr_t s_fontFamily(L"fontFammily");
-const static _bstr_t s_fontSize(L"fontSize");
-const static _bstr_t s_bold(L"bold");
-const static _bstr_t s_italic(L"italic");
-const static _bstr_t s_underline(L"underline");
-const static _bstr_t s_strikethrough(L"strikethrough");
-const static _variant_t v_boolTrueValue(L"true");
-const static _bstr_t s_boolTrueValue(L"true");
-const static _bstr_t s_foregroundColor(L"foregroundColor");
-const static _bstr_t s_width(L"width");
-const static _bstr_t s_height(L"height");
-const static _bstr_t s_path(L"path");
-const static _bstr_t s_color(L"color");
-const static _bstr_t s_style(L"style");
-const static _bstr_t s_startStyle(L"startStyle");
-const static _bstr_t s_endStyle(L"endStyle");
-const static _bstr_t s_link(L"link");
-const static _bstr_t s_destination(L"destination");
-const static _bstr_t s_startHandle(L"startHandle");
-const static _bstr_t s_endHandle(L"endHandle");
-const static _bstr_t s_shape(L"shape");
+const static std::wstring s_tmm(L"tmm");
+const static std::wstring s_version(L"version");
+const static std::wstring s_node(L"node");
+const static std::wstring s_id(L"id");
+const static std::wstring s_position(L"position");
+const static std::wstring v_positionLeftValue(L"left");
+const static std::wstring s_positionLeftValue(L"left");
+const static std::wstring v_positionRightValue(L"right");
+const static std::wstring s_positionRightValue(L"right");
+const static std::wstring s_createdTime(L"createdTime");
+const static std::wstring s_modifiedTime(L"modifiedTime");
+const static std::wstring s_backgroundColor(L"backgroundColor");
+const static std::wstring s_text(L"text");
+const static std::wstring s_fontAttributes(L"fontAttributes");
+const static std::wstring s_fontAttribute(L"fontAttribute");
+const static std::wstring s_startPosition(L"startPosition");
+const static std::wstring s_length(L"length");
+const static std::wstring s_fontFamily(L"fontFammily");
+const static std::wstring s_fontSize(L"fontSize");
+const static std::wstring s_bold(L"bold");
+const static std::wstring s_italic(L"italic");
+const static std::wstring s_underline(L"underline");
+const static std::wstring s_strikethrough(L"strikethrough");
+const static std::wstring v_boolTrueValue(L"true");
+const static std::wstring s_boolTrueValue(L"true");
+const static std::wstring s_foregroundColor(L"foregroundColor");
+const static std::wstring s_width(L"width");
+const static std::wstring s_height(L"height");
+const static std::wstring s_path(L"path");
+const static std::wstring s_color(L"color");
+const static std::wstring s_style(L"style");
+const static std::wstring s_startStyle(L"startStyle");
+const static std::wstring s_endStyle(L"endStyle");
+const static std::wstring s_link(L"link");
+const static std::wstring s_destination(L"destination");
+const static std::wstring s_startHandle(L"startHandle");
+const static std::wstring s_endHandle(L"endHandle");
+const static std::wstring s_shape(L"shape");
 
 touchmind::converter::NodeModelXMLDecoder::NodeModelXMLDecoder()
     : m_pSelectionManager(nullptr)
@@ -56,7 +56,8 @@ touchmind::converter::NodeModelXMLDecoder::~NodeModelXMLDecoder(void) {
 }
 
 HRESULT touchmind::converter::NodeModelXMLDecoder::Decode(
-    IN MSXML::IXMLDOMNodePtr xmlNodeNode, OUT std::shared_ptr<touchmind::model::node::NodeModel> &node,
+    IN pugi::xml_node &xmlNodeNode,
+    OUT std::shared_ptr<touchmind::model::node::NodeModel> &node,
     OUT std::vector<std::shared_ptr<touchmind::model::link::LinkModel>> &links, IN bool keepOriginalId,
     IN bool keepOriginalPosition, std::shared_ptr<LinkInfoList> linkInfoList,
     std::shared_ptr<std::map<NODE_ID, NODE_ID>> idMap) {
@@ -70,13 +71,11 @@ HRESULT touchmind::converter::NodeModelXMLDecoder::Decode(
   }
 
   HRESULT hr = S_OK;
-  if (s_node == xmlNodeNode->baseName) {
-    MSXML::IXMLDOMNamedNodeMapPtr pAttrMap = xmlNodeNode->attributes;
-
+  if (s_node == xmlNodeNode.name()) {
     // id
-    MSXML::IXMLDOMNodePtr pIdNode = pAttrMap->getNamedItem(s_id);
-    if (pIdNode != nullptr) {
-      std::wstring ws_id(pIdNode->text);
+    auto idAttr = xmlNodeNode.attribute(s_id);
+    if (idAttr != nullptr) {
+      std::wstring ws_id(idAttr.value());
       touchmind::NODE_ID nodeId;
       if (touchmind::StringToNodeId(ws_id, &nodeId) == 0) {
         if (keepOriginalId) {
@@ -90,94 +89,92 @@ HRESULT touchmind::converter::NodeModelXMLDecoder::Decode(
 
     // position
     if (keepOriginalPosition) {
-      MSXML::IXMLDOMNodePtr pPositionNode = pAttrMap->getNamedItem(s_position);
-      if (pPositionNode != nullptr) {
-        if (pPositionNode->text == s_positionLeftValue) {
+      auto positionAttr = xmlNodeNode.attribute(s_position);
+      if (positionAttr != nullptr) {
+        if (positionAttr.value() == s_positionLeftValue) {
           node->SetPosition(NODE_SIDE_LEFT);
-        } else if (pPositionNode->text == s_positionRightValue) {
+        } else if (positionAttr.value() == s_positionRightValue) {
           node->SetPosition(NODE_SIDE_RIGHT);
         }
       }
     }
 
     // created time
-    MSXML::IXMLDOMNodePtr pCreatedTimeNode = pAttrMap->getNamedItem(s_createdTime);
-    if (pCreatedTimeNode != nullptr) {
-      std::wstring ws_createdTime(pCreatedTimeNode->text);
+    auto createdTimeAttr = xmlNodeNode.attribute(s_createdTime);
+    if (createdTimeAttr != nullptr) {
+      std::wstring ws_createdTime(createdTimeAttr.value());
       SYSTEMTIME createdTime;
       touchmind::StringToSystemtime(ws_createdTime, &createdTime);
       node->SetCreatedTime(createdTime);
     }
 
     // modified time
-    MSXML::IXMLDOMNodePtr pModifiedTimeNode = pAttrMap->getNamedItem(s_modifiedTime);
-    if (pModifiedTimeNode != nullptr) {
-      std::wstring ws_modifiedTime(pModifiedTimeNode->text);
+    auto modifiedTimeAttr = xmlNodeNode.attribute(s_modifiedTime);
+    if (modifiedTimeAttr != nullptr) {
+      std::wstring ws_modifiedTime(modifiedTimeAttr.value());
       SYSTEMTIME modifiedTime;
       touchmind::StringToSystemtime(ws_modifiedTime, &modifiedTime);
       node->SetModifiedTime(modifiedTime);
     }
 
     // width
-    MSXML::IXMLDOMNodePtr pWidthNode = pAttrMap->getNamedItem(s_width);
-    if (pWidthNode != nullptr) {
-      std::wstring ws_width(pWidthNode->text);
+    auto widthAttr = xmlNodeNode.attribute(s_width);
+    if (widthAttr != nullptr) {
+      std::wstring ws_width(widthAttr.value());
       FLOAT width;
       touchmind::StringToSize(ws_width, &width);
       node->SetWidth(width);
     }
 
     // height
-    MSXML::IXMLDOMNodePtr pHeightNode = pAttrMap->getNamedItem(s_height);
-    if (pHeightNode != nullptr) {
-      std::wstring ws_height(pHeightNode->text);
+    auto heightAttr = xmlNodeNode.attribute(s_height);
+    if (heightAttr != nullptr) {
+      std::wstring ws_height(heightAttr.value());
       FLOAT height;
       touchmind::StringToSize(ws_height, &height);
       node->SetHeight(height);
     }
 
     // background color
-    MSXML::IXMLDOMNodePtr pBackgroundColorNode = pAttrMap->getNamedItem(s_backgroundColor);
-    if (pBackgroundColorNode != nullptr) {
-      std::wstring ws_backgroundColor(pBackgroundColorNode->text);
+    auto backgroundColorAttr = xmlNodeNode.attribute(s_backgroundColor);
+    if (backgroundColorAttr != nullptr) {
+      std::wstring ws_backgroundColor(backgroundColorAttr.value());
       COLORREF backgroundColor;
       touchmind::StringToColorref(ws_backgroundColor, &backgroundColor);
       node->SetBackgroundColor(util::ColorUtil::ToColorF(backgroundColor));
     }
 
     // shape
-    MSXML::IXMLDOMNodePtr pShapeNode = pAttrMap->getNamedItem(s_shape);
-    if (pShapeNode != nullptr) {
-      std::wstring ws_shape(pShapeNode->text);
+    auto shapeAttr = xmlNodeNode.attribute(s_shape);
+    if (shapeAttr != nullptr) {
+      std::wstring ws_shape(shapeAttr.value());
       NODE_SHAPE nodeShape = prop::NodeShape::ToNodeShape(ws_shape);
       node->SetNodeShape(nodeShape);
     }
 
-    MSXML::IXMLDOMNodeListPtr pNodeList = xmlNodeNode->childNodes;
-    for (int i = 0; i < pNodeList->length; ++i) {
-      MSXML::IXMLDOMNodePtr pChildNode = pNodeList->item[i];
-      if (pChildNode->baseName == s_text) {
+    for (auto child : xmlNodeNode.children()) {
+      if (child.name() == s_text) {
         // text
-        hr = _DecodeText(pChildNode, node);
+        hr = _DecodeText(child, node);
         if (FAILED(hr)) {
           break;
         }
-      } else if (pChildNode->baseName == s_path) {
+      } else if (child.name() == s_path) {
         // path
-        hr = _DecodePath(pChildNode, node);
+        hr = _DecodePath(child, node);
         if (FAILED(hr)) {
           break;
         }
-      } else if (pChildNode->baseName == s_link) {
+      } else if (child.name() == s_link) {
         // link
-        hr = _DecodeLink(pChildNode, node, linkInfoList);
+        hr = _DecodeLink(child, node, linkInfoList);
         if (FAILED(hr)) {
           break;
         }
-      } else if (pChildNode->baseName == s_node) {
+      } else if (child.name() == s_node) {
         // child node
         auto pChildNodeModel = touchmind::model::node::NodeModel::Create(m_pSelectionManager);
-        hr = Decode(pChildNode, pChildNodeModel, links, keepOriginalId, keepOriginalPosition, linkInfoList, idMap);
+        hr = Decode(child, pChildNodeModel, links, keepOriginalId, keepOriginalPosition, linkInfoList, idMap);
         node->AddChild(pChildNodeModel);
       }
     }
@@ -201,10 +198,9 @@ HRESULT touchmind::converter::NodeModelXMLDecoder::Decode(
 }
 
 HRESULT
-touchmind::converter::NodeModelXMLDecoder::_DecodeLink(IN MSXML::IXMLDOMNodePtr xmlLinkNode,
+touchmind::converter::NodeModelXMLDecoder::_DecodeLink(IN pugi::xml_node &xmlLinkNode,
                                                        OUT std::shared_ptr<touchmind::model::node::NodeModel> &node,
                                                        std::shared_ptr<LinkInfoList> linkInfoList) {
-  MSXML::IXMLDOMNamedNodeMapPtr pAttrMap = xmlLinkNode->attributes;
   LinkInfo linkInfo = {-1, -1, nullptr};
   linkInfo.start = node->GetId();
 
@@ -212,9 +208,9 @@ touchmind::converter::NodeModelXMLDecoder::_DecodeLink(IN MSXML::IXMLDOMNodePtr 
   linkInfo.link->SetLinkId(touchmind::model::link::LinkModel::GenerateLinkId());
 
   // destination
-  MSXML::IXMLDOMNodePtr pDestinationNode = pAttrMap->getNamedItem(s_destination);
-  if (pDestinationNode != nullptr) {
-    std::wstring ws_id(pDestinationNode->text);
+  auto destinationAttr = xmlLinkNode.attribute(s_destination);
+  if (destinationAttr != nullptr) {
+    std::wstring ws_id(destinationAttr.value());
     touchmind::NODE_ID nodeId;
     if (touchmind::StringToNodeId(ws_id, &nodeId) == 0) {
       linkInfo.end = nodeId;
@@ -222,50 +218,50 @@ touchmind::converter::NodeModelXMLDecoder::_DecodeLink(IN MSXML::IXMLDOMNodePtr 
   }
 
   // link width
-  MSXML::IXMLDOMNodePtr pLinkWidthNode = pAttrMap->getNamedItem(s_width);
-  if (pLinkWidthNode != nullptr) {
-    std::wstring ws_linkWidth(pLinkWidthNode->text);
+  auto linkWidthAttr = xmlLinkNode.attribute(s_width);
+  if (linkWidthAttr != nullptr) {
+    std::wstring ws_linkWidth(linkWidthAttr.value());
     LINE_WIDTH lineWidth = prop::LineWidth::ToLineWidth(ws_linkWidth);
     linkInfo.link->SetLineWidth(lineWidth);
   }
 
   // link color
-  MSXML::IXMLDOMNodePtr pLinkColorNode = pAttrMap->getNamedItem(s_color);
-  if (pLinkColorNode != nullptr) {
-    std::wstring ws_linkColor(pLinkColorNode->text);
+  auto linkColorAttr = xmlLinkNode.attribute(s_color);
+  if (linkColorAttr != nullptr) {
+    std::wstring ws_linkColor(linkColorAttr.value());
     D2D1_COLOR_F colorf;
     StringToColorF(ws_linkColor, &colorf);
     linkInfo.link->SetLineColor(colorf);
   }
 
   // link style
-  MSXML::IXMLDOMNodePtr pLinkStyleNode = pAttrMap->getNamedItem(s_style);
-  if (pLinkStyleNode != nullptr) {
-    std::wstring ws_linkStyle(pLinkStyleNode->text);
+  auto linkStyleAttr = xmlLinkNode.attribute(s_style);
+  if (linkStyleAttr != nullptr) {
+    std::wstring ws_linkStyle(linkStyleAttr.value());
     LINE_STYLE lineStyle = prop::LineStyle::ToLineStyle(ws_linkStyle);
     linkInfo.link->SetLineStyle(lineStyle);
   }
 
   // link edge style
   EDGE_STYLE edgeStyle1 = EDGE_STYLE_NORMAL;
-  MSXML::IXMLDOMNodePtr pLinkEdgeStyle1Node = pAttrMap->getNamedItem(s_startStyle);
-  if (pLinkEdgeStyle1Node != nullptr) {
-    std::wstring ws_linkEdgeStyle1(pLinkEdgeStyle1Node->text);
+  auto linkEdgeStyle1Attr = xmlLinkNode.attribute(s_startStyle);
+  if (linkEdgeStyle1Attr != nullptr) {
+    std::wstring ws_linkEdgeStyle1(linkEdgeStyle1Attr.value());
     edgeStyle1 = prop::LineEdgeStyle::ToEdgeStyle(ws_linkEdgeStyle1);
   }
   EDGE_STYLE edgeStyle2 = EDGE_STYLE_NORMAL;
-  MSXML::IXMLDOMNodePtr pLinkEdgeStyle2Node = pAttrMap->getNamedItem(s_endStyle);
-  if (pLinkEdgeStyle2Node != nullptr) {
-    std::wstring ws_linkEdgeStyle2(pLinkEdgeStyle2Node->text);
+  auto linkEdgeStyle2Attr = xmlLinkNode.attribute(s_endStyle);
+  if (linkEdgeStyle2Attr != nullptr) {
+    std::wstring ws_linkEdgeStyle2(linkEdgeStyle2Attr.value());
     edgeStyle2 = prop::LineEdgeStyle::ToEdgeStyle(ws_linkEdgeStyle2);
   }
   LINE_EDGE_STYLE lineEdgeStyle = prop::LineEdgeStyle::EdgeStylesToLineEdgeStyle(edgeStyle1, edgeStyle2);
   linkInfo.link->SetLineEdgeStyle(lineEdgeStyle);
 
   // handle 1
-  MSXML::IXMLDOMNodePtr pHandle1Node = pAttrMap->getNamedItem(s_startHandle);
-  if (pHandle1Node != nullptr) {
-    std::wstring ws_handle1(pHandle1Node->text);
+  auto handle1Attr = xmlLinkNode.attribute(s_startHandle);
+  if (handle1Attr != nullptr) {
+    std::wstring ws_handle1(handle1Attr.value());
     FLOAT angle, length;
     StringToHandle(ws_handle1, angle, length);
     linkInfo.link->GetEdge(EDGE_ID_1)->SetAngle(angle);
@@ -273,9 +269,9 @@ touchmind::converter::NodeModelXMLDecoder::_DecodeLink(IN MSXML::IXMLDOMNodePtr 
   }
 
   // handle 2
-  MSXML::IXMLDOMNodePtr pHandle2Node = pAttrMap->getNamedItem(s_endHandle);
-  if (pHandle2Node != nullptr) {
-    std::wstring ws_handle2(pHandle2Node->text);
+  auto handle2Attr = xmlLinkNode.attribute(s_endHandle);
+  if (handle2Attr != nullptr) {
+    std::wstring ws_handle2(handle2Attr.value());
     FLOAT angle, length;
     StringToHandle(ws_handle2, angle, length);
     linkInfo.link->GetEdge(EDGE_ID_2)->SetAngle(angle);
@@ -287,32 +283,31 @@ touchmind::converter::NodeModelXMLDecoder::_DecodeLink(IN MSXML::IXMLDOMNodePtr 
 }
 
 HRESULT
-touchmind::converter::NodeModelXMLDecoder::_DecodePath(IN MSXML::IXMLDOMNodePtr xmlPathNode,
+touchmind::converter::NodeModelXMLDecoder::_DecodePath(IN pugi::xml_node &xmlPathNode,
                                                        OUT std::shared_ptr<touchmind::model::node::NodeModel> &node) {
   auto path = node->GetPathModel();
-  MSXML::IXMLDOMNamedNodeMapPtr pAttrMap = xmlPathNode->attributes;
 
   // path width
-  MSXML::IXMLDOMNodePtr pWidthNode = pAttrMap->getNamedItem(s_width);
-  if (pWidthNode != nullptr) {
-    std::wstring ws_width(pWidthNode->text);
+  auto widthAttr = xmlPathNode.attribute(s_width);
+  if (widthAttr != nullptr) {
+    std::wstring ws_width(widthAttr.value());
     LINE_WIDTH lineWidth = prop::LineWidth::ToLineWidth(ws_width);
     path->SetWidth(lineWidth);
   }
 
   // path color
-  MSXML::IXMLDOMNodePtr pPathColor = pAttrMap->getNamedItem(s_color);
-  if (pPathColor != nullptr) {
-    std::wstring ws_pathColor(pPathColor->text);
+  auto pathColorAttr = xmlPathNode.attribute(s_color);
+  if (pathColorAttr != nullptr) {
+    std::wstring ws_pathColor(pathColorAttr.value());
     D2D1_COLOR_F pathColor;
     touchmind::StringToColorF(ws_pathColor, &pathColor);
     path->SetColor(pathColor);
   }
 
   // path style
-  MSXML::IXMLDOMNodePtr pPathStyle = pAttrMap->getNamedItem(s_style);
-  if (pPathStyle != nullptr) {
-    std::wstring ws_pathStyle(pPathStyle->text);
+  auto pathStyleAttr = xmlPathNode.attribute(s_style);
+  if (pathStyleAttr != nullptr) {
+    std::wstring ws_pathStyle(pathStyleAttr.value());
     LINE_STYLE lineStyle = prop::LineStyle::ToLineStyle(ws_pathStyle);
     path->SetStyle(lineStyle);
   }
@@ -321,21 +316,17 @@ touchmind::converter::NodeModelXMLDecoder::_DecodePath(IN MSXML::IXMLDOMNodePtr 
 }
 
 HRESULT
-touchmind::converter::NodeModelXMLDecoder::_DecodeText(IN MSXML::IXMLDOMNodePtr pTextNode,
+touchmind::converter::NodeModelXMLDecoder::_DecodeText(IN pugi::xml_node &textNode,
                                                        OUT std::shared_ptr<touchmind::model::node::NodeModel> &node) {
   HRESULT hr = S_OK;
-  std::wstring text(pTextNode->text);
+  std::wstring text(textNode.text().get());
   node->SetText(text);
 
-  MSXML::IXMLDOMNodeListPtr pChildNodeList = pTextNode->childNodes;
-  for (int i = 0; i < pChildNodeList->length && SUCCEEDED(hr); ++i) {
-    MSXML::IXMLDOMNodePtr pChildNode = pChildNodeList->item[i];
-    if (pChildNode->baseName == s_fontAttributes) {
-      MSXML::IXMLDOMNodeListPtr pFontAttributeNodeList = pChildNode->childNodes;
-      for (int j = 0; j < pFontAttributeNodeList->length; ++j) {
-        MSXML::IXMLDOMNodePtr pFontAttributeNode = pFontAttributeNodeList->item[j];
-        if (pFontAttributeNode->baseName == s_fontAttribute) {
-          hr = _DecodeFontAttribute(pFontAttributeNode, node);
+  for (auto child : textNode.children()) {
+    if (child.name() == s_fontAttributes) {
+      for (auto fontAttribute : child.children()) {
+        if (fontAttribute.name() == s_fontAttribute) {
+          hr = _DecodeFontAttribute(fontAttribute, node);
           if (FAILED(hr)) {
             break;
           }
@@ -347,72 +338,72 @@ touchmind::converter::NodeModelXMLDecoder::_DecodeText(IN MSXML::IXMLDOMNodePtr 
 }
 
 HRESULT touchmind::converter::NodeModelXMLDecoder::_DecodeFontAttribute(
-    IN MSXML::IXMLDOMNodePtr pFontAttributeNode, OUT std::shared_ptr<touchmind::model::node::NodeModel> &node) {
+    IN pugi::xml_node &fontAttributeNode, 
+    OUT std::shared_ptr<touchmind::model::node::NodeModel> &node) {
   HRESULT hr = S_OK;
 
   touchmind::text::FontAttribute fontAttribute;
-  MSXML::IXMLDOMNamedNodeMapPtr pAttrMap = pFontAttributeNode->attributes;
 
   // start position
-  MSXML::IXMLDOMNodePtr pStartPositionNode = pAttrMap->getNamedItem(s_startPosition);
-  if (pStartPositionNode != nullptr) {
-    std::wstring ws_startPosition(pStartPositionNode->text);
+  auto startPositionAttr = fontAttributeNode.attribute(s_startPosition);
+  if (startPositionAttr != nullptr) {
+    std::wstring ws_startPosition(startPositionAttr.value());
     LONG startPosition = _wtol(ws_startPosition.c_str());
     fontAttribute.startPosition = startPosition;
   }
 
   // length
-  MSXML::IXMLDOMNodePtr pLengthNode = pAttrMap->getNamedItem(s_length);
-  if (pLengthNode != nullptr) {
-    std::wstring ws_length(pLengthNode->text);
+  auto lengthAttr = fontAttributeNode.attribute(s_length);
+  if (lengthAttr != nullptr) {
+    std::wstring ws_length(lengthAttr.value());
     LONG length = _wtol(ws_length.c_str());
     fontAttribute.length = length;
   }
 
   // font family
-  MSXML::IXMLDOMNodePtr pFontFamilyNode = pAttrMap->getNamedItem(s_fontFamily);
-  if (pFontFamilyNode != nullptr) {
-    std::wstring ws_fontFamily(pFontFamilyNode->text);
+  auto fontFamilyAttr = fontAttributeNode.attribute(s_fontFamily);
+  if (fontFamilyAttr != nullptr) {
+    std::wstring ws_fontFamily(fontFamilyAttr.value());
     fontAttribute.fontFamilyName = ws_fontFamily;
   }
 
   // font size
-  MSXML::IXMLDOMNodePtr pFontSizeNode = pAttrMap->getNamedItem(s_fontSize);
-  if (pFontSizeNode != nullptr) {
-    std::wstring ws_fontSize(pFontSizeNode->text);
+  auto fontSizeAttr = fontAttributeNode.attribute(s_fontSize);
+  if (fontSizeAttr != nullptr) {
+    std::wstring ws_fontSize(fontSizeAttr.value());
     FLOAT fontSize;
     touchmind::StringToFontSize(ws_fontSize, &fontSize);
     fontAttribute.fontSize = fontSize;
   }
 
   // bold
-  MSXML::IXMLDOMNodePtr pBoldNode = pAttrMap->getNamedItem(s_bold);
-  if (pBoldNode != nullptr) {
-    fontAttribute.bold = (pBoldNode->text == s_boolTrueValue);
+  auto boldAttr = fontAttributeNode.attribute(s_bold);
+  if (boldAttr != nullptr) {
+    fontAttribute.bold = (boldAttr.value() == s_boolTrueValue);
   }
 
   // italic
-  MSXML::IXMLDOMNodePtr pItalicNode = pAttrMap->getNamedItem(s_italic);
-  if (pItalicNode != nullptr) {
-    fontAttribute.italic = (pItalicNode->text == s_boolTrueValue);
+  auto italicAttr = fontAttributeNode.attribute(s_italic);
+  if (italicAttr != nullptr) {
+    fontAttribute.italic = (italicAttr.value() == s_boolTrueValue);
   }
 
   // underline
-  MSXML::IXMLDOMNodePtr pUnderlineNode = pAttrMap->getNamedItem(s_underline);
-  if (pUnderlineNode != nullptr) {
-    fontAttribute.underline = (pUnderlineNode->text == s_boolTrueValue);
+  auto underlineAttr = fontAttributeNode.attribute(s_underline);
+  if (underlineAttr != nullptr) {
+    fontAttribute.underline = (underlineAttr.value() == s_boolTrueValue);
   }
 
   // strikethrough
-  MSXML::IXMLDOMNodePtr pStrikethroughNode = pAttrMap->getNamedItem(s_strikethrough);
-  if (pStrikethroughNode != nullptr) {
-    fontAttribute.strikethrough = (pStrikethroughNode->text == s_boolTrueValue);
+  auto strikethroughAttr = fontAttributeNode.attribute(s_strikethrough);
+  if (strikethroughAttr != nullptr) {
+    fontAttribute.strikethrough = (strikethroughAttr.value() == s_boolTrueValue);
   }
 
   // foreground color
-  MSXML::IXMLDOMNodePtr pForegroundColorNode = pAttrMap->getNamedItem(s_foregroundColor);
-  if (pForegroundColorNode != nullptr) {
-    std::wstring ws_foregroundColor(pForegroundColorNode->text);
+  auto foregroundColorAttr = fontAttributeNode.attribute(s_foregroundColor);
+  if (foregroundColorAttr != nullptr) {
+    std::wstring ws_foregroundColor(foregroundColorAttr.value());
     COLORREF foregroundColorref;
     touchmind::StringToColorref(ws_foregroundColor, &foregroundColorref);
     fontAttribute.foregroundColor = foregroundColorref;

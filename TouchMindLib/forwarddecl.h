@@ -1,4 +1,4 @@
-#ifndef FORWARDDECL_H_
+﻿#ifndef FORWARDDECL_H_
 #define FORWARDDECL_H_
 
 // touchmind

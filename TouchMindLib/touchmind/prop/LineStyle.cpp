@@ -1,4 +1,4 @@
-#include "stdafx.h"
+﻿#include "stdafx.h"
 #include "touchmind/prop/LineStyle.h"
 
 std::wostream &touchmind::operator<<(std::wostream &os, const touchmind::LINE_STYLE &lineStyle) {

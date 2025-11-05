@@ -1,4 +1,4 @@
-#include "StdAfx.h"
+﻿#include "StdAfx.h"
 #include "touchmind/util/TimeUtil.h"
 
 SYSTEMTIME touchmind::util::TimeUtil::zero;

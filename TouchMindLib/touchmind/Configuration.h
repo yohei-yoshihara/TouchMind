@@ -1,4 +1,4 @@
-#ifndef TOUCHMIND_CONFIGURATION_H_
+﻿#ifndef TOUCHMIND_CONFIGURATION_H_
 #define TOUCHMIND_CONFIGURATION_H_
 
 #include "touchmind/model/Insets.h"

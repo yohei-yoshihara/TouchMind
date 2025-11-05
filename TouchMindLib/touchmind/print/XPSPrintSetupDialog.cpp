@@ -1,4 +1,4 @@
-#include "stdafx.h"
+﻿#include "stdafx.h"
 #include "resource.h"
 #include "touchmind/Common.h"
 #include "touchmind/logging/Logging.h"
@@ -7,7 +7,7 @@
 
 struct PaperInfo {
   touchmind::print::PRINTSETUP_PAGE_SIZE pageSize;
-  wchar_t *label;
+  const wchar_t *label;
   XPS_SIZE xpsPageSize;
 };
 

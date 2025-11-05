@@ -1,4 +1,4 @@
-#include "stdafx.h"
+﻿#include "stdafx.h"
 #include "touchmind/touch/ManipulationHelper.h"
 #include "touchmind/util/CoordinateConversion.h"
 #include "touchmind/view/node/NodeViewManager.h"
@@ -35,7 +35,7 @@ void touchmind::operation::NodeMovingOperation::Draw(touchmind::Context *pContex
 
   // Create a layer.
   CComPtr<ID2D1Layer> pLayer = nullptr;
-  CHK_RES(pLayer, pRenderTarget->CreateLayer(nullptr, &pLayer));
+  THROW_IF_FAILED(pRenderTarget->CreateLayer(nullptr, &pLayer));
 
   D2D1_MATRIX_3X2_F transformMatrixBackup;
   pRenderTarget->GetTransform(&transformMatrixBackup);
@@ -49,7 +49,7 @@ void touchmind::operation::NodeMovingOperation::Draw(touchmind::Context *pContex
                            pLayer);
 
   // Draw paths
-  movingNode->ApplyVisitor([&](model::node::NodeModel::reference node) -> VISITOR_RESULT {
+  movingNode->ApplyVisitor([&](std::shared_ptr<model::node::NodeModel> node) -> VISITOR_RESULT {
     m_pNodeViewManager->DrawNodePaths(pContext, pRenderTarget, node);
     return touchmind::VISITOR_RESULT_CONTINUE;
   });

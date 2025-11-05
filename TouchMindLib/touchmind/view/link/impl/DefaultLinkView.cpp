@@ -1,4 +1,4 @@
-#include "stdafx.h"
+﻿#include "stdafx.h"
 #include "touchmind/Common.h"
 #include "touchmind/Context.h"
 #include "touchmind/view/linkedge/BaseLinkEdgeView.h"
@@ -19,7 +19,7 @@ void touchmind::view::link::impl::DefaultLinkView::CreateDeviceDependentResource
   }
   std::shared_ptr<touchmind::model::link::LinkModel> link = GetLinkModel().lock();
   if (!link->IsValid()) {
-    LOG(SEVERITY_LEVEL_ERROR) << L"link is invalid, linkId = " << link->GetLinkId();
+    SPDLOG_ERROR(L"link is invalid, linkId = {}", link->GetLinkId());
     return;
   }
 
@@ -68,7 +68,7 @@ bool touchmind::view::link::impl::DefaultLinkView::HitTest(touchmind::Context *p
   if (HasLinkModel()) {
     CreateDeviceDependentResources(pContext, pRenderTarget);
     BOOL b;
-    m_linkGeometry->StrokeContainsPoint(point, GetLinkModel().lock()->GetLineWidth() + 5.0f, nullptr, nullptr, &b);
+    m_linkGeometry->StrokeContainsPoint(point, static_cast<int>(GetLinkModel().lock()->GetLineWidth()) + 5.0f, nullptr, nullptr, &b);
     result = (b == TRUE);
   }
   return result;
@@ -80,26 +80,26 @@ void touchmind::view::link::impl::DefaultLinkView::_CreateDeviceDependentResourc
   ID2D1Factory *pD2DFactory = pContext->GetD2DFactory();
 
   m_linkBrush = nullptr;
-  CHK_RES(m_linkBrush,
-          pRenderTarget->CreateSolidColorBrush(link->GetLineColor(), D2D1::BrushProperties(), &m_linkBrush));
+  THROW_IF_FAILED(pRenderTarget->CreateSolidColorBrush(link->GetLineColor(), D2D1::BrushProperties(), &m_linkBrush));
 
   model::CurvePoints curvePoints;
   GeometryBuilder::CalculateLink(link, curvePoints);
   m_linkGeometry = nullptr;
-  CHK_RES(m_linkGeometry, GeometryBuilder::CreateCurvePathGeometry(pD2DFactory, curvePoints, &m_linkGeometry));
+  THROW_IF_FAILED(GeometryBuilder::CreateCurvePathGeometry(
+                      pD2DFactory, curvePoints, &m_linkGeometry));
 
   // style
   m_linkStyle = nullptr;
   switch (link->GetLineStyle()) {
   case LINE_STYLE_DASHED:
-    CHK_RES(m_linkStyle, pD2DFactory->CreateStrokeStyle(
+      THROW_IF_FAILED(pD2DFactory->CreateStrokeStyle(
                              D2D1::StrokeStyleProperties(D2D1_CAP_STYLE_ROUND, D2D1_CAP_STYLE_ROUND,
                                                          D2D1_CAP_STYLE_ROUND, D2D1_LINE_JOIN_MITER,
                                                          link->GetLineWidthAsValue(), D2D1_DASH_STYLE_DASH, 0.0f),
                              nullptr, 0, &m_linkStyle));
     break;
   case LINE_STYLE_DOTTED:
-    CHK_RES(m_linkStyle, pD2DFactory->CreateStrokeStyle(
+    THROW_IF_FAILED(pD2DFactory->CreateStrokeStyle(
                              D2D1::StrokeStyleProperties(D2D1_CAP_STYLE_ROUND, D2D1_CAP_STYLE_ROUND,
                                                          D2D1_CAP_STYLE_ROUND, D2D1_LINE_JOIN_MITER,
                                                          link->GetLineWidthAsValue(), D2D1_DASH_STYLE_DOT, 0.0f),
@@ -107,7 +107,7 @@ void touchmind::view::link::impl::DefaultLinkView::_CreateDeviceDependentResourc
     break;
   case LINE_STYLE_SOLID:
   default:
-    CHK_RES(m_linkStyle, pD2DFactory->CreateStrokeStyle(
+    THROW_IF_FAILED(pD2DFactory->CreateStrokeStyle(
                              D2D1::StrokeStyleProperties(D2D1_CAP_STYLE_ROUND, D2D1_CAP_STYLE_ROUND,
                                                          D2D1_CAP_STYLE_ROUND, D2D1_LINE_JOIN_MITER,
                                                          link->GetLineWidthAsValue(), D2D1_DASH_STYLE_SOLID, 0.0f),
@@ -123,15 +123,14 @@ void touchmind::view::link::impl::DefaultLinkView::_CreateTexture(
   FLOAT shadowOffset = GetLinkViewManager()->GetGaussFilter()->GetOffset();
 
   D2D1_RECT_F bounds;
-  CHK_HR(m_linkGeometry->GetBounds(nullptr, &bounds));
+  THROW_IF_FAILED(m_linkGeometry->GetBounds(nullptr, &bounds));
   UINT width = static_cast<UINT>((bounds.right - bounds.left) + shadowOffset * 2);
   UINT height = static_cast<UINT>((bounds.bottom - bounds.top) + shadowOffset * 2);
 
   CComPtr<ID3D10Texture2D> pSourceTexutre2D = nullptr;
-  CHK_RES(pSourceTexutre2D, pContext->CreateTexture2D(width, height, &pSourceTexutre2D));
+  THROW_IF_FAILED(pContext->CreateTexture2D(width, height, &pSourceTexutre2D));
   CComPtr<ID2D1RenderTarget> pSourceTexture2DRenderTarget = nullptr;
-  CHK_RES(pSourceTexture2DRenderTarget,
-          pContext->CreateD2DRenderTargetFromTexture2D(pSourceTexutre2D, &pSourceTexture2DRenderTarget));
+  THROW_IF_FAILED(pContext->CreateD2DRenderTargetFromTexture2D(pSourceTexutre2D, &pSourceTexture2DRenderTarget));
   pSourceTexture2DRenderTarget->BeginDraw();
   pSourceTexture2DRenderTarget->Clear(D2D1::ColorF(1.0f, 1.0f, 1.0f, 0.0f));
   pSourceTexture2DRenderTarget->SetTransform(
@@ -144,11 +143,13 @@ void touchmind::view::link::impl::DefaultLinkView::_CreateTexture(
   // GetLinkEdgeView(EDGE_ID_1)->Draw(pContext, pRenderTarget, GetLinkViewManager()->GetSelectedShadowBrush2(), 2.0f);
   // GetLinkEdgeView(EDGE_ID_2)->Fill(pContext, pRenderTarget, GetLinkViewManager()->GetSelectedShadowBrush1());
   // GetLinkEdgeView(EDGE_ID_2)->Draw(pContext, pRenderTarget, GetLinkViewManager()->GetSelectedShadowBrush2(), 2.0f);
-  CHK_HR(pSourceTexture2DRenderTarget->EndDraw());
+  THROW_IF_FAILED(pSourceTexture2DRenderTarget->EndDraw());
   CComPtr<ID3D10Texture2D> pTexture2D = nullptr;
-  CHK_RES(pTexture2D, GetLinkViewManager()->GetGaussFilter()->ApplyFilter(pContext, pSourceTexutre2D, &pTexture2D));
+  THROW_IF_FAILED(GetLinkViewManager()->GetGaussFilter()->ApplyFilter(
+                      pContext, pSourceTexutre2D, &pTexture2D));
   m_pBitmap = nullptr;
-  CHK_RES(m_pBitmap, pContext->CreateD2DSharedBitmapFromTexture2D(pRenderTarget, pTexture2D, &m_pBitmap));
+  THROW_IF_FAILED(pContext->CreateD2DSharedBitmapFromTexture2D(
+                                 pRenderTarget, pTexture2D, &m_pBitmap));
 }
 
 void touchmind::view::link::impl::DefaultLinkView::DiscardDeviceDependentResources() {

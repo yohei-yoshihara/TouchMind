@@ -1,4 +1,4 @@
-#ifndef TOUCHMIND_UTIL_COLORUTIL_H_
+﻿#ifndef TOUCHMIND_UTIL_COLORUTIL_H_
 #define TOUCHMIND_UTIL_COLORUTIL_H_
 
 namespace touchmind {

@@ -1,4 +1,4 @@
-#include "stdafx.h"
+﻿#include "stdafx.h"
 #include "touchmind/Context.h"
 #include "touchmind/model/node/NodeModel.h"
 #include "touchmind/model/link/LinkModel.h"
@@ -28,7 +28,7 @@ void touchmind::view::linkedge::impl::CircleLinkEdgeView::CreateDeviceDependentR
     ID2D1Factory *pD2DFactory = pContext->GetD2DFactory();
 
     D2D1_POINT_2F point0 = link->GetEdgePoint(GetEdgeId());
-    FLOAT markerSize = linkEdge->GetMarkerSize() + link->GetLineWidth();
+    FLOAT markerSize = linkEdge->GetMarkerSize() + static_cast<int>(link->GetLineWidth());
     FLOAT width = 0.0f;
     if (link->GetNode(GetEdgeId())->GetAncestorPosition() == NODE_SIDE_RIGHT) {
       width = markerSize / 2.0f;
@@ -37,11 +37,13 @@ void touchmind::view::linkedge::impl::CircleLinkEdgeView::CreateDeviceDependentR
     }
     point0.x += width;
     m_pCircleGeometry = nullptr;
-    CHK_RES(m_pCircleGeometry, pD2DFactory->CreateEllipseGeometry(
+    THROW_IF_FAILED(pD2DFactory->CreateEllipseGeometry(
                                    D2D1::Ellipse(point0, markerSize / 2.0f, markerSize / 2.0f), &m_pCircleGeometry));
 
     m_pBrush = nullptr;
-    CHK_RES(m_pBrush, pRenderTarget->CreateSolidColorBrush(link->GetLineColor(), D2D1::BrushProperties(), &m_pBrush));
+    THROW_IF_FAILED(pRenderTarget->CreateSolidColorBrush(
+                                  link->GetLineColor(), D2D1::BrushProperties(),
+                                  &m_pBrush));
     SetRepaintCounter(linkEdge);
   }
 }

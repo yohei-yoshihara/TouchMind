@@ -1,4 +1,4 @@
-#include "stdafx.h"
+﻿#include "stdafx.h"
 #include "touchmind/view/path/BasePathView.h"
 
 touchmind::view::path::BasePathView::BasePathView(std::weak_ptr<touchmind::model::node::NodeModel> node)

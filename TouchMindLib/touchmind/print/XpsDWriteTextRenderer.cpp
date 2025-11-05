@@ -1,4 +1,4 @@
-#include "StdAfx.h"
+ï»¿#include "StdAfx.h"
 #include "touchmind/Common.h"
 #include "touchmind/logging/Logging.h"
 #include "touchmind/util/Utils.h"
@@ -134,7 +134,7 @@ touchmind::print::XpsDWriteTextRenderer::DrawGlyphRun(void *clientDrawingContext
     if (SUCCEEDED(hr)) {
       hr = xpsGlyphs->SetFontRenderingEmSize(glyphRun->fontEmSize);
     }
-    // TODO: ‹N“®’¼Œã‚¾‚ÆclientDrawingEffect‚ªnullptr‚É‚È‚éB
+    // TODO: èµ·å‹•ç›´å¾Œã ã¨clientDrawingEffectãŒnullptrã«ãªã‚‹ã€‚
     if (SUCCEEDED(hr) && clientDrawingEffect != nullptr) {
       D2D1_COLOR_F colorf;
       std::wstring brushKey;
@@ -496,14 +496,14 @@ HRESULT touchmind::print::XpsDWriteTextRenderer::FindOrCreateFontResource(IDWrit
       if (SUCCEEDED(hr)) {
         DWORD ret = GetTempPath(MAX_PATH, tempPathBuffer);
         if (ret > MAX_PATH || ret == 0) {
-          LOG(SEVERITY_LEVEL_ERROR) << L"GetTempPath failed";
+          SPDLOG_ERROR(L"GetTempPath failed");
           hr = E_FAIL;
         }
       }
       if (SUCCEEDED(hr)) {
         UINT ret = GetTempFileName(tempPathBuffer, _TEMPFILE_PREFIX, 0, tempFileName);
         if (ret == 0) {
-          LOG(SEVERITY_LEVEL_ERROR) << L"GetTempFileName failed";
+          SPDLOG_ERROR(L"GetTempFileName failed");
           hr = E_FAIL;
         }
       }
@@ -515,7 +515,7 @@ HRESULT touchmind::print::XpsDWriteTextRenderer::FindOrCreateFontResource(IDWrit
           m_temporaryFileNames.push_back(_tempFileName);
         } else {
           DWORD lastError = GetLastError();
-          LOG(SEVERITY_LEVEL_ERROR) << util::LastError(util::LastErrorArgs(L"SHCreateStreamOnFile", lastError));
+          SPDLOG_ERROR(L"SHCreateStreamOnFile, lastError = {}", lastError);
         }
       }
     }

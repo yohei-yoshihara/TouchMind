@@ -60,7 +60,7 @@ namespace touchmind {
       }
       static EDGE_STYLE ToEdgeStyle(const std::wstring &s) {
         std::wstring _s(s);
-        std::transform(_s.begin(), _s.end(), _s.begin(), std::toupper);
+        std::transform(_s.begin(), _s.end(), _s.begin(), std::towupper);
         if (s == L"ARROW") {
           return EDGE_STYLE_ARROW;
         } else if (s == L"CIRCLE") {

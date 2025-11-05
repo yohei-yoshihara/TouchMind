@@ -1,4 +1,4 @@
-#include "StdAfx.h"
+﻿#include "StdAfx.h"
 #include <Strsafe.h>
 #include "touchmind/Common.h"
 #include "touchmind/logging/Logging.h"
@@ -175,10 +175,11 @@ HRESULT touchmind::control::DWriteEditControlManager::WndProc(HWND hWnd, UINT me
   }
   switch (message) {
   case WM_LBUTTONDOWN:
-    POINT point;
-    point.x = GET_X_LPARAM(lParam);
-    point.y = GET_Y_LPARAM(lParam);
-    touchmind::util::CoordinateConversion::ConvertWindowToModelCoordinate(m_parentHWnd, m_pScrollBarHelper, point,
+    POINT lbtnDownPoint;
+    lbtnDownPoint.x = GET_X_LPARAM(lParam);
+    lbtnDownPoint.y = GET_Y_LPARAM(lParam);
+    touchmind::util::CoordinateConversion::ConvertWindowToModelCoordinate(
+        m_parentHWnd, m_pScrollBarHelper, lbtnDownPoint,
                                                                           &m_dragStartPoint);
     if (m_pFocusedEditControl->HitTest((FLOAT)m_dragStartPoint.x, (FLOAT)m_dragStartPoint.y)) {
       m_dragging = true;
@@ -188,10 +189,11 @@ HRESULT touchmind::control::DWriteEditControlManager::WndProc(HWND hWnd, UINT me
     break;
   case WM_MOUSEMOVE:
     if (m_dragging) {
-      POINT point;
-      point.x = GET_X_LPARAM(lParam);
-      point.y = GET_Y_LPARAM(lParam);
-      touchmind::util::CoordinateConversion::ConvertWindowToModelCoordinate(m_parentHWnd, m_pScrollBarHelper, point,
+      POINT draggingPoint;
+      draggingPoint.x = GET_X_LPARAM(lParam);
+      draggingPoint.y = GET_Y_LPARAM(lParam);
+      touchmind::util::CoordinateConversion::ConvertWindowToModelCoordinate(
+          m_parentHWnd, m_pScrollBarHelper, draggingPoint,
                                                                             &m_dragEndPoint);
       m_pFocusedEditControl->OnMouseEvents(m_dragStartPoint, m_dragEndPoint);
       *eaten = true;

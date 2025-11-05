@@ -1,4 +1,4 @@
-#include "stdafx.h"
+﻿#include "stdafx.h"
 #include "touchmind/Context.h"
 #include "touchmind/model/CurvePoints.h"
 #include "touchmind/view/GeometryBuilder.h"
@@ -67,7 +67,7 @@ bool touchmind::view::path::impl::DefaultPathView::HitTest(touchmind::Context *p
   }
   CreateDeviceDependentResources(pContext, pRenderTarget);
   BOOL b;
-  m_pathGeometry->StrokeContainsPoint(point, GetNodeModel().lock()->GetPathModel()->GetWidth() + 5.0f, nullptr, nullptr,
+  m_pathGeometry->StrokeContainsPoint(point, static_cast<int>(GetNodeModel().lock()->GetPathModel()->GetWidth()) + 5.0f, nullptr, nullptr,
                                       &b);
   return (b == TRUE);
 }
@@ -96,25 +96,27 @@ void touchmind::view::path::impl::DefaultPathView::_CreateDeviceDependentResourc
   view::GeometryBuilder::CalculatePath(parent, node, pathDirection, GetConfiguration()->GetNodeJustification(),
                                        GetConfiguration()->GetLevelSeparation(), curvePoints);
   m_pathGeometry = nullptr;
-  CHK_RES(m_pathGeometry, view::GeometryBuilder::CreateCurvePathGeometry(pD2DFactory, curvePoints, &m_pathGeometry));
+  THROW_IF_FAILED(view::GeometryBuilder::CreateCurvePathGeometry(pD2DFactory, curvePoints, &m_pathGeometry));
   curvePoints.GetBounds(m_bounds);
 
   m_pathBrush = nullptr;
-  CHK_RES(m_pathBrush, pRenderTarget->CreateSolidColorBrush(node->GetPathModel()->GetColor(), D2D1::BrushProperties(),
+  THROW_IF_FAILED(pRenderTarget->CreateSolidColorBrush(
+                                   node->GetPathModel()->GetColor(),
+                                   D2D1::BrushProperties(),
                                                             &m_pathBrush));
 
   // style
   m_pathStyle = nullptr;
   switch (node->GetPathModel()->GetStyle()) {
   case LINE_STYLE_DASHED:
-    CHK_RES(m_pathStyle, pD2DFactory->CreateStrokeStyle(
+      THROW_IF_FAILED(pD2DFactory->CreateStrokeStyle(
                              D2D1::StrokeStyleProperties(
                                  D2D1_CAP_STYLE_ROUND, D2D1_CAP_STYLE_ROUND, D2D1_CAP_STYLE_ROUND, D2D1_LINE_JOIN_MITER,
                                  node->GetPathModel()->GetWidthAsValue(), D2D1_DASH_STYLE_DASH, 0.0f),
                              nullptr, 0, &m_pathStyle));
     break;
   case LINE_STYLE_DOTTED:
-    CHK_RES(m_pathStyle, pD2DFactory->CreateStrokeStyle(
+    THROW_IF_FAILED(pD2DFactory->CreateStrokeStyle(
                              D2D1::StrokeStyleProperties(
                                  D2D1_CAP_STYLE_ROUND, D2D1_CAP_STYLE_ROUND, D2D1_CAP_STYLE_ROUND, D2D1_LINE_JOIN_MITER,
                                  node->GetPathModel()->GetWidthAsValue(), D2D1_DASH_STYLE_DOT, 0.0f),
@@ -122,7 +124,7 @@ void touchmind::view::path::impl::DefaultPathView::_CreateDeviceDependentResourc
     break;
   case LINE_STYLE_SOLID:
   default:
-    CHK_RES(m_pathStyle, pD2DFactory->CreateStrokeStyle(
+    THROW_IF_FAILED(pD2DFactory->CreateStrokeStyle(
                              D2D1::StrokeStyleProperties(
                                  D2D1_CAP_STYLE_ROUND, D2D1_CAP_STYLE_ROUND, D2D1_CAP_STYLE_ROUND, D2D1_LINE_JOIN_MITER,
                                  node->GetPathModel()->GetWidthAsValue(), D2D1_DASH_STYLE_SOLID, 0.0f),
@@ -138,15 +140,14 @@ void touchmind::view::path::impl::DefaultPathView::_CreateTexture(
   FLOAT shadowOffset = GetNodeViewManager()->GetGaussFilter()->GetOffset();
 
   D2D1_RECT_F bounds;
-  CHK_HR(m_pathGeometry->GetBounds(nullptr, &bounds));
+  THROW_IF_FAILED(m_pathGeometry->GetBounds(nullptr, &bounds));
   UINT width = static_cast<UINT>((bounds.right - bounds.left) + shadowOffset * 2);
   UINT height = static_cast<UINT>((bounds.bottom - bounds.top) + shadowOffset * 2);
 
   CComPtr<ID3D10Texture2D> pSourceTexutre2D = nullptr;
-  CHK_RES(pSourceTexutre2D, pContext->CreateTexture2D(width, height, &pSourceTexutre2D));
+  THROW_IF_FAILED(pContext->CreateTexture2D(width, height, &pSourceTexutre2D));
   CComPtr<ID2D1RenderTarget> pSourceTexture2DRenderTarget = nullptr;
-  CHK_RES(pSourceTexture2DRenderTarget,
-          pContext->CreateD2DRenderTargetFromTexture2D(pSourceTexutre2D, &pSourceTexture2DRenderTarget));
+  THROW_IF_FAILED(pContext->CreateD2DRenderTargetFromTexture2D(pSourceTexutre2D, &pSourceTexture2DRenderTarget));
   pSourceTexture2DRenderTarget->BeginDraw();
   pSourceTexture2DRenderTarget->Clear(D2D1::ColorF(1.0f, 1.0f, 1.0f, 0.0f));
   pSourceTexture2DRenderTarget->SetTransform(
@@ -155,11 +156,13 @@ void touchmind::view::path::impl::DefaultPathView::_CreateTexture(
                                              node->GetPathModel()->GetWidthAsValue() + 2.0f);
   pSourceTexture2DRenderTarget->DrawGeometry(m_pathGeometry, GetNodeViewManager()->GetSelectedShadowBrush2(),
                                              node->GetPathModel()->GetWidthAsValue());
-  CHK_HR(pSourceTexture2DRenderTarget->EndDraw());
+  THROW_IF_FAILED(pSourceTexture2DRenderTarget->EndDraw());
   CComPtr<ID3D10Texture2D> pTexture2D = nullptr;
-  CHK_RES(pTexture2D, GetNodeViewManager()->GetGaussFilter()->ApplyFilter(pContext, pSourceTexutre2D, &pTexture2D));
+  THROW_IF_FAILED(GetNodeViewManager()->GetGaussFilter()->ApplyFilter(
+                      pContext, pSourceTexutre2D, &pTexture2D));
   m_pBitmap = nullptr;
-  CHK_RES(m_pBitmap, pContext->CreateD2DSharedBitmapFromTexture2D(pRenderTarget, pTexture2D, &m_pBitmap));
+  THROW_IF_FAILED(pContext->CreateD2DSharedBitmapFromTexture2D(
+                                 pRenderTarget, pTexture2D, &m_pBitmap));
   ASSERT(m_pBitmap != nullptr);
 }
 

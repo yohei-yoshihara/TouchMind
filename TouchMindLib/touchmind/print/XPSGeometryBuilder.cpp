@@ -1,4 +1,4 @@
-#include "stdafx.h"
+﻿#include "stdafx.h"
 #include "touchmind/model/node/NodeModel.h"
 #include "touchmind/layout/LayoutManager.h"
 #include "touchmind/print/XPSGeometryBuilder.h"
@@ -88,11 +88,12 @@ void touchmind::print::XPSGeometryBuilder::CreateRoundedRectangleGeometry(IXpsOM
                                       rect.y + r};
   BOOL segmentStrokes[8] = {TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE};
 
-  CHK_RES(*ppXpsFigure, pXpsFactory->CreateGeometryFigure(&startPoint, ppXpsFigure));
+  THROW_IF_FAILED(pXpsFactory->CreateGeometryFigure(&startPoint, ppXpsFigure));
   // one of the pdf converter software have a problem when set SetISClosed to TRUE
-  CHK_HR((*ppXpsFigure)->SetIsClosed(FALSE));
-  CHK_HR((*ppXpsFigure)->SetIsFilled(TRUE));
-  CHK_HR((*ppXpsFigure)->SetSegments(8, 4 * 5 + 4 * 2, segmentTypes, segmentData, segmentStrokes));
+  THROW_IF_FAILED((*ppXpsFigure)->SetIsClosed(FALSE));
+  THROW_IF_FAILED((*ppXpsFigure)->SetIsFilled(TRUE));
+  THROW_IF_FAILED((*ppXpsFigure)->SetSegments(8, 4 * 5 + 4 * 2, segmentTypes, segmentData,
+                                    segmentStrokes));
 }
 
 void touchmind::print::XPSGeometryBuilder::CreateRectangleGeometry(IXpsOMObjectFactory *pXpsFactory,
@@ -116,11 +117,11 @@ void touchmind::print::XPSGeometryBuilder::CreateRectangleGeometry(IXpsOMObjectF
       TRUE, TRUE, TRUE, TRUE,
   };
 
-  CHK_RES(*ppXpsFigure, pXpsFactory->CreateGeometryFigure(&startPoint, ppXpsFigure));
+  THROW_IF_FAILED(pXpsFactory->CreateGeometryFigure(&startPoint, ppXpsFigure));
   // one of the pdf converter software have a problem when set SetISClosed to TRUE
-  CHK_HR((*ppXpsFigure)->SetIsClosed(FALSE));
-  CHK_HR((*ppXpsFigure)->SetIsFilled(TRUE));
-  CHK_HR((*ppXpsFigure)
+  THROW_IF_FAILED((*ppXpsFigure)->SetIsClosed(FALSE));
+  THROW_IF_FAILED((*ppXpsFigure)->SetIsFilled(TRUE));
+  THROW_IF_FAILED((*ppXpsFigure)
              ->SetSegments(ARRAYSIZE(segmentTypes), ARRAYSIZE(segmentData), segmentTypes, segmentData, segmentStrokes));
 }
 
@@ -138,10 +139,12 @@ void touchmind::print::XPSGeometryBuilder::CreateCurvePathGeometry(IXpsOMObjectF
 
   BOOL segmentStrokes[1] = {TRUE};
 
-  CHK_RES(*ppXpsFigure, pXpsFactory->CreateGeometryFigure(&startPoint, ppXpsFigure));
-  CHK_HR((*ppXpsFigure)->SetIsClosed(FALSE));
-  CHK_HR((*ppXpsFigure)->SetIsFilled(FALSE));
-  CHK_HR((*ppXpsFigure)->SetSegments(1, 6, segmentTypes, segmentData, segmentStrokes));
+  THROW_IF_FAILED(pXpsFactory->CreateGeometryFigure(&startPoint, ppXpsFigure));
+  THROW_IF_FAILED((*ppXpsFigure)->SetIsClosed(FALSE));
+  THROW_IF_FAILED((*ppXpsFigure)->SetIsFilled(FALSE));
+  THROW_IF_FAILED(
+      (*ppXpsFigure)
+          ->SetSegments(1, 6, segmentTypes, segmentData, segmentStrokes));
 }
 
 void touchmind::print::XPSGeometryBuilder::CreatePathGeometryFromPoints(IXpsOMObjectFactory *pXpsFactory,
@@ -167,11 +170,11 @@ void touchmind::print::XPSGeometryBuilder::CreatePathGeometryFromPoints(IXpsOMOb
   segmentData[j * 2 + 1] = points[i].y;
   segmentStrokes[j] = TRUE;
 
-  CHK_RES(*ppXpsFigure, pXpsFactory->CreateGeometryFigure(&startPoint, ppXpsFigure));
+  THROW_IF_FAILED(pXpsFactory->CreateGeometryFigure(&startPoint, ppXpsFigure));
   // one of the pdf converter software have a problem when set SetISClosed to TRUE
-  CHK_HR((*ppXpsFigure)->SetIsClosed(FALSE));
-  CHK_HR((*ppXpsFigure)->SetIsFilled(TRUE));
-  CHK_HR((*ppXpsFigure)
+  THROW_IF_FAILED((*ppXpsFigure)->SetIsClosed(FALSE));
+  THROW_IF_FAILED((*ppXpsFigure)->SetIsFilled(TRUE));
+  THROW_IF_FAILED((*ppXpsFigure)
              ->SetSegments(static_cast<UINT32>(segmentTypes.size()), static_cast<UINT32>(segmentData.size()),
                            segmentTypes.data(), segmentData.data(), segmentStrokes.data()));
 }
@@ -191,10 +194,10 @@ void touchmind::print::XPSGeometryBuilder::CreateCircleGeometry(IXpsOMObjectFact
   BOOL segmentStrokes[] = {
       TRUE, TRUE, TRUE, TRUE,
   };
-  CHK_RES(*ppXpsFigure, pXpsFactory->CreateGeometryFigure(&startPoint, ppXpsFigure));
+  THROW_IF_FAILED(pXpsFactory->CreateGeometryFigure(&startPoint, ppXpsFigure));
   // one of the pdf converter software have a problem when set SetISClosed to TRUE
-  CHK_HR((*ppXpsFigure)->SetIsClosed(FALSE));
-  CHK_HR((*ppXpsFigure)->SetIsFilled(TRUE));
-  CHK_HR((*ppXpsFigure)
+  THROW_IF_FAILED((*ppXpsFigure)->SetIsClosed(FALSE));
+  THROW_IF_FAILED((*ppXpsFigure)->SetIsFilled(TRUE));
+  THROW_IF_FAILED((*ppXpsFigure)
              ->SetSegments(ARRAYSIZE(segmentTypes), ARRAYSIZE(segmentData), segmentTypes, segmentData, segmentStrokes));
 }

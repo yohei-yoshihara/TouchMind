@@ -1,4 +1,4 @@
-#include "StdAfx.h"
+﻿#include "StdAfx.h"
 #include "Resource.h"
 #include "touchmind/logging/Logging.h"
 #include "touchmind/Context.h"
@@ -94,16 +94,15 @@ HRESULT touchmind::filter::GaussFilter::ApplyFilter(IN touchmind::Context *pCont
 
   if (m_pGaussEffect == nullptr) {
     // Load pixel shader
-    CHK_RES(m_pGaussEffect, pContext->LoadResourceShader(pDevice, MAKEINTRESOURCE(IDR_GAUSS_SHADER), &m_pGaussEffect));
+    THROW_IF_FAILED(pContext->LoadResourceShader(pDevice, MAKEINTRESOURCE(IDR_GAUSS_SHADER), &m_pGaussEffect));
     // Obtain the technique
-    CHK_FATAL_NULL(m_pTechniqueNoRefForTexture = m_pGaussEffect->GetTechniqueByName("Shader"));
-    CHK_FATAL_NULL(m_pDiffuseVariableNoRefForTexture
-                   = m_pGaussEffect->GetVariableByName("texDiffuse")->AsShaderResource());
+    THROW_IF_NULL_ALLOC(m_pTechniqueNoRefForTexture = m_pGaussEffect->GetTechniqueByName("Shader"));
+    THROW_IF_NULL_ALLOC(m_pDiffuseVariableNoRefForTexture = m_pGaussEffect->GetVariableByName("texDiffuse")->AsShaderResource());
   }
-  CHK_HR(_SetGaussParameters(sourceTextureDesc.Width, sourceTextureDesc.Height));
-  CHK_RES(pTemporaryTexture,
-          pContext->CreateTexture2D(sourceTextureDesc.Width, sourceTextureDesc.Height, &pTemporaryTexture));
-  CHK_HR(pContext->CreateTexture2D(sourceTextureDesc.Width, sourceTextureDesc.Height, ppOutputTexture));
+  THROW_IF_FAILED(_SetGaussParameters(sourceTextureDesc.Width, sourceTextureDesc.Height));
+  THROW_IF_FAILED(pContext->CreateTexture2D(sourceTextureDesc.Width, sourceTextureDesc.Height, &pTemporaryTexture));
+  THROW_IF_FAILED(pContext->CreateTexture2D(
+      sourceTextureDesc.Width, sourceTextureDesc.Height, ppOutputTexture));
 
   // <<< PASS 0 >>>
   D3D10_SHADER_RESOURCE_VIEW_DESC srvDesc;
@@ -111,13 +110,15 @@ HRESULT touchmind::filter::GaussFilter::ApplyFilter(IN touchmind::Context *pCont
   srvDesc.ViewDimension = D3D10_SRV_DIMENSION_TEXTURE2D;
   srvDesc.Texture2D.MipLevels = 1;
   srvDesc.Texture2D.MostDetailedMip = 0;
-  CHK_RES(pSourceShaderRV, pDevice->CreateShaderResourceView(pSourceTexture, nullptr, &pSourceShaderRV));
+  THROW_IF_FAILED(pDevice->CreateShaderResourceView(pSourceTexture, nullptr,
+                                                    &pSourceShaderRV));
 
   D3D10_RENDER_TARGET_VIEW_DESC rtDesc;
   rtDesc.Format = sourceTextureDesc.Format;
   rtDesc.ViewDimension = D3D10_RTV_DIMENSION_TEXTURE2D;
   rtDesc.Texture2D.MipSlice = 0;
-  CHK_RES(pTemporaryTextureRV, pDevice->CreateRenderTargetView(pTemporaryTexture, &rtDesc, &pTemporaryTextureRV));
+  THROW_IF_FAILED(pDevice->CreateRenderTargetView(pTemporaryTexture, &rtDesc,
+                                                  &pTemporaryTextureRV));
 
   pContext->SetIndexBuffer();
   m_pDiffuseVariableNoRefForTexture->SetResource(pSourceShaderRV);
@@ -133,7 +134,7 @@ HRESULT touchmind::filter::GaussFilter::ApplyFilter(IN touchmind::Context *pCont
   viewport.MinDepth = 0;
   viewport.MaxDepth = 1;
   pDevice->RSSetViewports(1, &viewport);
-  CHK_HR(m_pTechniqueNoRefForTexture->GetPassByIndex(0)->Apply(0));
+  THROW_IF_FAILED(m_pTechniqueNoRefForTexture->GetPassByIndex(0)->Apply(0));
 
   pDevice->DrawIndexed(6, 0, 0);
   pDevice->Flush();
@@ -146,15 +147,17 @@ HRESULT touchmind::filter::GaussFilter::ApplyFilter(IN touchmind::Context *pCont
   // <<< PASS 0 END >>>
 
   // <<< PASS 1 START >>>
-  CHK_RES(pTemporaryShaderRV, pDevice->CreateShaderResourceView(pTemporaryTexture, nullptr, &pTemporaryShaderRV));
-  CHK_RES(pOutputTextureRV, pDevice->CreateRenderTargetView(*ppOutputTexture, &rtDesc, &pOutputTextureRV));
+  THROW_IF_FAILED(pDevice->CreateShaderResourceView(pTemporaryTexture, nullptr,
+                                                    &pTemporaryShaderRV));
+  THROW_IF_FAILED(pDevice->CreateRenderTargetView(*ppOutputTexture, &rtDesc,
+                                                  &pOutputTextureRV));
 
   m_pDiffuseVariableNoRefForTexture->SetResource(pTemporaryShaderRV);
 
   viewList[0] = pOutputTextureRV;
   pDevice->OMSetRenderTargets(1, viewList, nullptr);
 
-  CHK_HR(m_pTechniqueNoRefForTexture->GetPassByIndex(1)->Apply(0));
+  THROW_IF_FAILED(m_pTechniqueNoRefForTexture->GetPassByIndex(1)->Apply(0));
 
   pDevice->DrawIndexed(6, 0, 0);
   pDevice->Flush();

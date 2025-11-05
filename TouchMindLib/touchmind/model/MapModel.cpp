@@ -1,4 +1,4 @@
-#include "StdAfx.h"
+﻿#include "StdAfx.h"
 #include "touchmind/Common.h"
 #include "touchmind/logging/Logging.h"
 #include "touchmind/model/MapModel.h"
@@ -12,38 +12,38 @@
 
 std::wstring touchmind::model::MapModel::s_defaultRootNodeText(L"Root element");
 
-const static _bstr_t s_tmm(L"tmm");
-const static _bstr_t s_version(L"version");
-const static _variant_t s_versionValue_1_0(L"1.0");
-const static _bstr_t s_tree(L"tree");
-const static _bstr_t s_node(L"node");
-const static _bstr_t s_id(L"id");
-const static _bstr_t s_position(L"position");
-const static _variant_t v_positionLeftValue(L"left");
-const static _bstr_t s_positionLeftValue(L"left");
-const static _variant_t v_positionRightValue(L"right");
-const static _bstr_t s_positionRightValue(L"right");
-const static _bstr_t s_createdTime(L"createdTime");
-const static _bstr_t s_modifiedTime(L"modifiedTime");
-const static _bstr_t s_backgroundColor(L"backgroundColor");
-const static _bstr_t s_text(L"text");
-const static _bstr_t s_fontAttributes(L"fontAttributes");
-const static _bstr_t s_fontAttribute(L"fontAttribute");
-const static _bstr_t s_startPosition(L"startPosition");
-const static _bstr_t s_length(L"length");
-const static _bstr_t s_fontFamily(L"fontFammily");
-const static _bstr_t s_fontSize(L"fontSize");
-const static _bstr_t s_bold(L"bold");
-const static _bstr_t s_italic(L"italic");
-const static _bstr_t s_underline(L"underline");
-const static _bstr_t s_strikethrough(L"strikethrough");
-const static _variant_t v_boolTrueValue(L"true");
-const static _bstr_t s_boolTrueValue(L"true");
-const static _bstr_t s_foregroundColor(L"foregroundColor");
-const static _bstr_t s_width(L"width");
-const static _bstr_t s_height(L"height");
+const static std::wstring s_tmm(L"tmm");
+const static std::wstring s_version(L"version");
+const static std::wstring s_versionValue_1_0(L"1.0");
+const static std::wstring s_tree(L"tree");
+const static std::wstring s_node(L"node");
+const static std::wstring s_id(L"id");
+const static std::wstring s_position(L"position");
+const static std::wstring v_positionLeftValue(L"left");
+const static std::wstring s_positionLeftValue(L"left");
+const static std::wstring v_positionRightValue(L"right");
+const static std::wstring s_positionRightValue(L"right");
+const static std::wstring s_createdTime(L"createdTime");
+const static std::wstring s_modifiedTime(L"modifiedTime");
+const static std::wstring s_backgroundColor(L"backgroundColor");
+const static std::wstring s_text(L"text");
+const static std::wstring s_fontAttributes(L"fontAttributes");
+const static std::wstring s_fontAttribute(L"fontAttribute");
+const static std::wstring s_startPosition(L"startPosition");
+const static std::wstring s_length(L"length");
+const static std::wstring s_fontFamily(L"fontFammily");
+const static std::wstring s_fontSize(L"fontSize");
+const static std::wstring s_bold(L"bold");
+const static std::wstring s_italic(L"italic");
+const static std::wstring s_underline(L"underline");
+const static std::wstring s_strikethrough(L"strikethrough");
+const static std::wstring v_boolTrueValue(L"true");
+const static std::wstring s_boolTrueValue(L"true");
+const static std::wstring s_foregroundColor(L"foregroundColor");
+const static std::wstring s_width(L"width");
+const static std::wstring s_height(L"height");
 
-const static _bstr_t s_formatXslt(L"<?xml version=\"1.0\" encoding=\"UTF-8\"?>"
+const static std::wstring s_formatXslt(L"<?xml version=\"1.0\" encoding=\"UTF-8\"?>"
                                   L"<xsl:stylesheet xmlns:xsl=\"http://www.w3.org/1999/XSL/Transform\" version=\"1.0\">"
                                   L"<xsl:output method=\"xml\" indent=\"yes\"/>"
                                   L"<xsl:template match=\"@* | node()\">"
@@ -78,7 +78,7 @@ void touchmind::model::MapModel::Initialize() {
 
 void touchmind::model::MapModel::SetRootNodeModel(const std::shared_ptr<touchmind::model::node::NodeModel> &node) {
   if (node->GetParent() != nullptr) {
-    LOG(SEVERITY_LEVEL_ERROR) << L"try to set null as the root node";
+    SPDLOG_ERROR(L"try to set null as the root node");
     return;
   }
 
@@ -113,19 +113,14 @@ void touchmind::model::MapModel::Clear() {
   m_undo.clear();
 }
 
-touchmind::model::MapModelIOResult touchmind::model::MapModel::_Open_Version_1_0(MSXML::IXMLDOMElementPtr tmmElement) {
-  MSXML::IXMLDOMNodeListPtr xmlNodeList = tmmElement->getElementsByTagName(s_tree);
-  if (xmlNodeList->length > 0) {
-    MSXML::IXMLDOMNodePtr xmlNode = xmlNodeList->item[0];
-    MSXML::IXMLDOMNodeListPtr pRootNodeList = xmlNode->childNodes;
-    if (pRootNodeList->length > 0) {
-      MSXML::IXMLDOMNodePtr xmlRoot = pRootNodeList->item[0];
-      auto root = touchmind::model::node::NodeModel::Create(m_pSelectionManager);
-      std::vector<std::shared_ptr<model::link::LinkModel>> links;
-      CHK_HR(m_pNodeModelXMLDecoder->Decode(xmlRoot, root, links, true, true));
-      SetRootNodeModel(root);
-      AddLinks(links);
-    }
+touchmind::model::MapModelIOResult touchmind::model::MapModel::_Open_Version_1_0(pugi::xml_node tmmElement) {
+  auto xmlNodeList = tmmElement.children(s_tree.c_str());
+  for (auto xmlNode : xmlNodeList) {
+    auto root = touchmind::model::node::NodeModel::Create(m_pSelectionManager);
+    std::vector<std::shared_ptr<model::link::LinkModel>> links;
+    THROW_IF_FAILED(m_pNodeModelXMLDecoder->Decode(xmlNode, root, links, true, true));
+    SetRootNodeModel(root);
+    AddLinks(links);
   }
   return MapModelIOResult_OK;
 }
@@ -133,60 +128,47 @@ touchmind::model::MapModelIOResult touchmind::model::MapModel::_Open_Version_1_0
 touchmind::model::MapModelIOResult touchmind::model::MapModel::Open(const std::wstring &fileName) {
   _FireBeforeOpenEvent();
   Clear();
-  MSXML::IXMLDOMDocumentPtr pXMLDoc;
-  HRESULT hr = pXMLDoc.CreateInstance(__uuidof(MSXML::DOMDocument60), nullptr, CLSCTX_INPROC_SERVER);
-  if (FAILED(hr)) {
-    LOG(SEVERITY_LEVEL_ERROR) << "Failed to create the XML class instance";
+  pugi::xml_document xmlDoc;
+  auto result = xmlDoc.load_file(fileName.c_str());
+  if (!result) {
+    SPDLOG_ERROR(L"failed to load the file '{}'", fileName);
     return MapModelIOResult_InternalError;
   }
 
-  try {
-    pXMLDoc->async = VARIANT_FALSE;
-    pXMLDoc->validateOnParse = VARIANT_FALSE;
-    pXMLDoc->resolveExternals = VARIANT_FALSE;
-
-    if (pXMLDoc->load(fileName.c_str()) == VARIANT_TRUE) {
-      MSXML::IXMLDOMNodeListPtr children = pXMLDoc->childNodes;
-      for (int i = 0; i < children->length; ++i) {
-        MSXML::IXMLDOMNodePtr child = children->item[i];
-        if (child->baseName == s_tmm) {
-          MSXML::IXMLDOMElementPtr tmmElement = child;
-          _variant_t s_versionValue = tmmElement->getAttribute(s_version);
-          if (s_versionValue == s_versionValue_1_0) {
-            _Open_Version_1_0(tmmElement);
-          }
-        }
+  for (auto child : xmlDoc.children()) {
+    if (child.name() == s_tmm) {
+      auto versionValue = child.attribute(s_version);
+      if (versionValue.value() == s_versionValue_1_0) {
+        _Open_Version_1_0(child);
       }
     }
-  } catch (_com_error &errorObject) {
-    LOG(SEVERITY_LEVEL_ERROR) << "Exception thrown, HRESULT: " << errorObject.Error();
-    return MapModelIOResult_InternalError;
   }
+
   m_fileName = fileName;
   _FireAfterOpenEvent();
   return MapModelIOResult_OK;
 }
 
-touchmind::model::MapModelIOResult
-touchmind::model::MapModel::_OpenFromFreeMind_ParseNodeList(std::shared_ptr<touchmind::model::node::NodeModel> parent,
-                                                            MSXML::IXMLDOMNodeListPtr xmlNodeList) {
-  if (xmlNodeList == nullptr) {
-    return MapModelIOResult_OK;
-  }
-
-  touchmind::model::MapModelIOResult result = MapModelIOResult_OK;
-  for (int i = 0; i < xmlNodeList->length; ++i) {
-    MSXML::IXMLDOMNodePtr xmlNode = xmlNodeList->item[i];
-    auto node = touchmind::model::node::NodeModel::Create(m_pSelectionManager);
-    result = _OpenFromFreeMind_ParseNode(node, xmlNode);
-    if (result == MapModelIOResult_OK) {
-      parent->AddChild(node);
-    } else {
-      break;
-    }
-  }
-  return result;
-}
+//touchmind::model::MapModelIOResult
+//touchmind::model::MapModel::_OpenFromFreeMind_ParseNodeList(std::shared_ptr<touchmind::model::node::NodeModel> parent,
+//                                                            MSXML::IXMLDOMNodeListPtr xmlNodeList) {
+//  if (xmlNodeList == nullptr) {
+//    return MapModelIOResult_OK;
+//  }
+//
+//  touchmind::model::MapModelIOResult result = MapModelIOResult_OK;
+//  for (int i = 0; i < xmlNodeList->length; ++i) {
+//    MSXML::IXMLDOMNodePtr xmlNode = xmlNodeList->item[i];
+//    auto node = touchmind::model::node::NodeModel::Create(m_pSelectionManager);
+//    result = _OpenFromFreeMind_ParseNode(node, xmlNode);
+//    if (result == MapModelIOResult_OK) {
+//      parent->AddChild(node);
+//    } else {
+//      break;
+//    }
+//  }
+//  return result;
+//}
 
 int touchmind::model::MapModel::_GetNumericStartIndex(const std::wstring &text) {
   for (int i = static_cast<int>(text.length() - 1); i >= 0; --i) {
@@ -204,111 +186,114 @@ int touchmind::model::MapModel::_GetNumericStartIndex(const std::wstring &text) 
   return -1;
 }
 
-touchmind::model::MapModelIOResult
-touchmind::model::MapModel::_OpenFromFreeMind_ParseNode(std::shared_ptr<touchmind::model::node::NodeModel> node,
-                                                        MSXML::IXMLDOMNodePtr xmlNode) {
-  const static _bstr_t s_created(L"CREATED");
-  const static _bstr_t s_modified(L"MODIFIED");
-  const static _bstr_t s_position(L"POSITION");
-  const static _bstr_t s_text(L"TEXT");
-
-  if (s_node == xmlNode->baseName) {
-    MSXML::IXMLDOMNamedNodeMapPtr pAttrMap = xmlNode->attributes;
-
-    // ID
-    MSXML::IXMLDOMNodePtr pIdNode = pAttrMap->getNamedItem(s_id);
-    touchmind::NODE_ID id = -1;
-    wchar_t *offset;
-    if (pIdNode != nullptr) {
-      std::wstring ws_id(pIdNode->text);
-      int numericStartIndex = _GetNumericStartIndex(ws_id);
-      if (numericStartIndex >= 0) {
-        std::wstring ws_id_mod = ws_id.substr(numericStartIndex, ws_id.length() - numericStartIndex);
-        id = wcstoul(ws_id_mod.c_str(), &offset, 10);
-      }
-    }
-    // CREATED
-    MSXML::IXMLDOMNodePtr pCreatedNode = pAttrMap->getNamedItem(s_created);
-    std::wstring ws_createdTime(pCreatedNode->text);
-    LONGLONG createdTime = static_cast<LONGLONG>(wcstod(ws_createdTime.c_str(), &offset));
-
-    // MODIFIED
-    MSXML::IXMLDOMNodePtr pModifiedNode = pAttrMap->getNamedItem(s_modified);
-    std::wstring ws_modifiedTime(pModifiedNode->text);
-
-    // TEXT
-    MSXML::IXMLDOMNodePtr pTextNode = pAttrMap->getNamedItem(s_text);
-
-    // POSITION
-    MSXML::IXMLDOMNodePtr pPositionNode = pAttrMap->getNamedItem(s_position);
-    touchmind::NODE_SIDE position = touchmind::NODE_SIDE_UNDEFINED;
-    if (pPositionNode != nullptr) {
-      if (s_positionRightValue == pPositionNode->text) {
-        position = touchmind::NODE_SIDE_RIGHT;
-      } else if (s_positionLeftValue == pPositionNode->text) {
-        position = touchmind::NODE_SIDE_LEFT;
-      }
-    }
-
-    if (id != -1) {
-      node->SetId(id);
-    }
-    node->SetCreatedTime(createdTime);
-    node->SetModifiedTime(createdTime);
-    node->SetText(std::wstring(pTextNode->text));
-    node->SetPosition(position);
-
-    MSXML::IXMLDOMNodeListPtr pNodeList = xmlNode->childNodes;
-    _OpenFromFreeMind_ParseNodeList(node, pNodeList);
-  }
-  return MapModelIOResult_OK;
-}
+//touchmind::model::MapModelIOResult
+//touchmind::model::MapModel::_OpenFromFreeMind_ParseNode(std::shared_ptr<touchmind::model::node::NodeModel> node,
+//                                                        MSXML::IXMLDOMNodePtr xmlNode) {
+//  const static std::wstring s_created(L"CREATED");
+//  const static std::wstring s_modified(L"MODIFIED");
+//  const static std::wstring s_position(L"POSITION");
+//  const static std::wstring s_text(L"TEXT");
+//
+//  if (s_node == xmlNode->baseName) {
+//    MSXML::IXMLDOMNamedNodeMapPtr pAttrMap = xmlNode->attributes;
+//
+//    // ID
+//    MSXML::IXMLDOMNodePtr pIdNode = pAttrMap->getNamedItem(s_id);
+//    touchmind::NODE_ID id = -1;
+//    wchar_t *offset;
+//    if (pIdNode != nullptr) {
+//      std::wstring ws_id(pIdNode->text);
+//      int numericStartIndex = _GetNumericStartIndex(ws_id);
+//      if (numericStartIndex >= 0) {
+//        std::wstring ws_id_mod = ws_id.substr(numericStartIndex, ws_id.length() - numericStartIndex);
+//        id = wcstoul(ws_id_mod.c_str(), &offset, 10);
+//      }
+//    }
+//    // CREATED
+//    MSXML::IXMLDOMNodePtr pCreatedNode = pAttrMap->getNamedItem(s_created);
+//    std::wstring ws_createdTime(pCreatedNode->text);
+//    LONGLONG createdTime = static_cast<LONGLONG>(wcstod(ws_createdTime.c_str(), &offset));
+//
+//    // MODIFIED
+//    MSXML::IXMLDOMNodePtr pModifiedNode = pAttrMap->getNamedItem(s_modified);
+//    std::wstring ws_modifiedTime(pModifiedNode->text);
+//
+//    // TEXT
+//    MSXML::IXMLDOMNodePtr pTextNode = pAttrMap->getNamedItem(s_text);
+//
+//    // POSITION
+//    MSXML::IXMLDOMNodePtr pPositionNode = pAttrMap->getNamedItem(s_position);
+//    touchmind::NODE_SIDE position = touchmind::NODE_SIDE_UNDEFINED;
+//    if (pPositionNode != nullptr) {
+//      if (s_positionRightValue == pPositionNode->text) {
+//        position = touchmind::NODE_SIDE_RIGHT;
+//      } else if (s_positionLeftValue == pPositionNode->text) {
+//        position = touchmind::NODE_SIDE_LEFT;
+//      }
+//    }
+//
+//    if (id != -1) {
+//      node->SetId(id);
+//    }
+//    node->SetCreatedTime(createdTime);
+//    node->SetModifiedTime(createdTime);
+//    node->SetText(std::wstring(pTextNode->text));
+//    node->SetPosition(position);
+//
+//    MSXML::IXMLDOMNodeListPtr pNodeList = xmlNode->childNodes;
+//    _OpenFromFreeMind_ParseNodeList(node, pNodeList);
+//  }
+//  return MapModelIOResult_OK;
+//}
 
 touchmind::model::MapModelIOResult touchmind::model::MapModel::OpenFromFreeMind(const std::wstring &fileName) {
-  const static _bstr_t s_map(L"map");
+  //const static std::wstring s_map(L"map");
 
-  _FireBeforeOpenEvent();
-  Clear();
+  //_FireBeforeOpenEvent();
+  //Clear();
 
-  MSXML::IXMLDOMDocumentPtr pXMLDoc;
-  HRESULT hr = pXMLDoc.CreateInstance(__uuidof(MSXML::DOMDocument60), nullptr, CLSCTX_INPROC_SERVER);
-  if (FAILED(hr)) {
-    LOG(SEVERITY_LEVEL_ERROR) << "Failed to create the XML class instance";
-    return MapModelIOResult_InternalError;
-  }
+  //pugi::xml_document xmlDoc;
+  //auto result = xmlDoc.load_file(fileName.c_str());
+  //if (!result) {
+  //  SPDLOG_ERROR("Failed to load a XML file '{}'", fileName);
+  //  return MapModelIOResult_InternalError;
+  //}
 
-  auto rootNodeModel = touchmind::model::node::NodeModel::Create(m_pSelectionManager);
-  try {
-    pXMLDoc->async = VARIANT_FALSE;
-    pXMLDoc->validateOnParse = VARIANT_FALSE;
-    pXMLDoc->resolveExternals = VARIANT_FALSE;
+  //auto rootNodeModel = touchmind::model::node::NodeModel::Create(m_pSelectionManager);
+  //auto mapNode = xmlDoc.child(L"map");
+  //if (!mapNode) {
+  //  SPDLOG_ERROR("Could not find 'map' node");  
+  //  return MapModelIOResult_FileFormatError;
+  //}
+  //
+  //auto parseNode = [&](const pugi::xml_node &xmlNode) -> bool {
+  //  
 
-    if (pXMLDoc->load(fileName.c_str()) == VARIANT_TRUE) {
-      MSXML::IXMLDOMNodePtr pMapNode;
-      pXMLDoc->get_firstChild(&pMapNode);
-      if (s_map != pMapNode->baseName) {
-        LOG(SEVERITY_LEVEL_ERROR) << "Root node of XML document must be 'map', but '" << pMapNode->baseName << "'";
-        return MapModelIOResult_FileFormatError;
-      }
-      MSXML::IXMLDOMNodeListPtr pNodeList = pMapNode->childNodes;
-      for (int i = 0; i < pNodeList->length; ++i) {
-        MSXML::IXMLDOMNodePtr pNode = pNodeList->item[i];
-        if (s_node == pNode->baseName) {
-          _OpenFromFreeMind_ParseNode(rootNodeModel, pNode);
-          // we assume that map node has only one node
-          break;
-        }
-      }
-    } else {
-      LOG(SEVERITY_LEVEL_ERROR) << "Failed to load DOM. " << (LPCSTR)pXMLDoc->parseError->Getreason();
-      return MapModelIOResult_LoadFailed;
-    }
-  } catch (_com_error &errorObject) {
-    LOG(SEVERITY_LEVEL_ERROR) << "Exception thrown, HRESULT: " << errorObject.Error();
-    return MapModelIOResult_InternalError;
-  }
-  SetRootNodeModel(rootNodeModel);
-  _FireAfterOpenEvent();
+  //  for (auto childNode : xmlNode.children(L"node")) {
+  //    auto ret = parseNode(childNode);
+  //  }
+  //};
+
+
+
+  //    MSXML::IXMLDOMNodePtr pMapNode;
+  //    pXMLDoc->get_firstChild(&pMapNode);
+  //    if (s_map != pMapNode->baseName) {
+  //      SPDLOG_ERROR("Root node of XML document must be 'map', but '{}'", pMapNode->baseName);
+  //      return MapModelIOResult_FileFormatError;
+  //    }
+  //    MSXML::IXMLDOMNodeListPtr pNodeList = pMapNode->childNodes;
+  //    for (int i = 0; i < pNodeList->length; ++i) {
+  //      MSXML::IXMLDOMNodePtr pNode = pNodeList->item[i];
+  //      if (s_node == pNode->baseName) {
+  //        _OpenFromFreeMind_ParseNode(rootNodeModel, pNode);
+  //        // we assume that map node has only one node
+  //        break;
+  //      }
+  //    }
+
+  //SetRootNodeModel(rootNodeModel);
+  //_FireAfterOpenEvent();
   return MapModelIOResult_OK;
 }
 
@@ -318,49 +303,32 @@ touchmind::model::MapModelIOResult touchmind::model::MapModel::Save() {
 
 touchmind::model::MapModelIOResult touchmind::model::MapModel::SaveAs(const std::wstring &fileName) {
   _FireBeforeSaveEvent();
-  MSXML::IXMLDOMDocumentPtr pXMLDoc;
-  HRESULT hr = pXMLDoc.CreateInstance(__uuidof(MSXML::DOMDocument60), nullptr, CLSCTX_INPROC_SERVER);
-  if (FAILED(hr)) {
-    LOG(SEVERITY_LEVEL_ERROR) << "Failed to create the XML class instance";
-    return MapModelIOResult_InternalError;
-  }
 
-  try {
-    MSXML::IXMLDOMProcessingInstructionPtr pXMLProcessingNode
-        = pXMLDoc->createProcessingInstruction("xml", " version=\"1.0\" encoding=\"UTF-8\"");
-    pXMLDoc->appendChild(pXMLProcessingNode);
+  pugi::xml_document xmlDoc;
 
-    // tmm
-    MSXML::IXMLDOMElementPtr tmmNode = pXMLDoc->createElement(s_tmm);
-    pXMLDoc->appendChild(tmmNode);
+  // tmm
+  auto tmmNode = xmlDoc.append_child(s_tmm);
 
-    // version
-    _variant_t v_versionValue(L"1.0");
-    tmmNode->setAttribute(s_version, v_versionValue);
+  // version
+  tmmNode.append_attribute(s_version) = L"1.0";
 
-    // tree
-    MSXML::IXMLDOMElementPtr treeNode = pXMLDoc->createElement(s_tree);
-    tmmNode->appendChild(treeNode);
+  // tree
+  auto treeNode = tmmNode.append_child(s_tree);
 
-    // root node
-    MSXML::IXMLDOMElementPtr node = pXMLDoc->createElement(s_node);
-    treeNode->appendChild(node);
+  // root node
+  auto node = treeNode.append_child(s_node);
 
-    hr = m_pNodeModelXMLEncoder->Encode(m_root, pXMLDoc, node);
-    MapModelIOResult result = SUCCEEDED(hr) ? MapModelIOResult_OK : MapModelIOResult_InternalError;
+  HRESULT hr = m_pNodeModelXMLEncoder->Encode(m_root, node);
+  MapModelIOResult result = SUCCEEDED(hr) ? MapModelIOResult_OK : MapModelIOResult_InternalError;
 
-    if (result == MapModelIOResult_OK) {
-      _variant_t varString = fileName.c_str();
-      hr = pXMLDoc->save(varString);
-      if (FAILED(hr)) {
-        LOG(SEVERITY_LEVEL_ERROR) << L"Failed to save, hr = " << hr;
-        return MapModelIOResult_FileIOError;
-      }
+  if (result == MapModelIOResult_OK) {
+    bool ret = xmlDoc.save_file(fileName.c_str());
+    if (!ret) {
+      SPDLOG_ERROR(L"Failed to save as '{}'", fileName);
+      return MapModelIOResult_FileIOError;
     }
-  } catch (_com_error &errorObject) {
-    LOG(SEVERITY_LEVEL_ERROR) << "Exception thrown, HRESULT: " << errorObject.Error();
-    return MapModelIOResult_InternalError;
   }
+
   m_fileName = fileName;
   _FireAfterSaveEvent();
   m_pFileOperation->SetSaveCounter(GetRootNodeModel());

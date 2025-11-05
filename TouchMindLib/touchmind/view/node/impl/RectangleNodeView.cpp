@@ -1,4 +1,4 @@
-#include "stdafx.h"
+﻿#include "stdafx.h"
 #include "touchmind/Common.h"
 #include "touchmind/Context.h"
 #include "touchmind/control/DWriteEditControlCommon.h"
@@ -27,8 +27,6 @@ void touchmind::view::node::impl::RectangleNodeView::CreateDeviceDependentResour
 
 void touchmind::view::node::impl::RectangleNodeView::Draw(touchmind::Context *pContext,
                                                           ID2D1RenderTarget *pRenderTarget) {
-  LOG_ENTER;
-
   UNREFERENCED_PARAMETER(pContext);
   UNREFERENCED_PARAMETER(pRenderTarget);
   // to avoid an issue (window resizing fail), this resource must be static.
@@ -71,38 +69,34 @@ void touchmind::view::node::impl::RectangleNodeView::Draw(touchmind::Context *pC
 
     // Create body path geometry
     CComPtr<ID2D1PathGeometry> pBodyGeometry = nullptr;
-    CHK_RES(pBodyGeometry,
-            GeometryBuilder::CreateRoundedRectangleGeometry(pContext->GetD2DFactory(), bodyRect, 0.0f,
+    THROW_IF_FAILED(GeometryBuilder::CreateRoundedRectangleGeometry(pContext->GetD2DFactory(), bodyRect, 0.0f,
                                                             node->IsCollapsed(), isRightSideNode, &pBodyGeometry));
     // draw shadow
     CComPtr<ID3D10Texture2D> pSourceTexutre2D = nullptr;
-    CHK_RES(pSourceTexutre2D, pContext->CreateTexture2D(nWidth, nHeight, &pSourceTexutre2D));
+    THROW_IF_FAILED(pContext->CreateTexture2D(nWidth, nHeight, &pSourceTexutre2D));
     CComPtr<ID2D1RenderTarget> pSourceTexture2DRenderTarget = nullptr;
-    CHK_RES(pSourceTexture2DRenderTarget,
-            pContext->CreateD2DRenderTargetFromTexture2D(pSourceTexutre2D, &pSourceTexture2DRenderTarget));
+    THROW_IF_FAILED(pContext->CreateD2DRenderTargetFromTexture2D(pSourceTexutre2D, &pSourceTexture2DRenderTarget));
     pSourceTexture2DRenderTarget->BeginDraw();
     pSourceTexture2DRenderTarget->Clear(D2D1::ColorF(1.0f, 1.0f, 1.0f, 0.0f));
     if (node->IsSelected()) {
       D2D1_RECT_F highlightRect;
       GeometryBuilder::TransformRect(bodyRect, 2.0f, highlightRect);
       CComPtr<ID2D1PathGeometry> pHighlightGeometry = nullptr;
-      CHK_RES(pHighlightGeometry, GeometryBuilder::CreateRoundedRectangleGeometry(
+      THROW_IF_FAILED(GeometryBuilder::CreateRoundedRectangleGeometry(
                                       pContext->GetD2DFactory(), highlightRect, 0.0f, node->IsCollapsed(),
                                       isRightSideNode, &pHighlightGeometry));
       GetNodeViewManager()->DrawSelectedNodeShadow(pContext, pSourceTexture2DRenderTarget, pHighlightGeometry);
     } else {
       GetNodeViewManager()->DrawNodeShadow(pContext, pSourceTexture2DRenderTarget, pBodyGeometry);
     }
-    CHK_HR(pSourceTexture2DRenderTarget->EndDraw());
+    THROW_IF_FAILED(pSourceTexture2DRenderTarget->EndDraw());
     CComPtr<ID3D10Texture2D> pOutputTexutre2D = nullptr;
-    CHK_RES(pOutputTexutre2D,
-            GetNodeViewManager()->GetGaussFilter()->ApplyFilter(pContext, pSourceTexutre2D, &pOutputTexutre2D));
+    THROW_IF_FAILED(GetNodeViewManager()->GetGaussFilter()->ApplyFilter(pContext, pSourceTexutre2D, &pOutputTexutre2D));
 
     // draw body
     // ID2D1RenderTarget *pOutputTexture2DRenderTarget = nullptr; // can not wrap with CComPtr<> (windows resizing fail)
     pOutputTexture2DRenderTarget = nullptr;
-    CHK_RES(pOutputTexture2DRenderTarget,
-            pContext->CreateD2DRenderTargetFromTexture2D(pOutputTexutre2D, &pOutputTexture2DRenderTarget));
+    THROW_IF_FAILED(pContext->CreateD2DRenderTargetFromTexture2D(pOutputTexutre2D, &pOutputTexture2DRenderTarget));
     pOutputTexture2DRenderTarget->BeginDraw();
     D2D1_COLOR_F startColor;
     D2D1_COLOR_F endColor;
@@ -114,10 +108,9 @@ void touchmind::view::node::impl::RectangleNodeView::Draw(touchmind::Context *pC
 
     if (node->IsCollapsed()) {
       CComPtr<ID2D1SolidColorBrush> pCollapsedMarkBrush = nullptr;
-      CHK_RES(pCollapsedMarkBrush,
-              pRenderTarget->CreateSolidColorBrush(D2D1::ColorF(D2D1::ColorF::DarkOrange), &pCollapsedMarkBrush));
+      THROW_IF_FAILED(pRenderTarget->CreateSolidColorBrush(D2D1::ColorF(D2D1::ColorF::DarkOrange), &pCollapsedMarkBrush));
       CComPtr<ID2D1PathGeometry> pCollapsedMarkPathGeometry = nullptr;
-      CHK_RES(pCollapsedMarkPathGeometry, GeometryBuilder::CreateCollapsedMarkGeometry(
+      THROW_IF_FAILED(GeometryBuilder::CreateCollapsedMarkGeometry(
                                               pContext->GetD2DFactory(), bodyRect, nodeFigure.GetCornerRoundSize(),
                                               isRightSideNode, &pCollapsedMarkPathGeometry));
       pOutputTexture2DRenderTarget->FillGeometry(pCollapsedMarkPathGeometry, pCollapsedMarkBrush);
@@ -129,8 +122,7 @@ void touchmind::view::node::impl::RectangleNodeView::Draw(touchmind::Context *pC
   }
   // Draw node on the render target
   CComPtr<ID2D1Bitmap> pOutputSharedBitmap = nullptr;
-  CHK_RES(pOutputSharedBitmap,
-          pContext->CreateD2DSharedBitmapFromTexture2D(pRenderTarget, m_pTexture, &pOutputSharedBitmap));
+  THROW_IF_FAILED(pContext->CreateD2DSharedBitmapFromTexture2D(pRenderTarget, m_pTexture, &pOutputSharedBitmap));
   D2D1_SIZE_F size = pOutputSharedBitmap->GetSize();
   FLOAT left = node->GetX() - bodyOffset - shadowOffset;
   FLOAT top = node->GetY() - bodyOffset - shadowOffset;
@@ -140,8 +132,6 @@ void touchmind::view::node::impl::RectangleNodeView::Draw(touchmind::Context *pC
   editControl->OnRender(pRenderTarget);
 
   SetRepaintCounter(node);
-
-  LOG_LEAVE;
 }
 
 bool touchmind::view::node::impl::RectangleNodeView::HitTest(touchmind::Context *pContext,

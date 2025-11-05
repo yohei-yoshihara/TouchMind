@@ -1,4 +1,4 @@
-#include "stdafx.h"
+﻿#include "stdafx.h"
 #include <Strsafe.h>
 #include "touchmind/Common.h"
 #include "touchmind/logging/Logging.h"
@@ -163,7 +163,7 @@ HRESULT touchmind::shell::MRUManager::PopulateRibbonRecentItems(__deref_out PROP
       iCurrentFile++;
     }
   }
-  SAFEARRAYBOUND sab = {iCurrentFile, 0};
+  SAFEARRAYBOUND sab = {static_cast<ULONG>(iCurrentFile), 0};
   SafeArrayRedim(psa, &sab);
   hr = UIInitPropertyFromIUnknownArray(UI_PKEY_RecentItems, psa, pvarValue);
 

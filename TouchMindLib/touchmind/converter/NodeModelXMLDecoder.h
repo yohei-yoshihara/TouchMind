@@ -1,13 +1,13 @@
-#ifndef TOUCHMIND_MODEL_NODEMODELXMLDECODER_H_
+﻿#ifndef TOUCHMIND_MODEL_NODEMODELXMLDECODER_H_
 #define TOUCHMIND_MODEL_NODEMODELXMLDECODER_H_
 
 #include "forwarddecl.h"
 
-#ifndef __RENAME_MSXML
-#define __RENAME_MSXML
-#import "MSXML6.dll" rename_namespace(_T("MSXML"))
-#endif
-#include <msxml6.h>
+//#ifndef __RENAME_MSXML
+//#define __RENAME_MSXML
+//#import "MSXML6.dll" rename_namespace(_T("MSXML"))
+//#endif
+//#include <msxml6.h>
 
 namespace touchmind {
   namespace converter {
@@ -24,13 +24,16 @@ namespace touchmind {
       touchmind::model::MapModel *m_pMapModel;
 
     protected:
-      HRESULT _DecodeText(IN MSXML::IXMLDOMNodePtr pTextNode,
+      HRESULT _DecodeText(IN pugi::xml_node &pTextNode,
                           OUT std::shared_ptr<touchmind::model::node::NodeModel> &node);
-      HRESULT _DecodePath(IN MSXML::IXMLDOMNodePtr xmlPathNode,
+     HRESULT _DecodePath(
+         IN pugi::xml_node &pTextNode,
                           OUT std::shared_ptr<touchmind::model::node::NodeModel> &node);
-      HRESULT _DecodeFontAttribute(IN MSXML::IXMLDOMNodePtr pFontAttributeNode,
+      HRESULT _DecodeFontAttribute(
+          IN pugi::xml_node &pTextNode,
                                    OUT std::shared_ptr<touchmind::model::node::NodeModel> &node);
-      HRESULT _DecodeLink(IN MSXML::IXMLDOMNodePtr xmlLinkNode,
+     HRESULT _DecodeLink(
+         IN pugi::xml_node &pTextNode,
                           OUT std::shared_ptr<touchmind::model::node::NodeModel> &node,
                           std::shared_ptr<LinkInfoList> linkInfoList);
 
@@ -43,7 +46,9 @@ namespace touchmind {
       void SetMapModel(touchmind::model::MapModel *pMapModel) {
         m_pMapModel = pMapModel;
       }
-      HRESULT Decode(IN MSXML::IXMLDOMNodePtr pElement, OUT std::shared_ptr<touchmind::model::node::NodeModel> &node,
+      HRESULT Decode(
+          IN pugi::xml_node &pElement,
+          OUT std::shared_ptr<touchmind::model::node::NodeModel> &node,
                      OUT std::vector<std::shared_ptr<touchmind::model::link::LinkModel>> &links, IN bool keepOriginalId,
                      IN bool keepOriginalPosition, std::shared_ptr<LinkInfoList> linkInfoList = nullptr,
                      std::shared_ptr<std::map<NODE_ID, NODE_ID>> idMap = nullptr);

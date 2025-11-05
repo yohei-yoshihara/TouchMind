@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #ifdef _DEBUG
 //#define DEBUG_GPU_RESOURCE
@@ -6,12 +6,11 @@
 
 #include "targetver.h"
 
-#define WIN32_LEAN_AND_MEAN
-
 // c++ headers
 #include <string>
 #include <iostream>
 #include <fstream>
+#include <sstream>
 #include <vector>
 #include <stack>
 #include <queue>
@@ -34,8 +33,13 @@
 #include <type_traits>
 #include <iterator>
 #include <random>
+#include <cwctype>
 
 // windows headers
+#define WIN32_LEAN_AND_MEAN
+#define NOMINMAX
+#define STRICT 1
+#define STRICT_TYPED_ITEMIDS
 #include <windows.h>
 #include <WindowsX.h>
 #include <WinUser.h>
@@ -73,56 +77,60 @@
 #include <Prntvpt.h>
 #include <commdlg.h>
 
-// There are definitions that are conflicts in stdint.h and intsafe.h
-#ifdef INT8_MIN
-#undef INT8_MIN
-#endif
-#ifdef INT8_MAX
-#undef INT8_MAX
-#endif
-#ifdef INT16_MIN
-#undef INT16_MIN
-#endif
-#ifdef INT16_MAX
-#undef INT16_MAX
-#endif
-#ifdef INT32_MIN
-#undef INT32_MIN
-#endif
-#ifdef INT32_MAX
-#undef INT32_MAX
-#endif
-#ifdef INT64_MIN
-#undef INT64_MIN
-#endif
-#ifdef INT64_MAX
-#undef INT64_MAX
-#endif
+#include "wil/resource.h"
+#include "wil/win32_helpers.h"
+#include "wil/result.h"
 
-#ifdef UINT8_MIN
-#undef UINT8_MIN
-#endif
-#ifdef UINT8_MAX
-#undef UINT8_MAX
-#endif
-#ifdef UINT16_MIN
-#undef UINT16_MIN
-#endif
-#ifdef UINT16_MAX
-#undef UINT16_MAX
-#endif
-#ifdef UINT32_MIN
-#undef UINT32_MIN
-#endif
-#ifdef UINT32_MAX
-#undef UINT32_MAX
-#endif
-#ifdef UINT64_MIN
-#undef UINT64_MIN
-#endif
-#ifdef UINT64_MAX
-#undef UINT64_MAX
-#endif
+// There are definitions that are conflicts in stdint.h and intsafe.h
+//#ifdef INT8_MIN
+//#undef INT8_MIN
+//#endif
+//#ifdef INT8_MAX
+//#undef INT8_MAX
+//#endif
+//#ifdef INT16_MIN
+//#undef INT16_MIN
+//#endif
+//#ifdef INT16_MAX
+//#undef INT16_MAX
+//#endif
+//#ifdef INT32_MIN
+//#undef INT32_MIN
+//#endif
+//#ifdef INT32_MAX
+//#undef INT32_MAX
+//#endif
+//#ifdef INT64_MIN
+//#undef INT64_MIN
+//#endif
+//#ifdef INT64_MAX
+//#undef INT64_MAX
+//#endif
+//
+//#ifdef UINT8_MIN
+//#undef UINT8_MIN
+//#endif
+//#ifdef UINT8_MAX
+//#undef UINT8_MAX
+//#endif
+//#ifdef UINT16_MIN
+//#undef UINT16_MIN
+//#endif
+//#ifdef UINT16_MAX
+//#undef UINT16_MAX
+//#endif
+//#ifdef UINT32_MIN
+//#undef UINT32_MIN
+//#endif
+//#ifdef UINT32_MAX
+//#undef UINT32_MAX
+//#endif
+//#ifdef UINT64_MIN
+//#undef UINT64_MIN
+//#endif
+//#ifdef UINT64_MAX
+//#undef UINT64_MAX
+//#endif
 #include <stdint.h>
 
 #include "touchmind/logging/Logging.h"
@@ -186,11 +194,15 @@ EXTERN_C IMAGE_DOS_HEADER __ImageBase;
 #endif
 
 // MSXML
-#ifndef __RENAME_MSXML
-#define __RENAME_MSXML
-#import "MSXML6.dll" rename_namespace(_T("MSXML"))
-#endif
-#include <msxml6.h>
+//#ifndef __RENAME_MSXML
+//#define __RENAME_MSXML
+//#import "MSXML6.dll" rename_namespace(_T("MSXML"))
+//#endif
+//#include <msxml6.h>
+#define PUGIXML_WCHAR_MODE
+#include "pugixml/pugiconfig.hpp"
+#include "pugixml/pugixml.hpp"
+
 
 #undef min
 #undef max

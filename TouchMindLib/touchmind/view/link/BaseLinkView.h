@@ -1,4 +1,4 @@
-#ifndef TOUCHMIND_VIEW_LINK_ILINKVIEW_H_
+﻿#ifndef TOUCHMIND_VIEW_LINK_ILINKVIEW_H_
 #define TOUCHMIND_VIEW_LINK_ILINKVIEW_H_
 
 #include "forwarddecl.h"

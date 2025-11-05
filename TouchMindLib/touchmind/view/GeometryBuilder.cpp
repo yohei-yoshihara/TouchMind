@@ -1,4 +1,4 @@
-#include "stdafx.h"
+﻿#include "stdafx.h"
 #include "touchmind/Common.h"
 #include "touchmind/Configuration.h"
 #include "touchmind/model/CurvePoints.h"
@@ -44,14 +44,14 @@ HRESULT touchmind::view::GeometryBuilder::CreateCollapsedMarkGeometry(IN ID2D1Fa
   _CalculateCollapsedMarkSize(rect, r, isRightSideNode, p1, p2, rr);
 
   CComPtr<ID2D1GeometrySink> pSink = nullptr;
-  CHK_HR(pD2DFactory->CreatePathGeometry(ppPathGeometry));
-  CHK_RES(pSink, (*ppPathGeometry)->Open(&pSink));
+  THROW_IF_FAILED(pD2DFactory->CreatePathGeometry(ppPathGeometry));
+  THROW_IF_FAILED((*ppPathGeometry)->Open(&pSink));
   pSink->BeginFigure(p1, D2D1_FIGURE_BEGIN_FILLED);
   pSink->AddArc(
       D2D1::ArcSegment(p2, D2D1::SizeF(rr, rr), touchmind::PI, D2D1_SWEEP_DIRECTION_CLOCKWISE, D2D1_ARC_SIZE_SMALL));
   pSink->AddLine(p2);
   pSink->EndFigure(D2D1_FIGURE_END_CLOSED);
-  CHK_HR(pSink->Close());
+  THROW_IF_FAILED(pSink->Close());
   return S_OK;
 }
 
@@ -59,9 +59,9 @@ HRESULT touchmind::view::GeometryBuilder::CreateRoundedRectangleGeometry(IN ID2D
                                                                          IN const D2D1_RECT_F &rect, IN FLOAT r,
                                                                          IN bool isCollapsed, IN bool isRightSideNode,
                                                                          OUT ID2D1PathGeometry **ppPathGeometry) {
-  CHK_HR(pD2DFactory->CreatePathGeometry(ppPathGeometry));
+  THROW_IF_FAILED(pD2DFactory->CreatePathGeometry(ppPathGeometry));
   CComPtr<ID2D1GeometrySink> pSink = nullptr;
-  CHK_RES(pSink, (*ppPathGeometry)->Open(&pSink));
+  THROW_IF_FAILED((*ppPathGeometry)->Open(&pSink));
   pSink->BeginFigure(D2D1::Point2F(rect.left, rect.top + r), D2D1_FIGURE_BEGIN_FILLED);
   pSink->AddArc(D2D1::ArcSegment(D2D1::Point2F(rect.left + r, rect.top), D2D1::SizeF(r, r), touchmind::PI / 2.0f,
                                  D2D1_SWEEP_DIRECTION_CLOCKWISE, D2D1_ARC_SIZE_SMALL));
@@ -97,16 +97,16 @@ HRESULT touchmind::view::GeometryBuilder::CreateRoundedRectangleGeometry(IN ID2D
 
   pSink->AddLine(D2D1::Point2F(rect.left, rect.top + r));
   pSink->EndFigure(D2D1_FIGURE_END_CLOSED);
-  CHK_HR(pSink->Close());
+  THROW_IF_FAILED(pSink->Close());
   return S_OK;
 }
 
 HRESULT touchmind::view::GeometryBuilder::CreateHalfRoundedRectangleGeometry(IN ID2D1Factory *pD2DFactory,
                                                                              IN const D2D1_RECT_F &rect, IN FLOAT r,
                                                                              OUT ID2D1PathGeometry **ppPathGeometry) {
-  CHK_HR(pD2DFactory->CreatePathGeometry(ppPathGeometry));
+  THROW_IF_FAILED(pD2DFactory->CreatePathGeometry(ppPathGeometry));
   CComPtr<ID2D1GeometrySink> pSink = nullptr;
-  CHK_RES(pSink, (*ppPathGeometry)->Open(&pSink));
+  THROW_IF_FAILED((*ppPathGeometry)->Open(&pSink));
   pSink->BeginFigure(D2D1::Point2F(rect.left, rect.bottom), D2D1_FIGURE_BEGIN_FILLED);
   pSink->AddLine(D2D1::Point2F(rect.left, rect.top + r));
   pSink->AddArc(D2D1::ArcSegment(D2D1::Point2F(rect.left + r, rect.top), D2D1::SizeF(r, r), (FLOAT)(PI / 2.0f),
@@ -117,7 +117,7 @@ HRESULT touchmind::view::GeometryBuilder::CreateHalfRoundedRectangleGeometry(IN 
   pSink->AddLine(D2D1::Point2F(rect.right, rect.bottom));
   pSink->AddLine(D2D1::Point2F(rect.left, rect.bottom));
   pSink->EndFigure(D2D1_FIGURE_END_CLOSED);
-  CHK_HR(pSink->Close());
+  THROW_IF_FAILED(pSink->Close());
   return S_OK;
 }
 
@@ -125,10 +125,10 @@ HRESULT touchmind::view::GeometryBuilder::CreateDiagonalGradientBrush(
     IN ID2D1RenderTarget *pRenderTarget, IN const D2D1_RECT_F &rect,
     IN const std::vector<D2D1_GRADIENT_STOP> &gradientStops, OUT ID2D1LinearGradientBrush **ppGradientBrush) {
   CComPtr<ID2D1GradientStopCollection> pGradientStopCollection = nullptr;
-  CHK_RES(pGradientStopCollection, pRenderTarget->CreateGradientStopCollection(
+  THROW_IF_FAILED(pRenderTarget->CreateGradientStopCollection(
                                        gradientStops.data(), static_cast<UINT>(gradientStops.size()), D2D1_GAMMA_1_0,
                                        D2D1_EXTEND_MODE_CLAMP, &pGradientStopCollection));
-  CHK_HR(pRenderTarget->CreateLinearGradientBrush(
+  THROW_IF_FAILED(pRenderTarget->CreateLinearGradientBrush(
       D2D1::LinearGradientBrushProperties(D2D1::Point2F(rect.left, rect.top), D2D1::Point2F(rect.right, rect.bottom)),
       pGradientStopCollection, ppGradientBrush));
   return S_OK;
@@ -138,10 +138,10 @@ HRESULT touchmind::view::GeometryBuilder::CreateVerticalGradientBrush(
     IN ID2D1RenderTarget *pRenderTarget, IN const D2D1_RECT_F &rect,
     IN const std::vector<D2D1_GRADIENT_STOP> &gradientStops, OUT ID2D1LinearGradientBrush **ppGradientBrush) {
   CComPtr<ID2D1GradientStopCollection> pGradientStopCollection = nullptr;
-  CHK_RES(pGradientStopCollection, pRenderTarget->CreateGradientStopCollection(
+  THROW_IF_FAILED(pRenderTarget->CreateGradientStopCollection(
                                        gradientStops.data(), static_cast<UINT>(gradientStops.size()), D2D1_GAMMA_1_0,
                                        D2D1_EXTEND_MODE_CLAMP, &pGradientStopCollection));
-  CHK_HR(pRenderTarget->CreateLinearGradientBrush(
+  THROW_IF_FAILED(pRenderTarget->CreateLinearGradientBrush(
       D2D1::LinearGradientBrushProperties(D2D1::Point2F(rect.left, rect.top), D2D1::Point2F(rect.left, rect.bottom)),
       pGradientStopCollection, ppGradientBrush));
   return S_OK;
@@ -151,9 +151,9 @@ HRESULT touchmind::view::GeometryBuilder::CreateIsoscelesTriangleGeometry(IN ID2
                                                                           IN const D2D1_RECT_F &rect,
                                                                           IN TRIANGLE_VERTEX tirangleVertex,
                                                                           OUT ID2D1PathGeometry **ppPathGeometry) {
-  CHK_HR(pD2DFactory->CreatePathGeometry(ppPathGeometry));
+  THROW_IF_FAILED(pD2DFactory->CreatePathGeometry(ppPathGeometry));
   CComPtr<ID2D1GeometrySink> pSink = nullptr;
-  CHK_RES(pSink, (*ppPathGeometry)->Open(&pSink));
+  THROW_IF_FAILED((*ppPathGeometry)->Open(&pSink));
   switch (tirangleVertex) {
   case TRIANGLE_VERTEX_TOP_LEFT:
     pSink->BeginFigure(D2D1::Point2F(rect.left, rect.top), D2D1_FIGURE_BEGIN_FILLED);
@@ -181,7 +181,7 @@ HRESULT touchmind::view::GeometryBuilder::CreateIsoscelesTriangleGeometry(IN ID2
     break;
   }
   pSink->EndFigure(D2D1_FIGURE_END_CLOSED);
-  CHK_HR(pSink->Close());
+  THROW_IF_FAILED(pSink->Close());
   return S_OK;
 }
 
@@ -205,9 +205,9 @@ HRESULT touchmind::view::GeometryBuilder::CreateTriangleMoverGeometry(IN ID2D1Fa
     break;
   }
 
-  CHK_HR(pD2DFactory->CreatePathGeometry(ppPathGeometry));
+  THROW_IF_FAILED(pD2DFactory->CreatePathGeometry(ppPathGeometry));
   CComPtr<ID2D1GeometrySink> pSink = nullptr;
-  CHK_RES(pSink, (*ppPathGeometry)->Open(&pSink));
+  THROW_IF_FAILED((*ppPathGeometry)->Open(&pSink));
 
   FLOAT x0 = rect.left;
   FLOAT y0 = rect.top;
@@ -231,7 +231,7 @@ HRESULT touchmind::view::GeometryBuilder::CreateTriangleMoverGeometry(IN ID2D1Fa
       }
     }
   }
-  CHK_HR(pSink->Close());
+  THROW_IF_FAILED(pSink->Close());
   return S_OK;
 }
 
@@ -311,9 +311,9 @@ void touchmind::view::GeometryBuilder::CalculatePath(IN std::shared_ptr<touchmin
 HRESULT touchmind::view::GeometryBuilder::CreateCurvePathGeometry(IN ID2D1Factory *pD2DFactory,
                                                                   IN const touchmind::model::CurvePoints &curvePoints,
                                                                   OUT ID2D1PathGeometry **ppPathGeometry) {
-  CHK_HR(pD2DFactory->CreatePathGeometry(ppPathGeometry));
+  THROW_IF_FAILED(pD2DFactory->CreatePathGeometry(ppPathGeometry));
   CComPtr<ID2D1GeometrySink> pSink = nullptr;
-  CHK_RES(pSink, (*ppPathGeometry)->Open(&pSink));
+  THROW_IF_FAILED((*ppPathGeometry)->Open(&pSink));
   pSink->SetFillMode(D2D1_FILL_MODE_WINDING);
   pSink->BeginFigure(D2D1::Point2F(curvePoints.GetX(0), curvePoints.GetY(0)),
                      D2D1_FIGURE_BEGIN_FILLED // D2D1_FIGURE_BEGIN_HOLLOW
@@ -322,7 +322,7 @@ HRESULT touchmind::view::GeometryBuilder::CreateCurvePathGeometry(IN ID2D1Factor
                                        D2D1::Point2F(curvePoints.GetX(2), curvePoints.GetY(2)),
                                        D2D1::Point2F(curvePoints.GetX(3), curvePoints.GetY(3))));
   pSink->EndFigure(D2D1_FIGURE_END_OPEN);
-  CHK_HR(pSink->Close());
+  THROW_IF_FAILED(pSink->Close());
   return S_OK;
 }
 
@@ -330,9 +330,9 @@ HRESULT touchmind::view::GeometryBuilder::CreateRectangleGeometry(IN ID2D1Factor
                                                                   IN const D2D1_RECT_F &rect, IN bool isCollapsed,
                                                                   IN bool isRightSideNode,
                                                                   OUT ID2D1PathGeometry **ppPathGeometry) {
-  CHK_HR(pD2DFactory->CreatePathGeometry(ppPathGeometry));
+  THROW_IF_FAILED(pD2DFactory->CreatePathGeometry(ppPathGeometry));
   CComPtr<ID2D1GeometrySink> pSink = nullptr;
-  CHK_RES(pSink, (*ppPathGeometry)->Open(&pSink));
+  THROW_IF_FAILED((*ppPathGeometry)->Open(&pSink));
   pSink->BeginFigure(D2D1::Point2F(rect.left, rect.top), D2D1_FIGURE_BEGIN_FILLED);
   pSink->AddLine(D2D1::Point2F(rect.right, rect.top));
   if (isCollapsed && isRightSideNode) {
@@ -359,7 +359,7 @@ HRESULT touchmind::view::GeometryBuilder::CreateRectangleGeometry(IN ID2D1Factor
 
   pSink->AddLine(D2D1::Point2F(rect.left, rect.top));
   pSink->EndFigure(D2D1_FIGURE_END_CLOSED);
-  CHK_HR(pSink->Close());
+  THROW_IF_FAILED(pSink->Close());
   return S_OK;
 }
 
@@ -419,14 +419,14 @@ void touchmind::view::GeometryBuilder::CalculateArrowPoints(IN D2D1_POINT_2F poi
 HRESULT touchmind::view::GeometryBuilder::CreatePathGeometryFromPoints(IN ID2D1Factory *pD2DFactory,
                                                                        IN const std::vector<D2D1_POINT_2F> &points,
                                                                        OUT ID2D1PathGeometry **ppPathGeometry) {
-  CHK_HR(pD2DFactory->CreatePathGeometry(ppPathGeometry));
+  THROW_IF_FAILED(pD2DFactory->CreatePathGeometry(ppPathGeometry));
   CComPtr<ID2D1GeometrySink> pSink = nullptr;
-  CHK_RES(pSink, (*ppPathGeometry)->Open(&pSink));
+  THROW_IF_FAILED((*ppPathGeometry)->Open(&pSink));
   pSink->BeginFigure(points[0], D2D1_FIGURE_BEGIN_FILLED);
   for (size_t i = 1; i < points.size(); ++i) {
     pSink->AddLine(points[i]);
   }
   pSink->EndFigure(D2D1_FIGURE_END_CLOSED);
-  CHK_HR(pSink->Close());
+  THROW_IF_FAILED(pSink->Close());
   return S_OK;
 }

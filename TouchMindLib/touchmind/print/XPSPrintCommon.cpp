@@ -1,4 +1,4 @@
-#include "stdafx.h"
+﻿#include "stdafx.h"
 #include "XPSPrintCommon.h"
 
 std::wostream &operator<<(std::wostream &os, const DEVMODE &devMode) {

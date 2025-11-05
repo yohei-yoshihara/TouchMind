@@ -1,4 +1,4 @@
-#ifndef TOUCHMIND_VIEW_PATH_IPATHVIEW_H_
+﻿#ifndef TOUCHMIND_VIEW_PATH_IPATHVIEW_H_
 #define TOUCHMIND_VIEW_PATH_IPATHVIEW_H_
 
 #include "forwarddecl.h"

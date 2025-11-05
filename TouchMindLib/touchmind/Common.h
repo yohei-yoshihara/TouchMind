@@ -1,4 +1,4 @@
-#ifndef TOUCHMIND_COMMON_H_
+﻿#ifndef TOUCHMIND_COMMON_H_
 #define TOUCHMIND_COMMON_H_
 
 #include "../TouchMindMUI_en_us/resource.h"

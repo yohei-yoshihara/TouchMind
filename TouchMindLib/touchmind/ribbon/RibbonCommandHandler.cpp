@@ -1,4 +1,4 @@
-#include "StdAfx.h"
+﻿#include "StdAfx.h"
 #include <Shobjidl.h>
 #include "resource.h"
 #include "touchmind/logging/Logging.h"
@@ -56,11 +56,9 @@ IFACEMETHODIMP touchmind::ribbon::RibbonCommandHandler::QueryInterface(REFIID ri
 
 HRESULT touchmind::ribbon::RibbonCommandHandler::Initialize() {
   HRESULT hr = S_OK;
-  LOG_ENTER;
   if (m_pifbFactory == nullptr) {
     hr = CoCreateInstance(CLSID_UIRibbonImageFromBitmapFactory, nullptr, CLSCTX_ALL, IID_PPV_ARGS(&m_pifbFactory));
   }
-  LOG_LEAVE_HRESULT(hr);
   return hr;
 }
 
@@ -71,13 +69,13 @@ HRESULT touchmind::ribbon::RibbonCommandHandler::Initialize() {
  */
 HRESULT touchmind::ribbon::RibbonCommandHandler::OnCreateUICommand(UINT32 nCmdID, UI_COMMANDTYPE typeID,
                                                                    IUICommandHandler **ppCommandHandler) {
-  LOG_ENTER_ARG(L"nCmdID = " << nCmdID);
   UNREFERENCED_PARAMETER(typeID);
   HRESULT hr = S_OK;
   if (m_pFontControlCommandHandler == nullptr) {
     hr = ribbon::handler::FontControlCommandHandler::CreateInstance(&m_pFontControlCommandHandler);
     if (FAILED(hr)) {
-      LOG(SEVERITY_LEVEL_FATAL) << L"FontControlCommandHandler::CreateInstance failed, hr = " << hr;
+      SPDLOG_ERROR(L"FontControlCommandHandler::CreateInstance failed, hr = {}",
+                   hr);
       goto exit_func;
     }
   }
@@ -122,7 +120,6 @@ HRESULT touchmind::ribbon::RibbonCommandHandler::OnCreateUICommand(UINT32 nCmdID
     }
   }
 exit_func:
-  LOG_LEAVE_HRESULT(hr);
   return hr;
 }
 
@@ -131,7 +128,6 @@ exit_func:
  */
 HRESULT touchmind::ribbon::RibbonCommandHandler::OnViewChanged(UINT32 nViewID, UI_VIEWTYPE typeID, IUnknown *pView,
                                                                UI_VIEWVERB verb, INT32 uReasonCode) {
-  LOG_ENTER;
   UNREFERENCED_PARAMETER(nViewID);
   UNREFERENCED_PARAMETER(uReasonCode);
 
@@ -156,7 +152,6 @@ HRESULT touchmind::ribbon::RibbonCommandHandler::OnViewChanged(UINT32 nViewID, U
       break;
     }
   }
-  LOG_LEAVE_HRESULT(hr);
   return hr;
 }
 
@@ -181,13 +176,11 @@ HRESULT touchmind::ribbon::RibbonCommandHandler::OnDestroyUICommand(UINT32 comma
 HRESULT touchmind::ribbon::RibbonCommandHandler::Execute(UINT nCmdID, UI_EXECUTIONVERB verb, const PROPERTYKEY *key,
                                                          const PROPVARIANT *pPropvarValue,
                                                          IUISimplePropertySet *pCommandExecutionProperties) {
-  LOG_ENTER_ARG(L"nCmdID = " << nCmdID);
   HRESULT hr = S_OK;
 
   if (m_executeListeners.count(nCmdID) > 0) {
     hr = m_executeListeners[nCmdID](nCmdID, verb, key, pPropvarValue, pCommandExecutionProperties);
   }
-  LOG_LEAVE_HRESULT(hr);
   return hr;
 }
 
@@ -197,12 +190,10 @@ HRESULT touchmind::ribbon::RibbonCommandHandler::Execute(UINT nCmdID, UI_EXECUTI
 STDMETHODIMP touchmind::ribbon::RibbonCommandHandler::UpdateProperty(UINT nCmdID, REFPROPERTYKEY key,
                                                                      const PROPVARIANT *pPropvarCurrentValue,
                                                                      PROPVARIANT *pPropvarNewValue) {
-  LOG_ENTER_ARG(L"nCmdID = " << nCmdID);
   HRESULT hr = E_NOTIMPL;
   if (m_updatePropertyListeners.count(nCmdID) > 0) {
     hr = m_updatePropertyListeners[nCmdID](nCmdID, key, pPropvarCurrentValue, pPropvarNewValue);
   }
-  LOG_LEAVE_HRESULT(hr);
   return hr;
 }
 // IUICommandHandler (end)

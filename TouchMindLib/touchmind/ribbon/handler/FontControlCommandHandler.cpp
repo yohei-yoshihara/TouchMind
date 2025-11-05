@@ -1,4 +1,4 @@
-#include "stdafx.h"
+﻿#include "stdafx.h"
 #include "touchmind/Common.h"
 #include "touchmind/logging/Logging.h"
 #include "touchmind/control/DWriteEditControlManager.h"
@@ -6,7 +6,6 @@
 
 HRESULT
 touchmind::ribbon::handler::FontControlCommandHandler::CreateInstance(OUT IUICommandHandler **ppCommandHandler) {
-  LOG_ENTER;
   HRESULT hr = S_OK;
   if (!ppCommandHandler) {
     hr = E_POINTER;
@@ -20,7 +19,6 @@ touchmind::ribbon::handler::FontControlCommandHandler::CreateInstance(OUT IUICom
       hr = E_OUTOFMEMORY;
     }
   }
-  LOG_LEAVE_HRESULT(hr);
   return hr;
 }
 
@@ -53,7 +51,6 @@ STDMETHODIMP touchmind::ribbon::handler::FontControlCommandHandler::QueryInterfa
 
 STDMETHODIMP touchmind::ribbon::handler::FontControlCommandHandler::UpdateProperty(
     UINT nCmdID, IN REFPROPERTYKEY key, IN const PROPVARIANT *ppropvarCurrentValue, OUT PROPVARIANT *ppropvarNewValue) {
-  LOG_ENTER;
   UNREFERENCED_PARAMETER(nCmdID);
 
   HRESULT hr = E_NOTIMPL;
@@ -69,14 +66,12 @@ STDMETHODIMP touchmind::ribbon::handler::FontControlCommandHandler::UpdateProper
       }
     }
   }
-  LOG_LEAVE_HRESULT(hr);
   return hr;
 }
 
 STDMETHODIMP touchmind::ribbon::handler::FontControlCommandHandler::Execute(
     UINT nCmdID, UI_EXECUTIONVERB verb, IN const PROPERTYKEY *key, IN const PROPVARIANT *ppropvarValue,
     IN IUISimplePropertySet *pCommandExecutionProperties) {
-  LOG_ENTER;
   UNREFERENCED_PARAMETER(nCmdID);
 
   HRESULT hr = E_NOTIMPL;
@@ -130,6 +125,5 @@ STDMETHODIMP touchmind::ribbon::handler::FontControlCommandHandler::Execute(
     }
     }
   }
-  LOG_LEAVE_HRESULT(hr);
   return hr;
 }

@@ -1,4 +1,4 @@
-#include "StdAfx.h"
+﻿#include "StdAfx.h"
 #include "touchmind/Common.h"
 #include "touchmind/logging/Logging.h"
 #include "touchmind/touch/AbstractManipulationHelper.h"
@@ -117,7 +117,7 @@ touchmind::touch::AbstractManipulationHelper::OnLeftMouseDoubleClick(HWND hWnd, 
   // Left mouse button double click
   if (!::KillTimer(hWnd, m_timerIdForDoubleClick)) {
     DWORD lastError = GetLastError();
-    LOG(SEVERITY_LEVEL_ERROR) << util::LastError(util::LastErrorArgs(L"KillTimer", lastError));
+    SPDLOG_ERROR(L"KillTimer, lastError = {}", lastError);
     ManipulationResult result(false, false);
     return result;
   }
@@ -154,9 +154,9 @@ touchmind::touch::AbstractManipulationHelper::OnLeftMouseUp(HWND hWnd, UINT mess
     UINT_PTR ret;
     if ((ret = ::SetTimer(hWnd, m_timerIdForDoubleClick, GetDoubleClickTime(), nullptr)) == 0) {
       DWORD lastError = GetLastError();
-      LOG(SEVERITY_LEVEL_ERROR) << util::LastError(util::LastErrorArgs(L"SetTimer", lastError));
-      ManipulationResult result(false, false);
-      return result;
+      SPDLOG_ERROR(L"SetTimer, lastError = {}", lastError);
+      ManipulationResult manipulationResult(false, false);
+      return manipulationResult;
     }
     result.IsNeedInvalidateRect = true;
     result.WasHandled = true;
@@ -174,9 +174,9 @@ touchmind::touch::AbstractManipulationHelper::OnTimer(HWND hWnd, UINT message, W
   if (wParam == m_timerIdForDoubleClick) {
     if (!::KillTimer(hWnd, m_timerIdForDoubleClick)) {
       DWORD lastError = GetLastError();
-      LOG(SEVERITY_LEVEL_ERROR) << util::LastError(util::LastErrorArgs(L"KillTimer", lastError));
-      ManipulationResult result(false, false);
-      return result;
+      SPDLOG_ERROR("KillTimer, lastError = {}", lastError);
+      ManipulationResult manipulationResult(false, false);
+      return manipulationResult;
     }
     m_draggingStatus = DRAGGING_STATUS_NOT_DRAGGING;
     // Left mouse button single click
@@ -237,7 +237,7 @@ touchmind::touch::AbstractManipulationHelper::OnGesture(HWND hWnd, UINT message,
   gi.cbSize = sizeof(gi);
   BOOL bResult = GetGestureInfo((HGESTUREINFO)lParam, &gi);
   if (!bResult) {
-    LOG(SEVERITY_LEVEL_ERROR) << L"GetGestureInfo failed, err=" << GetLastError();
+    SPDLOG_ERROR(L"GetGestureInfo failed, lastError = {}", GetLastError());
     result.IsNeedInvalidateRect = false;
     result.WasHandled = false;
     return result;
@@ -365,7 +365,7 @@ touchmind::touch::AbstractManipulationHelper::OnSetCursor(HWND hWnd, UINT messag
 }
 
 std::wostream &operator<<(std::wostream &strm, const GESTUREINFO &gi) {
-  wchar_t *s_id = nullptr;
+  std::wstring s_id;
   switch (gi.dwID) {
   case GID_BEGIN:
     s_id = L"GID_BEGIN";
@@ -410,7 +410,7 @@ std::wostream &operator<<(std::wostream &strm, const GESTUREINFO &gi) {
 }
 
 std::wostream &operator<<(std::wostream &strm, const GESTURECONFIG &gi) {
-  wchar_t *s_id = nullptr;
+  std::wstring s_id;
   switch (gi.dwID) {
   case GID_BEGIN:
     s_id = L"GID_BEGIN";

@@ -1,6 +1,8 @@
 #ifndef TOUCHMIND_PROP_NODESHAPE_H_
 #define TOUCHMIND_PROP_NODESHAPE_H_
 
+#include <cwctype>
+
 namespace touchmind {
 #define NUMBER_OF_NODE_SHAPES 2
   enum NODE_SHAPE {
@@ -39,7 +41,7 @@ namespace touchmind {
       }
       static NODE_SHAPE ToNodeShape(const std::wstring &s) {
         std::wstring _s(s);
-        std::transform(_s.begin(), _s.end(), _s.begin(), std::toupper);
+        std::transform(_s.begin(), _s.end(), _s.begin(), std::towupper);
         if (s == L"RECTANGLE") {
           return NODE_SHAPE_RECTANGLE;
         }

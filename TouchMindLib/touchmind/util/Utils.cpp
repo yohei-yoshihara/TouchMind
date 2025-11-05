@@ -1,12 +1,12 @@
-#include "StdAfx.h"
+﻿#include "StdAfx.h"
 #include <strsafe.h>
 #include "touchmind/util/Utils.h"
 
 struct WM {
   UINT id;
-  wchar_t *name;
+  const wchar_t *name;
 };
-struct WM wms[] = {{0x0000, L"WM_NULL"},
+const struct WM wms[] = {{0x0000, L"WM_NULL"},
                    {0x0001, L"WM_CREATE"},
                    {0x0002, L"WM_DESTROY"},
                    {0x0003, L"WM_MOVE"},

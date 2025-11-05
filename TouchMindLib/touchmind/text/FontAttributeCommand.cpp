@@ -1,4 +1,4 @@
-#include "stdafx.h"
+﻿#include "stdafx.h"
 #include "touchmind/Common.h"
 #include "touchmind/Configuration.h"
 #include "touchmind/text/FontAttributeCommand.h"

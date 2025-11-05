@@ -1,4 +1,4 @@
-#ifndef TOUCHMIND_TOUCH_TOUCHUTIL_H_
+﻿#ifndef TOUCHMIND_TOUCH_TOUCHUTIL_H_
 #define TOUCHMIND_TOUCH_TOUCHUTIL_H_
 
 namespace touchmind {

@@ -1,4 +1,4 @@
-#include "Stdafx.h"
+﻿#include "Stdafx.h"
 #include "touchmind/Common.h"
 #include "touchmind/win/CanvasPanel.h"
 #include "touchmind/win/TouchMindApp.h"

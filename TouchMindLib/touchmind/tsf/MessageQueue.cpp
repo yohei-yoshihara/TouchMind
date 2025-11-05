@@ -1,4 +1,4 @@
-#include "StdAfx.h"
+﻿#include "StdAfx.h"
 #include "MessageQueue.h"
 
 touchmind::tsf::MessageQueue::MessageQueue(void) {

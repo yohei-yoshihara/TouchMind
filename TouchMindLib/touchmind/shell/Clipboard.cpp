@@ -1,4 +1,4 @@
-#include "StdAfx.h"
+﻿#include "StdAfx.h"
 #include "touchmind/Common.h"
 #include "touchmind/logging/Logging.h"
 #include "touchmind/model/node/NodeModel.h"
@@ -108,13 +108,12 @@ HRESULT touchmind::shell::Clipboard::CopyNodeModel(IN HWND hWnd,
     }
     ::EmptyClipboard();
     // customized xml format
-    MSXML::IXMLDOMDocumentPtr pXMLDoc;
-    hr = pXMLDoc.CreateInstance(__uuidof(MSXML::DOMDocument60), nullptr, CLSCTX_INPROC_SERVER);
-    _bstr_t s_node(L"node");
-    MSXML::IXMLDOMElementPtr pElement = pXMLDoc->createElement(s_node);
-    pXMLDoc->appendChild(pElement);
-    m_pNodeModelXMLEncoder->Encode(node, pXMLDoc, pElement);
-    std::wstring xml(pXMLDoc->xml);
+    pugi::xml_document xmlDoc;
+    auto xmlNode = xmlDoc.append_child(L"node");
+    m_pNodeModelXMLEncoder->Encode(node, xmlNode);
+    std::wstringstream ss;
+    xmlDoc.save(ss);
+    std::wstring xml(ss.str());
     _CopyXML(hWnd, xml);
 
     // text format
@@ -139,13 +138,10 @@ HRESULT touchmind::shell::Clipboard::PasteNodeModel(IN HWND hWnd,
       if (formatId == m_touchMindClipboardFormatId) {
         std::wstring s_xml;
         _PasteXML(hWnd, s_xml);
-        LOG(SEVERITY_LEVEL_DEBUG) << s_xml;
-        MSXML::IXMLDOMDocumentPtr pXMLDoc;
-        hr = pXMLDoc.CreateInstance(__uuidof(MSXML::DOMDocument60), nullptr, CLSCTX_INPROC_SERVER);
-        _bstr_t xml(s_xml.c_str());
-        pXMLDoc->loadXML(xml);
-        MSXML::IXMLDOMElementPtr pElement = pXMLDoc->firstChild;
-        m_pNodeModelXMLDecoder->Decode(pElement, node, links, false, false);
+        pugi::xml_document xmlDoc;
+        xmlDoc.load_string(s_xml.c_str());
+        auto xmlNode = xmlDoc.child(L"node");
+        m_pNodeModelXMLDecoder->Decode(xmlNode, node, links, false, false);
       } else if (formatId == CF_UNICODETEXT) {
         std::wstring text;
         _PasteTEXT(hWnd, text);

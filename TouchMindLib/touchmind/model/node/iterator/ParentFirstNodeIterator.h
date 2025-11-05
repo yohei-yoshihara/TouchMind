@@ -1,4 +1,4 @@
-#ifndef TOUCHMIND_MODEL_NODE_PARENTFIRSTNODEITERATOR_H_
+﻿#ifndef TOUCHMIND_MODEL_NODE_PARENTFIRSTNODEITERATOR_H_
 #define TOUCHMIND_MODEL_NODE_PARENTFIRSTNODEITERATOR_H_
 
 #include "touchmind/model/node/NodeModel.h"
@@ -65,10 +65,10 @@ namespace touchmind {
                     if (m_stack.empty()) {
                       break;
                     }
-                    auto next = m_stack.top()->GetRightSibling();
-                    if (next != nullptr) {
+                    auto next2 = m_stack.top()->GetRightSibling();
+                    if (next2 != nullptr) {
                       m_stack.pop();
-                      m_stack.push(next);
+                      m_stack.push(next2);
                       break;
                     }
                   }

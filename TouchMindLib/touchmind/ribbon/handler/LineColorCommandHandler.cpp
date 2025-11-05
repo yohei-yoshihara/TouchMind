@@ -1,4 +1,4 @@
-#include "stdafx.h"
+﻿#include "stdafx.h"
 #include "resource.h"
 #include "touchmind/Common.h"
 #include "touchmind/Context.h"
@@ -82,7 +82,7 @@ touchmind::ribbon::handler::LineColorCommandHandler::Execute(UINT cmdID, UI_EXEC
   UNREFERENCED_PARAMETER(cmdID);
   UNREFERENCED_PARAMETER(pCommandExecutionProperties);
 
-  LOG(SEVERITY_LEVEL_DEBUG) << L"key = " << *pKey;
+  //LOG(SEVERITY_LEVEL_DEBUG) << L"key = " << *pKey;
 
   HRESULT hr = E_FAIL;
   if (pKey && *pKey == UI_PKEY_ColorType) {
@@ -117,8 +117,6 @@ touchmind::ribbon::handler::LineColorCommandHandler::Execute(UINT cmdID, UI_EXEC
 
 IFACEMETHODIMP touchmind::ribbon::handler::LineColorCommandHandler::UpdateProperty(
     UINT cmdID, REFPROPERTYKEY key, const PROPVARIANT *pPropvarCurrentValue, PROPVARIANT *pPropvarNewValue) {
-  LOG_ENTER;
-
   UNREFERENCED_PARAMETER(cmdID);
   UNREFERENCED_PARAMETER(key);
   UNREFERENCED_PARAMETER(pPropvarCurrentValue);
@@ -148,18 +146,15 @@ IFACEMETHODIMP touchmind::ribbon::handler::LineColorCommandHandler::UpdateProper
       CComPtr<IUIImage> uiImage = nullptr;
       D2D1_COLOR_F colorF = m_pRibbonRequestDispatcher->UpdateProperty_GetLineColor();
       hr = _CreateUIImage(colorF, &uiImage);
-      CHK_RES(uiImage, S_OK);
       if (SUCCEEDED(hr)) {
         hr = UIInitPropertyFromImage(key, uiImage, pPropvarNewValue);
       }
     }
   }
-  LOG_LEAVE;
   return hr;
 }
 
 HRESULT touchmind::ribbon::handler::LineColorCommandHandler::_CreateUIImage(D2D1_COLOR_F color, IUIImage **ppUIImage) {
-  LOG_ENTER;
   const static FLOAT width = 48;
   const static FLOAT height = 48;
   const static FLOAT drawHeight = 32.0f;
@@ -171,12 +166,11 @@ HRESULT touchmind::ribbon::handler::LineColorCommandHandler::_CreateUIImage(D2D1
     return E_FAIL;
   }
   CComPtr<IWICBitmap> pWICBitmap = nullptr;
-  CHK_RES(pWICBitmap,
-          touchmind::util::BitmapHelper::CreateBitmap(m_pContext->GetWICImagingFactory(), static_cast<UINT>(width),
+  THROW_IF_FAILED(touchmind::util::BitmapHelper::CreateBitmap(m_pContext->GetWICImagingFactory(), static_cast<UINT>(width),
                                                       static_cast<UINT>(height), &pWICBitmap));
 
   CComPtr<ID2D1RenderTarget> pRenderTarget = nullptr;
-  CHK_RES(pRenderTarget, touchmind::util::BitmapHelper::CreateBitmapRenderTarget(
+  THROW_IF_FAILED(touchmind::util::BitmapHelper::CreateBitmapRenderTarget(
                              pWICBitmap, m_pContext->GetD2DFactory(), &pRenderTarget));
 
   model::CurvePoints curvePoints;
@@ -190,12 +184,11 @@ HRESULT touchmind::ribbon::handler::LineColorCommandHandler::_CreateUIImage(D2D1
   curvePoints.SetY(3, drawHeight - strokeWidth / 2.0f);
 
   CComPtr<ID2D1PathGeometry> pGeometry = nullptr;
-  CHK_RES(pGeometry,
-          view::GeometryBuilder::CreateCurvePathGeometry(m_pContext->GetD2DFactory(), curvePoints, &pGeometry));
+  THROW_IF_FAILED(view::GeometryBuilder::CreateCurvePathGeometry(m_pContext->GetD2DFactory(), curvePoints, &pGeometry));
 
   pRenderTarget->BeginDraw();
   CComPtr<ID2D1SolidColorBrush> pBrush = nullptr;
-  CHK_RES(pBrush, pRenderTarget->CreateSolidColorBrush(color, &pBrush));
+  THROW_IF_FAILED(pRenderTarget->CreateSolidColorBrush(color, &pBrush));
   pRenderTarget->DrawGeometry(pGeometry, pBrush, strokeWidth);
   pRenderTarget->EndDraw();
 
@@ -203,7 +196,5 @@ HRESULT touchmind::ribbon::handler::LineColorCommandHandler::_CreateUIImage(D2D1
   touchmind::util::BitmapHelper::CreateBitmapFromWICBitmapSource(pWICBitmap, &hBitmap);
 
   hr = m_pRibbonFramework->GetUIImageFromBitmap()->CreateImage(hBitmap, UI_OWNERSHIP_TRANSFER, ppUIImage);
-
-  LOG_LEAVE;
   return hr;
 }

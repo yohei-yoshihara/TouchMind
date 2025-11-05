@@ -1,4 +1,4 @@
-#include "StdAfx.h"
+﻿#include "StdAfx.h"
 #include "touchmind/logging/Logging.h"
 #include "touchmind/util/BitmapHelper.h"
 

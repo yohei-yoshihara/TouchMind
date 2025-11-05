@@ -1,4 +1,4 @@
-#include "StdAfx.h"
+﻿#include "StdAfx.h"
 #include "touchmind/Context.h"
 #include "touchmind/Configuration.h"
 #include "touchmind/animation/AnimationManagerEventHandler.h"
@@ -33,11 +33,6 @@
 #include "touchmind/converter/NodeModelXMLDecoder.h"
 
 LRESULT CALLBACK touchmind::win::CanvasPanel::WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) {
-#ifdef _DEBUG
-  LOG(SEVERITY_LEVEL_DEBUG_L3) << touchmind::util::WMessage(message);
-#endif
-  LOG(SEVERITY_LEVEL_DEBUG) << touchmind::util::WMessage(message);
-
   LRESULT result = 0;
 
   if (message == WM_CREATE) {
@@ -213,7 +208,7 @@ touchmind::win::CanvasPanel::~CanvasPanel(void) {
 void touchmind::win::CanvasPanel::Initialize(UINT ribbonHeight) {
   m_ribbonHeight = ribbonHeight;
 
-  CHK_HR(m_pContext->CreateDeviceIndependentResources());
+  THROW_IF_FAILED(m_pContext->CreateDeviceIndependentResources());
 
   WNDCLASSEX wcex = {sizeof(WNDCLASSEX)};
   wcex.style = CS_HREDRAW | CS_VREDRAW | CS_DBLCLKS;
@@ -242,7 +237,7 @@ void touchmind::win::CanvasPanel::Initialize(UINT ribbonHeight) {
                      rc.left, rc.top, rc.right, rc.bottom, parentHwnd, nullptr, HINST_THISCOMPONENT, this);
   if (m_hwnd == nullptr) {
     DWORD lastError = GetLastError();
-    LOG(SEVERITY_LEVEL_ERROR) << util::LastError(util::LastErrorArgs(L"CreateWindow", lastError));
+    SPDLOG_ERROR(L"CreateWindow, lastError = {}", lastError);
     throw std::runtime_error("CreateWindow");
   }
   _InitializeAfterCreateWindow();
@@ -335,11 +330,11 @@ void touchmind::win::CanvasPanel::OnCreate() {
 
 void touchmind::win::CanvasPanel::OnRender() {
   UI_ANIMATION_SECONDS secondsNow;
-  CHK_HR(m_pContext->GetAnimationTimer()->GetTime(&secondsNow));
-  CHK_HR(m_pContext->GetAnimationManager()->Update(secondsNow));
-  CHK_HR(m_pContext->OnRender());
+  THROW_IF_FAILED(m_pContext->GetAnimationTimer()->GetTime(&secondsNow));
+  THROW_IF_FAILED(m_pContext->GetAnimationManager()->Update(secondsNow));
+  THROW_IF_FAILED(m_pContext->OnRender());
   UI_ANIMATION_MANAGER_STATUS status;
-  CHK_HR(m_pContext->GetAnimationManager()->GetStatus(&status));
+  THROW_IF_FAILED(m_pContext->GetAnimationManager()->GetStatus(&status));
   if (status == UI_ANIMATION_MANAGER_BUSY) {
     Invalidate();
   }
@@ -385,7 +380,7 @@ HRESULT touchmind::win::CanvasPanel::Render2D(touchmind::Context *pContext, ID2D
   if (GetState() == CANVAS_STATE_CREATING_LINK) {
     m_createLinkOperation->Draw(pContext, pRenderTarget);
   }
-  CHK_ERROR_HRESULT(hr, pRenderTarget->EndDraw());
+  THROW_IF_FAILED(pRenderTarget->EndDraw());
   // ***** end draw *****
 
   // update scroll bars
@@ -470,7 +465,7 @@ void touchmind::win::CanvasPanel::OnHScroll(HWND hWnd, WPARAM wParam) {
     posChanged = true;
     break;
   default:
-    LOG(SEVERITY_LEVEL_WARN) << L"type = UNKNOWN(" << type << ")";
+    SPDLOG_WARN(L"type = UNKNOWN({})", type);
     break;
   }
 
@@ -517,7 +512,7 @@ void touchmind::win::CanvasPanel::OnVScroll(HWND hWnd, WPARAM wParam) {
   case SB_ENDSCROLL:
     break;
   default:
-    LOG(SEVERITY_LEVEL_WARN) << L"type = UNKNOWN(" << type << ")";
+    SPDLOG_WARN(L"type = UNKNOWN({}", type);
     break;
   }
 
@@ -843,7 +838,7 @@ void touchmind::win::CanvasPanel::SetGestureConfigs(HWND hWnd) {
   BOOL bResult = SetGestureConfig(hWnd, 0, uiGcs, gc, sizeof(GESTURECONFIG));
   if (!bResult) {
     DWORD lastError = GetLastError();
-    LOG(SEVERITY_LEVEL_ERROR) << util::LastError(util::LastErrorArgs(L"SetGestureConfig", lastError));
+    SPDLOG_ERROR(L"SetGestureConfig, lastError = ", lastError);
   }
 }
 

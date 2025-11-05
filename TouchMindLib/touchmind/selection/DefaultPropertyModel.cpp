@@ -1,4 +1,4 @@
-#include "stdafx.h"
+﻿#include "stdafx.h"
 #include "touchmind/selection/SelectableSupport.h"
 #include "touchmind/selection/DefaultPropertyModel.h"
 

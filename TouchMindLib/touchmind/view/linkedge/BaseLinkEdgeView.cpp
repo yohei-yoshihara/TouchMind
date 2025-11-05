@@ -1,4 +1,4 @@
-#include "stdafx.h"
+﻿#include "stdafx.h"
 #include "touchmind/view/linkedge/BaseLinkEdgeView.h"
 
 touchmind::view::linkedge::BaseLinkEdgeView::BaseLinkEdgeView(std::weak_ptr<touchmind::model::link::LinkModel> link,

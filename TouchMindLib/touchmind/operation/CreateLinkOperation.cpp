@@ -1,4 +1,4 @@
-#include "stdafx.h"
+﻿#include "stdafx.h"
 #include "touchmind/Context.h"
 #include "touchmind/MUI.h"
 #include "touchmind/win/CanvasPanel.h"
@@ -59,57 +59,47 @@ touchmind::operation::CreateLinkOperation::~CreateLinkOperation() {
 void touchmind::operation::CreateLinkOperation::CreateDeviceDependentResources(touchmind::Context *pContext,
                                                                                ID2D1RenderTarget *pRenderTarget) {
   if (m_foregroundBrush == nullptr) {
-    CHK_RES(m_foregroundBrush,
-            pRenderTarget->CreateSolidColorBrush(D2D1::ColorF(1.0f, 1.0f, 1.0f, 1.0f), &m_foregroundBrush));
+    THROW_IF_FAILED(pRenderTarget->CreateSolidColorBrush(D2D1::ColorF(1.0f, 1.0f, 1.0f, 1.0f), &m_foregroundBrush));
   }
   // start node message
   if (m_startNodeBodyBrush == nullptr) {
-    CHK_RES(m_startNodeBodyBrush,
-            pRenderTarget->CreateSolidColorBrush(D2D1::ColorF(D2D1::ColorF::Navy), &m_startNodeBodyBrush));
+    THROW_IF_FAILED(pRenderTarget->CreateSolidColorBrush(D2D1::ColorF(D2D1::ColorF::Navy), &m_startNodeBodyBrush));
   }
   if (m_startNodeMessageTextFormat == nullptr) {
-    CHK_RES(m_startNodeMessageTextFormat,
-            pContext->GetDWriteFactory()->CreateTextFormat(
+    THROW_IF_FAILED(pContext->GetDWriteFactory()->CreateTextFormat(
                 MUI::GetString(IDS_DEFAULT_FONT_NAME), nullptr, DWRITE_FONT_WEIGHT_NORMAL, DWRITE_FONT_STYLE_NORMAL,
                 DWRITE_FONT_STRETCH_NORMAL, 14.0f, L"", &m_startNodeMessageTextFormat));
   }
   if (m_startNodeMessageTextLayout == nullptr) {
-    CHK_RES(m_startNodeMessageTextLayout,
-            pContext->GetDWriteFactory()->CreateTextLayout(
+    THROW_IF_FAILED(pContext->GetDWriteFactory()->CreateTextLayout(
                 m_startNodeMessasgeText.c_str(), static_cast<UINT32>(m_startNodeMessasgeText.size()),
                 m_startNodeMessageTextFormat, MESSAGE_BOX_WIDTH, MESSAGE_BOX_HEIGHT, &m_startNodeMessageTextLayout));
   }
   // end node message
   if (m_endNodeBodyBrush == nullptr) {
-    CHK_RES(m_endNodeBodyBrush,
-            pRenderTarget->CreateSolidColorBrush(D2D1::ColorF(D2D1::ColorF::Orange), &m_endNodeBodyBrush));
+    THROW_IF_FAILED(pRenderTarget->CreateSolidColorBrush(D2D1::ColorF(D2D1::ColorF::Orange), &m_endNodeBodyBrush));
   }
   if (m_endNodeMessageTextFormat == nullptr) {
-    CHK_RES(m_endNodeMessageTextFormat,
-            pContext->GetDWriteFactory()->CreateTextFormat(
+    THROW_IF_FAILED(pContext->GetDWriteFactory()->CreateTextFormat(
                 MUI::GetString(IDS_DEFAULT_FONT_NAME), nullptr, DWRITE_FONT_WEIGHT_NORMAL, DWRITE_FONT_STYLE_NORMAL,
                 DWRITE_FONT_STRETCH_NORMAL, 14.0f, L"", &m_endNodeMessageTextFormat));
   }
   if (m_endNodeMessageTextLayout == nullptr) {
-    CHK_RES(m_endNodeMessageTextLayout,
-            pContext->GetDWriteFactory()->CreateTextLayout(
+    THROW_IF_FAILED(pContext->GetDWriteFactory()->CreateTextLayout(
                 m_endNodeMessasgeText.c_str(), static_cast<UINT32>(m_endNodeMessasgeText.size()),
                 m_endNodeMessageTextFormat, MESSAGE_BOX_WIDTH, MESSAGE_BOX_HEIGHT, &m_endNodeMessageTextLayout));
   }
   // start node number
   if (m_startNodeNumberMarkBrush == nullptr) {
-    CHK_RES(m_startNodeNumberMarkBrush,
-            pRenderTarget->CreateSolidColorBrush(D2D1::ColorF(0.0f, 0.0f, 1.0f, 0.5f), &m_startNodeNumberMarkBrush));
+    THROW_IF_FAILED(pRenderTarget->CreateSolidColorBrush(D2D1::ColorF(0.0f, 0.0f, 1.0f, 0.5f), &m_startNodeNumberMarkBrush));
   }
   if (m_startNodeNumberTextFormat == nullptr) {
-    CHK_RES(m_startNodeNumberTextFormat,
-            pContext->GetDWriteFactory()->CreateTextFormat(
+    THROW_IF_FAILED(pContext->GetDWriteFactory()->CreateTextFormat(
                 MUI::GetString(IDS_DEFAULT_FONT_NAME), nullptr, DWRITE_FONT_WEIGHT_NORMAL, DWRITE_FONT_STYLE_NORMAL,
                 DWRITE_FONT_STRETCH_NORMAL, 16.0f, L"", &m_startNodeNumberTextFormat));
   }
   if (m_startNodeNumberTextLayout == nullptr) {
-    CHK_RES(m_startNodeMessageTextLayout,
-            pContext->GetDWriteFactory()->CreateTextLayout(
+    THROW_IF_FAILED(pContext->GetDWriteFactory()->CreateTextLayout(
                 m_startNodeNumberText.c_str(), static_cast<UINT32>(m_startNodeNumberText.size()),
                 m_startNodeNumberTextFormat, FLT_MAX, FLT_MAX, &m_startNodeNumberTextLayout));
   }
@@ -253,21 +243,26 @@ void touchmind::operation::CreateLinkOperation::_StartStartNodeAnimation(touchmi
   _StopStartNodeAnimation();
 
   m_startNodeStoryboard = nullptr;
-  CHK_HR(pContext->GetAnimationManager()->CreateStoryboard(&m_startNodeStoryboard));
+  THROW_IF_FAILED(pContext->GetAnimationManager()->CreateStoryboard(
+      &m_startNodeStoryboard));
   m_startNodeRadius = nullptr;
-  CHK_HR(pContext->GetAnimationManager()->CreateAnimationVariable(0.0f, &m_startNodeRadius));
+  THROW_IF_FAILED(pContext->GetAnimationManager()->CreateAnimationVariable(
+      0.0f, &m_startNodeRadius));
   m_startNodeTransition = nullptr;
-  CHK_HR(pContext->GetAnimationTransitionLibrary()->CreateLinearTransition(0.5f, 200.0f, &m_startNodeTransition));
-  CHK_HR(m_startNodeStoryboard->AddTransition(m_startNodeRadius, m_startNodeTransition));
+  THROW_IF_FAILED(
+      pContext->GetAnimationTransitionLibrary()->CreateLinearTransition(
+          0.5f, 200.0f, &m_startNodeTransition));
+  THROW_IF_FAILED(m_startNodeStoryboard->AddTransition(m_startNodeRadius,
+                                                       m_startNodeTransition));
 
   UI_ANIMATION_SECONDS secondsNow;
-  CHK_HR(pContext->GetAnimationTimer()->GetTime(&secondsNow));
-  CHK_HR(m_startNodeStoryboard->Schedule(secondsNow));
+  THROW_IF_FAILED(pContext->GetAnimationTimer()->GetTime(&secondsNow));
+  THROW_IF_FAILED(m_startNodeStoryboard->Schedule(secondsNow));
 }
 
 void touchmind::operation::CreateLinkOperation::_StopStartNodeAnimation() {
   if (m_startNodeStoryboard != nullptr) {
-    CHK_HR(m_startNodeStoryboard->Abandon());
+    THROW_IF_FAILED(m_startNodeStoryboard->Abandon());
   }
   m_startNodeStoryboard = nullptr;
   m_startNodeRadius = nullptr;
@@ -278,21 +273,26 @@ void touchmind::operation::CreateLinkOperation::_StartEndNodeAnimation(touchmind
   _StopEndNodeAnimation();
 
   m_endNodeStoryboard = nullptr;
-  CHK_HR(pContext->GetAnimationManager()->CreateStoryboard(&m_endNodeStoryboard));
+  THROW_IF_FAILED(
+      pContext->GetAnimationManager()->CreateStoryboard(&m_endNodeStoryboard));
   m_endNodeRadius = nullptr;
-  CHK_HR(pContext->GetAnimationManager()->CreateAnimationVariable(0.0f, &m_endNodeRadius));
+  THROW_IF_FAILED(pContext->GetAnimationManager()->CreateAnimationVariable(
+      0.0f, &m_endNodeRadius));
   m_endNodeTransition = nullptr;
-  CHK_HR(pContext->GetAnimationTransitionLibrary()->CreateLinearTransition(0.5f, 200.0f, &m_endNodeTransition));
-  CHK_HR(m_endNodeStoryboard->AddTransition(m_endNodeRadius, m_endNodeTransition));
+  THROW_IF_FAILED(
+      pContext->GetAnimationTransitionLibrary()->CreateLinearTransition(
+          0.5f, 200.0f, &m_endNodeTransition));
+  THROW_IF_FAILED(
+      m_endNodeStoryboard->AddTransition(m_endNodeRadius, m_endNodeTransition));
 
   UI_ANIMATION_SECONDS secondsNow;
-  CHK_HR(pContext->GetAnimationTimer()->GetTime(&secondsNow));
-  CHK_HR(m_endNodeStoryboard->Schedule(secondsNow));
+  THROW_IF_FAILED(pContext->GetAnimationTimer()->GetTime(&secondsNow));
+  THROW_IF_FAILED(m_endNodeStoryboard->Schedule(secondsNow));
 }
 
 void touchmind::operation::CreateLinkOperation::_StopEndNodeAnimation() {
   if (m_endNodeStoryboard != nullptr) {
-    CHK_HR(m_endNodeStoryboard->Abandon());
+    THROW_IF_FAILED(m_endNodeStoryboard->Abandon());
   }
   m_endNodeStoryboard = nullptr;
   m_endNodeRadius = nullptr;

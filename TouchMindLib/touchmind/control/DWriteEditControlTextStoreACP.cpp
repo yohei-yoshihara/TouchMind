@@ -1,4 +1,4 @@
-#include "StdAfx.h"
+﻿#include "StdAfx.h"
 #include "touchmind/logging/Logging.h"
 #include "touchmind/util/Utils.h"
 #include "touchmind/util/CoordinateConversion.h"
@@ -57,7 +57,7 @@ STDMETHODIMP touchmind::control::DWriteEditControlTextStoreACP::QueryInterface(R
     (*(LPUNKNOWN *)ppReturn)->AddRef();
     return S_OK;
   }
-  LOG(SEVERITY_LEVEL_ERROR) << L"E_NOINTERFACE";
+  SPDLOG_ERROR(L"E_NOINTERFACE");
   return E_NOINTERFACE;
 }
 
@@ -133,12 +133,12 @@ STDMETHODIMP touchmind::control::DWriteEditControlTextStoreACP::UnadviseSink(IUn
 
 STDMETHODIMP touchmind::control::DWriteEditControlTextStoreACP::RequestLock(DWORD dwLockFlags, HRESULT *phrSession) {
   if (nullptr == m_AdviseSink.pTextStoreACPSink) {
-    LOG(SEVERITY_LEVEL_ERROR) << L"E_UNEXPECTED";
+    SPDLOG_ERROR(L"E_UNEXPECTED");
     return E_UNEXPECTED;
   }
 
   if (nullptr == phrSession) {
-    LOG(SEVERITY_LEVEL_ERROR) << L"E_INVALIDARG";
+    SPDLOG_ERROR(L"E_INVALIDARG");
     return E_INVALIDARG;
   }
 
@@ -770,7 +770,7 @@ STDMETHODIMP touchmind::control::DWriteEditControlTextStoreACP::_TestInsert(LONG
                                                                             ULONG cch, LONG *pacpResultStart,
                                                                             LONG *pacpResultEnd) {
   if ((acpTestStart > acpTestEnd) || (acpTestStart > static_cast<LONG>(m_text.length()))) {
-    LOG(SEVERITY_LEVEL_ERROR) << L"hr = E_INVALIDARG";
+    SPDLOG_ERROR(L"hr = E_INVALIDARG");
     return E_INVALIDARG;
   }
 

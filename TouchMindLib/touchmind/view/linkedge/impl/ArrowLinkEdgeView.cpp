@@ -1,4 +1,4 @@
-#include "stdafx.h"
+﻿#include "stdafx.h"
 #include "touchmind/Context.h"
 #include "touchmind/model/node/NodeModel.h"
 #include "touchmind/model/link/LinkModel.h"
@@ -34,15 +34,17 @@ void touchmind::view::linkedge::impl::ArrowLinkEdgeView::CreateDeviceDependentRe
 
     D2D1_POINT_2F point0 = link->GetEdgePoint(GetEdgeId());
     std::vector<D2D1_POINT_2F> points;
-    view::GeometryBuilder::CalculateArrowPoints(point0, linkEdge->GetMarkerSize() + link->GetLineWidth(),
-                                                linkEdge->GetMarkerSize() + link->GetLineWidth(), linkEdge->GetAngle(),
+    view::GeometryBuilder::CalculateArrowPoints(point0, linkEdge->GetMarkerSize() + static_cast<int>(link->GetLineWidth()),
+                                                linkEdge->GetMarkerSize() + static_cast<int>(link->GetLineWidth()), linkEdge->GetAngle(),
                                                 node->GetAncestorPosition(), points);
     m_pArrowGeometry = nullptr;
-    CHK_RES(m_pArrowGeometry,
+    THROW_IF_FAILED(
             view::GeometryBuilder::CreatePathGeometryFromPoints(pD2DFactory, points, &m_pArrowGeometry));
 
     m_pBrush = nullptr;
-    CHK_RES(m_pBrush, pRenderTarget->CreateSolidColorBrush(link->GetLineColor(), D2D1::BrushProperties(), &m_pBrush));
+    THROW_IF_FAILED(pRenderTarget->CreateSolidColorBrush(
+                                  link->GetLineColor(), D2D1::BrushProperties(),
+                                  &m_pBrush));
     SetRepaintCounter(linkEdge);
   }
 }

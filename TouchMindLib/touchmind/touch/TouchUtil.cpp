@@ -1,4 +1,4 @@
-#include "stdafx.h"
+﻿#include "stdafx.h"
 #include "touchmind/touch/AbstractManipulationHelper.h"
 #include "touchmind/touch/TouchUtil.h"
 
@@ -14,10 +14,10 @@ void touchmind::touch::TouchUtil::DumpGestureConfig(HWND hWnd) {
   gc[4].dwID = GID_PRESSANDTAP;
   BOOL bResult = GetGestureConfig(hWnd, 0, 0, &uiGcs, gc, sizeof(GESTURECONFIG));
   if (!bResult) {
-    LOG(SEVERITY_LEVEL_ERROR) << L"GetGestureConfig error = " << GetLastError();
+    SPDLOG_ERROR(L"GetGestureConfig error = {}", GetLastError());
   } else {
-    for (int i = 0; i < GC_SIZE; ++i) {
-      LOG(SEVERITY_LEVEL_ERROR) << gc[i];
-    }
+    //for (int i = 0; i < GC_SIZE; ++i) {
+    //  SPDLOG_ERROR(gc[i];
+    //}
   }
 }

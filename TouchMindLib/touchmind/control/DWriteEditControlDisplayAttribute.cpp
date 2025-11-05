@@ -1,4 +1,4 @@
-#include "StdAfx.h"
+﻿#include "StdAfx.h"
 #include "DWriteEditControlDisplayAttribute.h"
 
 touchmind::control::DWriteEditControlDisplayAttribute::DWriteEditControlDisplayAttribute(void)

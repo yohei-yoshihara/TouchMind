@@ -1,6 +1,7 @@
 # compiled source #
 ###################
 
+*.aps
 #*.dll
 #*.lib
 *.fxo

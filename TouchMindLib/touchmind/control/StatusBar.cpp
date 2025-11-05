@@ -1,4 +1,4 @@
-#include "StdAfx.h"
+﻿#include "StdAfx.h"
 #include "touchmind/Common.h"
 #include "touchmind/logging/Logging.h"
 #include "touchmind/control/StatusBar.h"
@@ -22,7 +22,7 @@ HRESULT touchmind::control::StatusBar::Initialize(HWND hwndParent, int idStatus,
   initCtrls.dwSize = sizeof(initCtrls);
   initCtrls.dwICC = ICC_BAR_CLASSES;
   if (!InitCommonControlsEx(&initCtrls)) {
-    LOG(SEVERITY_LEVEL_ERROR) << L"InitCommonControlsEx failed";
+    SPDLOG_ERROR(L"InitCommonControlsEx failed");
     return E_FAIL;
   }
 
@@ -30,7 +30,7 @@ HRESULT touchmind::control::StatusBar::Initialize(HWND hwndParent, int idStatus,
                           (HMENU)idStatus, hInstance, nullptr);
   hr = m_hWnd != nullptr ? S_OK : E_FAIL;
   if (FAILED(hr)) {
-    LOG(SEVERITY_LEVEL_ERROR) << L"Create status bar failed";
+    SPDLOG_ERROR(L"Create status bar failed");
     return hr;
   }
   SetParts(numberOfParts);
@@ -82,6 +82,6 @@ void touchmind::control::StatusBar::SetText(int index, const wchar_t *text) {
 }
 
 void touchmind::control::StatusBar::ClearText(int index) {
-  WCHAR *s = L"";
+  const WCHAR *s = L"";
   SendMessage(m_hWnd, SB_SETTEXT, index, (LPARAM)s);
 }

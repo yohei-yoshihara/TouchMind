@@ -1,13 +1,13 @@
-#ifndef TOUCHMIND_MODEL_NODEMODELXMLENCODER_H_
+﻿#ifndef TOUCHMIND_MODEL_NODEMODELXMLENCODER_H_
 #define TOUCHMIND_MODEL_NODEMODELXMLENCODER_H_
 
 #include "forwarddecl.h"
 
-#ifndef __RENAME_MSXML
-#define __RENAME_MSXML
-#import "MSXML6.dll" rename_namespace(_T("MSXML"))
-#endif
-#include <msxml6.h>
+//#ifndef __RENAME_MSXML
+//#define __RENAME_MSXML
+//#import "MSXML6.dll" rename_namespace(_T("MSXML"))
+//#endif
+//#include <msxml6.h>
 
 namespace touchmind {
   namespace converter {
@@ -16,8 +16,8 @@ namespace touchmind {
       NodeModelXMLEncoder(void);
       ~NodeModelXMLEncoder(void);
 
-      HRESULT Encode(IN std::shared_ptr<touchmind::model::node::NodeModel> node, IN MSXML::IXMLDOMDocumentPtr pXMLDoc,
-                     OUT MSXML::IXMLDOMElementPtr &pElement);
+      HRESULT Encode(IN std::shared_ptr<touchmind::model::node::NodeModel> node,
+                     OUT pugi::xml_node &pElement);
     };
   } // converter
 } // touchmind

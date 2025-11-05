@@ -1,4 +1,4 @@
-#include "stdafx.h"
+﻿#include "stdafx.h"
 #include "touchmind/Common.h"
 #include "touchmind/model/node/NodeModel.h"
 #include "touchmind/model/link/LinkModel.h"
@@ -31,14 +31,12 @@ void touchmind::model::linkedge::LinkEdgeModel::CalculateAngleAndLength(D2D1_POI
 
 D2D1_POINT_2F touchmind::model::linkedge::LinkEdgeModel::CalculateHandlePosition(D2D1_POINT_2F nodePos,
                                                                                  touchmind::NODE_SIDE nodeSide) const {
-  LOG_ENTER_ARG(L"nodePos = " << nodePos << L", nodeSide = " << nodeSide);
   D2D1_POINT_2F p = {std::cos(m_angle) * m_length, -std::sin(m_angle) * m_length};
   if (nodeSide == NODE_SIDE_LEFT) {
     p.x = -p.x;
   }
   p.x += nodePos.x;
   p.y += nodePos.y;
-  LOG_LEAVE_ARG(L"p = " << p);
   return p;
 }
 

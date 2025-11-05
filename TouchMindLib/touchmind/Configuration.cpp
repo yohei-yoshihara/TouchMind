@@ -1,4 +1,4 @@
-#include "StdAfx.h"
+﻿#include "StdAfx.h"
 #include "Configuration.h"
 
 std::wostream &touchmind::operator<<(std::wostream &os, const LAYOUT_ORIENTATION &layoutOrientation) {

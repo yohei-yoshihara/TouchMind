@@ -1,4 +1,4 @@
-#include "stdafx.h"
+﻿#include "stdafx.h"
 #include "touchmind/Common.h"
 #include "touchmind/logging/Logging.h"
 #include "touchmind/view/GeometryBuilder.h"
@@ -36,10 +36,10 @@ void touchmind::view::node::NodeFigureHelper::DrawPlate(const D2D1_RECT_F &rect,
   }
 
   if (m_pStrokeColorBrush == nullptr) {
-    CHK_RES(m_pStrokeColorBrush, pRenderTarget->CreateSolidColorBrush(m_strokeColor, &m_pStrokeColorBrush));
+    THROW_IF_FAILED(pRenderTarget->CreateSolidColorBrush(m_strokeColor, &m_pStrokeColorBrush));
   }
   if (m_pPlateOutlinePathGeometry == nullptr) {
-    CHK_RES(m_pPlateOutlinePathGeometry, GeometryBuilder::CreateRoundedRectangleGeometry(
+    THROW_IF_FAILED(GeometryBuilder::CreateRoundedRectangleGeometry(
                                              pD2DFactory, rect, r, false, true, &m_pPlateOutlinePathGeometry));
   }
 
@@ -47,7 +47,8 @@ void touchmind::view::node::NodeFigureHelper::DrawPlate(const D2D1_RECT_F &rect,
     std::vector<D2D1_GRADIENT_STOP> plateOutlineGradientStops;
     plateOutlineGradientStops.push_back(D2D1::GradientStop(0.0f, m_plateStartColor));
     plateOutlineGradientStops.push_back(D2D1::GradientStop(1.0f, m_plateEndColor));
-    CHK_RES(m_pPlateBrush, GeometryBuilder::CreateDiagonalGradientBrush(pRenderTarget, rect, plateOutlineGradientStops,
+    THROW_IF_FAILED(GeometryBuilder::CreateDiagonalGradientBrush(
+            pRenderTarget, rect, plateOutlineGradientStops,
                                                                         &m_pPlateBrush));
   }
   // Outer frame
@@ -60,15 +61,15 @@ void touchmind::view::node::NodeFigureHelper::DrawPlate(const D2D1_RECT_F &rect,
       = D2D1::RectF(rect.right - m_triangleSize - m_triangleMergin, rect.bottom - m_triangleSize - m_triangleMergin,
                     rect.right - m_triangleMergin, rect.bottom - m_triangleMergin);
   if (m_pTrianglePathGeometry == nullptr) {
-    CHK_RES(m_pTrianglePathGeometry,
-            GeometryBuilder::CreateTriangleMoverGeometry(pD2DFactory, triangleRect, TRIANGLE_VERTEX_BOTTOM_RIGHT,
+    THROW_IF_FAILED(GeometryBuilder::CreateTriangleMoverGeometry(pD2DFactory, triangleRect, TRIANGLE_VERTEX_BOTTOM_RIGHT,
                                                          &m_pTrianglePathGeometry));
   }
   if (m_pTriangleBrush == nullptr) {
     std::vector<D2D1_GRADIENT_STOP> triangleGradientStops;
     triangleGradientStops.push_back(D2D1::GradientStop(0.0f, D2D1::ColorF(0xd45500, 1.0f)));
     triangleGradientStops.push_back(D2D1::GradientStop(1.0f, D2D1::ColorF(0xff9249, 1.0f)));
-    CHK_RES(m_pTriangleBrush, GeometryBuilder::CreateVerticalGradientBrush(pRenderTarget, triangleRect,
+    THROW_IF_FAILED(GeometryBuilder::CreateVerticalGradientBrush(
+                        pRenderTarget, triangleRect,
                                                                            triangleGradientStops, &m_pTriangleBrush));
   }
   if (m_pTrianglePathGeometry != nullptr && m_pTriangleBrush != nullptr) {

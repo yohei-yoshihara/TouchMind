@@ -111,7 +111,7 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
-      <AdditionalOptions>/Zm256 %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalOptions>/Zm256 /utf-8 %(AdditionalOptions)</AdditionalOptions>
       <Optimization>Disabled</Optimization>
       <AdditionalIncludeDirectories>
       </AdditionalIncludeDirectories>
@@ -125,6 +125,7 @@
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <MultiProcessorCompilation>false</MultiProcessorCompilation>
       <TreatWarningAsError>false</TreatWarningAsError>
+      <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -158,6 +159,7 @@
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="pugixml\pugixml.cpp" />
     <ClCompile Include="touchmind\model\BaseModel.cpp" />
     <ClCompile Include="touchmind\model\linkedge\LinkEdgeModel.cpp" />
     <ClCompile Include="touchmind\model\link\LinkModel.cpp" />
@@ -267,6 +269,8 @@
   <ItemGroup>
     <ClInclude Include="forwarddecl.h" />
     <ClInclude Include="libs.h" />
+    <ClInclude Include="pugixml\pugiconfig.hpp" />
+    <ClInclude Include="pugixml\pugixml.hpp" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="touchmind\animation\IAnimationStatusChangedListener.h" />
     <ClInclude Include="touchmind\model\BaseModel.h" />

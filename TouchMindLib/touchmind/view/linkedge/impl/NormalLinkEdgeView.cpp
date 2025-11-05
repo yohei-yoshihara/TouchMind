@@ -1,4 +1,4 @@
-#include "stdafx.h"
+﻿#include "stdafx.h"
 #include "touchmind/Context.h"
 #include "touchmind/model/linkedge/LinkEdgeModel.h"
 #include "touchmind/view/linkedge/impl/NormalLinkEdgeView.h"

@@ -1,4 +1,4 @@
-#include "stdafx.h"
+﻿#include "stdafx.h"
 #include "touchmind/model/node/NodeModel.h"
 #include "touchmind/view/path/BasePathView.h"
 #include "touchmind/view/path/impl/DefaultPathView.h"

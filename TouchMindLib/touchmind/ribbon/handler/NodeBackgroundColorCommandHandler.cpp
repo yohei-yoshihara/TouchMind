@@ -1,4 +1,4 @@
-#include "stdafx.h"
+﻿#include "stdafx.h"
 #include "resource.h"
 #include "touchmind/Common.h"
 #include "touchmind/Context.h"
@@ -16,7 +16,6 @@
 
 HRESULT touchmind::ribbon::handler::NodeBackgroundColorCommandHandler::_CreateUIImage(D2D1_COLOR_F color,
                                                                                       IUIImage **ppUIImage) {
-  LOG_ENTER;
   static UINT dpiList[] = {96, 120, 144, 192};
   static UINT sizeList[] = {32, 40, 48, 64};
 
@@ -36,12 +35,11 @@ HRESULT touchmind::ribbon::handler::NodeBackgroundColorCommandHandler::_CreateUI
   }
 
   CComPtr<IWICBitmap> pWICBitmap = nullptr;
-  CHK_RES(pWICBitmap,
-          touchmind::util::BitmapHelper::CreateBitmap(m_pContext->GetWICImagingFactory(), static_cast<UINT>(width),
+  THROW_IF_FAILED(touchmind::util::BitmapHelper::CreateBitmap(m_pContext->GetWICImagingFactory(), static_cast<UINT>(width),
                                                       static_cast<UINT>(height), &pWICBitmap));
 
   CComPtr<ID2D1RenderTarget> pRenderTarget = nullptr;
-  CHK_RES(pRenderTarget, touchmind::util::BitmapHelper::CreateBitmapRenderTarget(
+  THROW_IF_FAILED(touchmind::util::BitmapHelper::CreateBitmapRenderTarget(
                              pWICBitmap, m_pContext->GetD2DFactory(), &pRenderTarget));
 
   pRenderTarget->BeginDraw();
@@ -61,7 +59,6 @@ HRESULT touchmind::ribbon::handler::NodeBackgroundColorCommandHandler::_CreateUI
   touchmind::util::BitmapHelper::CreateBitmapFromWICBitmapSource(pWICBitmap, &hBitmap);
 
   hr = m_pRibbonFramework->GetUIImageFromBitmap()->CreateImage(hBitmap, UI_OWNERSHIP_TRANSFER, ppUIImage);
-  LOG_LEAVE;
   return hr;
 }
 
@@ -136,7 +133,7 @@ IFACEMETHODIMP touchmind::ribbon::handler::NodeBackgroundColorCommandHandler::Ex
   UNREFERENCED_PARAMETER(cmdID);
   UNREFERENCED_PARAMETER(pCommandExecutionProperties);
 
-  LOG(SEVERITY_LEVEL_DEBUG) << L"key = " << *pKey;
+  //LOG(SEVERITY_LEVEL_DEBUG) << L"key = " << *pKey;
 
   HRESULT hr = E_FAIL;
   if (pKey && *pKey == UI_PKEY_ColorType) {
@@ -171,7 +168,6 @@ IFACEMETHODIMP touchmind::ribbon::handler::NodeBackgroundColorCommandHandler::Ex
 
 IFACEMETHODIMP touchmind::ribbon::handler::NodeBackgroundColorCommandHandler::UpdateProperty(
     UINT cmdID, REFPROPERTYKEY key, const PROPVARIANT *pPropvarCurrentValue, PROPVARIANT *pPropvarNewValue) {
-  LOG_ENTER;
   UNREFERENCED_PARAMETER(cmdID);
   UNREFERENCED_PARAMETER(key);
   UNREFERENCED_PARAMETER(pPropvarCurrentValue);
@@ -202,12 +198,10 @@ IFACEMETHODIMP touchmind::ribbon::handler::NodeBackgroundColorCommandHandler::Up
       CComPtr<IUIImage> uiImage = nullptr;
       D2D1_COLOR_F colorF = m_pRibbonRequestDispatcher->UpdateProperty_GetNodeBackgroundColor();
       hr = _CreateUIImage(colorF, &uiImage);
-      CHK_RES(uiImage, S_OK);
       if (SUCCEEDED(hr)) {
         hr = UIInitPropertyFromImage(key, uiImage, pPropvarNewValue);
       }
     }
   }
-  LOG_LEAVE;
   return hr;
 }

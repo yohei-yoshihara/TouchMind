@@ -1,6 +1,8 @@
 #ifndef TOUCHMIND_PROP_LINEWIDTH_H_
 #define TOUCHMIND_PROP_LINEWIDTH_H_
 
+#include <sstream>
+
 namespace touchmind {
 #define NUMBER_OF_LINE_WIDTHS 4
   enum LINE_WIDTH {

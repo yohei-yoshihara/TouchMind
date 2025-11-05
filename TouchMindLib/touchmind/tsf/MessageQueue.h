@@ -1,4 +1,4 @@
-#ifndef TOUCHMIND_TSF_MESSAGEQUEUE_H_
+﻿#ifndef TOUCHMIND_TSF_MESSAGEQUEUE_H_
 #define TOUCHMIND_TSF_MESSAGEQUEUE_H_
 
 namespace touchmind {

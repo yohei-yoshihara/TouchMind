@@ -1,4 +1,4 @@
-#include "stdafx.h"
+﻿#include "stdafx.h"
 #include "touchmind/prop/LineEdgeStyle.h"
 
 std::wostream &touchmind::operator<<(std::wostream &os, const EDGE_ID &edgeId) {

@@ -1,4 +1,4 @@
-#ifndef TOUCHMIND_TSF_TSFMANAGER_H_
+﻿#ifndef TOUCHMIND_TSF_TSFMANAGER_H_
 #define TOUCHMIND_TSF_TSFMANAGER_H_
 
 namespace touchmind {

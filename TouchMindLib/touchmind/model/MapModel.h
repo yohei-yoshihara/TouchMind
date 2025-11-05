@@ -1,13 +1,13 @@
-#ifndef TOUCHMIND_MODEL_MAPMODEL_H_
+﻿#ifndef TOUCHMIND_MODEL_MAPMODEL_H_
 #define TOUCHMIND_MODEL_MAPMODEL_H_
 
 #include "forwarddecl.h"
 
-#ifndef __RENAME_MSXML
-#define __RENAME_MSXML
-#import "MSXML6.dll" rename_namespace(_T("MSXML"))
-#endif
-#include <msxml6.h>
+//#ifndef __RENAME_MSXML
+//#define __RENAME_MSXML
+//#import "MSXML6.dll" rename_namespace(_T("MSXML"))
+//#endif
+//#include <msxml6.h>
 
 namespace touchmind {
   namespace model {
@@ -72,11 +72,11 @@ namespace touchmind {
       void _FireBeforeSaveEvent();
       void _FireAfterSaveEvent();
       int _GetNumericStartIndex(const std::wstring &text);
-      MapModelIOResult _Open_Version_1_0(MSXML::IXMLDOMElementPtr tmmElement);
-      MapModelIOResult _OpenFromFreeMind_ParseNodeList(std::shared_ptr<touchmind::model::node::NodeModel> parent,
-                                                       MSXML::IXMLDOMNodeListPtr pNodeList);
-      MapModelIOResult _OpenFromFreeMind_ParseNode(std::shared_ptr<touchmind::model::node::NodeModel> node,
-                                                   MSXML::IXMLDOMNodePtr xmlNode);
+      MapModelIOResult _Open_Version_1_0(pugi::xml_node tmmElement);
+      //MapModelIOResult _OpenFromFreeMind_ParseNodeList(std::shared_ptr<touchmind::model::node::NodeModel> parent,
+      //                                                 MSXML::IXMLDOMNodeListPtr pNodeList);
+      //MapModelIOResult _OpenFromFreeMind_ParseNode(std::shared_ptr<touchmind::model::node::NodeModel> node,
+      //                                             MSXML::IXMLDOMNodePtr xmlNode);
 
     public:
       static void SetDefaultRootNodeText(const std::wstring &defaultRootNodeText) {

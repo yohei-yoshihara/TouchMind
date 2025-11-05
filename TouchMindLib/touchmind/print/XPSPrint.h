@@ -1,4 +1,4 @@
-#ifndef TOUCHMIND_PRINT_XPSPRINT_H_
+﻿#ifndef TOUCHMIND_PRINT_XPSPRINT_H_
 #define TOUCHMIND_PRINT_XPSPRINT_H_
 
 #include "forwarddecl.h"

@@ -1,4 +1,4 @@
-#ifndef TOUCHMIND_CLIPBOARD_H_
+﻿#ifndef TOUCHMIND_CLIPBOARD_H_
 #define TOUCHMIND_CLIPBOARD_H_
 
 #include "forwarddecl.h"

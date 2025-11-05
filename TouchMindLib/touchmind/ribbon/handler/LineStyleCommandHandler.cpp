@@ -1,4 +1,4 @@
-#include "stdafx.h"
+﻿#include "stdafx.h"
 #include "resource.h"
 #include "touchmind/Common.h"
 #include "touchmind/logging/Logging.h"
@@ -113,9 +113,9 @@ IFACEMETHODIMP touchmind::ribbon::handler::LineStyleCommandHandler::UpdateProper
   if (!s_imageInitialized) {
     for (size_t i = 0; i < s_IMAGE_ID.size(); ++i) {
       m_pImages[i] = nullptr;
-      CHK_HR(m_pRibbonFramework->CreateUIImageFromBitmapResource(MAKEINTRESOURCE(s_IMAGE_ID[i]), &m_pImages[i]));
+      THROW_IF_FAILED(m_pRibbonFramework->CreateUIImageFromBitmapResource(MAKEINTRESOURCE(s_IMAGE_ID[i]), &m_pImages[i]));
       m_pImages64x24[i] = nullptr;
-      CHK_HR(
+      THROW_IF_FAILED(
           m_pRibbonFramework->CreateUIImageFromBitmapResource(MAKEINTRESOURCE(s_IMAGE64x24_ID[i]), &m_pImages64x24[i]));
     }
     s_imageInitialized = true;
@@ -133,7 +133,7 @@ IFACEMETHODIMP touchmind::ribbon::handler::LineStyleCommandHandler::UpdateProper
     hr = S_FALSE;
   } else if (UI_PKEY_ItemsSource == key) {
     CComPtr<IUICollection> collection = nullptr;
-    CHK_HR(pPropvarCurrentValue->punkVal->QueryInterface(IID_PPV_ARGS(&collection)));
+    THROW_IF_FAILED(pPropvarCurrentValue->punkVal->QueryInterface(IID_PPV_ARGS(&collection)));
     for (size_t i = 0; i < s_IMAGE_ID.size(); ++i) {
       CComPtr<PropertySet> item(new PropertySet());
       item->SetImage(m_pImages64x24[i]);

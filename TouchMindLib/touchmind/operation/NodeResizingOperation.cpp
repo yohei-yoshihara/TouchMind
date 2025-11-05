@@ -1,4 +1,4 @@
-#include "stdafx.h"
+﻿#include "stdafx.h"
 #include "touchmind/Context.h"
 #include "touchmind/Configuration.h"
 #include "touchmind/model/Insets.h"
@@ -18,8 +18,7 @@ void touchmind::operation::NodeResizingOperation::CreateDeviceDependentResources
                                                                                  ID2D1RenderTarget *pRenderTarget) {
   UNREFERENCED_PARAMETER(pContext);
   m_pResizingFigureBrush = nullptr;
-  CHK_RES(m_pResizingFigureBrush,
-          pRenderTarget->CreateSolidColorBrush(D2D1::ColorF(1.0f, 0.5f, 0.0f, 0.5f), &m_pResizingFigureBrush));
+  THROW_IF_FAILED(pRenderTarget->CreateSolidColorBrush(D2D1::ColorF(1.0f, 0.5f, 0.0f, 0.5f), &m_pResizingFigureBrush));
 }
 
 void touchmind::operation::NodeResizingOperation::Draw(touchmind::Context *pContext, ID2D1RenderTarget *pRenderTarget) {

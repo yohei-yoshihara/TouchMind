@@ -1,4 +1,4 @@
-#ifndef TOUCHMIND_ANIMATION_ANIMATIONMANAGEREVENTHANDLER_H_
+﻿#ifndef TOUCHMIND_ANIMATION_ANIMATIONMANAGEREVENTHANDLER_H_
 #define TOUCHMIND_ANIMATION_ANIMATIONMANAGEREVENTHANDLER_H_
 
 #include "forwarddecl.h"
@@ -49,13 +49,13 @@ namespace touchmind {
         static const IID IID_UNKNOWN = {0x00000000, 0x0000, 0x0000, 0xc0, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x46};
         if (::InlineIsEqualGUID(riid, IID_UNKNOWN)) {
           *ppvObject = static_cast<IUIAnimationCallback *>(this);
-          AddRef();
+          this->AddRef();
           return S_OK;
         }
 
         if (::InlineIsEqualGUID(riid, riidCallback)) {
           *ppvObject = static_cast<IUIAnimationCallback *>(this);
-          AddRef();
+          this->AddRef();
           return S_OK;
         }
 
@@ -72,7 +72,7 @@ namespace touchmind {
         }
         IFACEMETHOD(QueryInterface)(__in REFIID riid, __deref_out void **ppvObject) {
           IUIAnimationCallback **ppAnimationInterface = reinterpret_cast<IUIAnimationCallback **>(ppvObject);
-          return QueryInterfaceCallback(riid, IID_PPV_ARGS(ppAnimationInterface));
+          return this->QueryInterfaceCallback(riid, IID_PPV_ARGS(ppAnimationInterface));
         }
 
         IFACEMETHOD_(ULONG, AddRef)() {

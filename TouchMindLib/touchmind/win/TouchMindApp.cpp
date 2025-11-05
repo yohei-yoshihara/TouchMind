@@ -1,4 +1,4 @@
-#include "StdAfx.h"
+﻿#include "StdAfx.h"
 #include <Strsafe.h>
 #include "Resource.h"
 #include "TouchMindApp.h"
@@ -70,15 +70,14 @@ void touchmind::win::TouchMindApp::Initialize() {
   HICON hIcon = LoadIcon(HINST_THISCOMPONENT, MAKEINTRESOURCE(IDI_TOUCHMIND));
   if (hIcon == nullptr) {
     DWORD lastError = GetLastError();
-    LOG(SEVERITY_LEVEL_ERROR) << util::LastError(util::LastErrorArgs(L"LoadIcon(IDI_TOUCHMIND)", lastError));
+    SPDLOG_ERROR(L"LoadIcon(IDI_TOUCHMIND), lastError = {}", lastError);
     throw std::runtime_error("LoadIcon");
   }
 
   HACCEL hAccel = LoadAccelerators(HINST_THISCOMPONENT, MAKEINTRESOURCE(IDR_ACCELERATOR_DEFAULT));
   if (hAccel == nullptr) {
     DWORD lastError = GetLastError();
-    LOG(SEVERITY_LEVEL_ERROR) << util::LastError(
-        util::LastErrorArgs(L"LoadAccelerators(IDR_ACCELERATOR_DEFAULT)", lastError));
+    SPDLOG_ERROR(L"LoadAccelerators(IDR_ACCELERATOR_DEFAULT), lastError = {}", lastError);
     throw std::runtime_error("LoadAccelerators");
   }
 
@@ -106,7 +105,7 @@ void touchmind::win::TouchMindApp::Initialize() {
                         static_cast<UINT>(ceil(768.f * dpiY / 96.f)), nullptr, nullptr, HINST_THISCOMPONENT, this);
   if (m_hwnd == nullptr) {
     DWORD lastError = GetLastError();
-    LOG(SEVERITY_LEVEL_ERROR) << util::LastError(util::LastErrorArgs(L"CreateWindow", lastError));
+    SPDLOG_ERROR(L"CreateWindow, lastError = {}", lastError);
     throw std::runtime_error("CreateWindow");
   }
   m_pTsfManager->SetHAccel(hAccel);
@@ -144,13 +143,15 @@ void touchmind::win::TouchMindApp::_InitializeRibbon() {
   // NodeShapeCommandHandler
   CComPtr<IUICommandHandler> nodeShapeCommandHandler(new touchmind::ribbon::handler::NodeShapeCommandHandler(
       m_pRibbonFramework.get(), m_ribbonRequestDispatcher.get()));
-  CHK_RES(nodeShapeCommandHandler, S_OK);
   m_pRibbonFramework->GetRibbonCommandHandler()->AddCommandHandler(cmdNodeShape, nodeShapeCommandHandler);
   m_ribbonRequestDispatcher->AddSelectionChangedListner([](
       touchmind::ribbon::RibbonFramework *pRibbonFramework,
       std::shared_ptr<touchmind::selection::SelectableSupport> oldSelectedItem,
       std::shared_ptr<touchmind::selection::SelectableSupport> newSelectedItem) {
-    pRibbonFramework->GetFramework()->InvalidateUICommand(cmdNodeShape, UI_INVALIDATIONS_PROPERTY, &UI_PKEY_Enabled);
+        UNREFERENCED_PARAMETER(oldSelectedItem);
+        UNREFERENCED_PARAMETER(newSelectedItem);
+        pRibbonFramework->GetFramework()->InvalidateUICommand(
+            cmdNodeShape, UI_INVALIDATIONS_PROPERTY, &UI_PKEY_Enabled);
     pRibbonFramework->GetFramework()->InvalidateUICommand(cmdNodeShape, UI_INVALIDATIONS_PROPERTY,
                                                           &UI_PKEY_SelectedItem);
     pRibbonFramework->GetFramework()->InvalidateUICommand(cmdNodeShape, UI_INVALIDATIONS_PROPERTY, &UI_PKEY_LargeImage);
@@ -160,13 +161,15 @@ void touchmind::win::TouchMindApp::_InitializeRibbon() {
   CComPtr<IUICommandHandler> nodeBackgroundCommandHandler(
       new touchmind::ribbon::handler::NodeBackgroundColorCommandHandler(
           m_pCanvasPanel->GetContext(), m_pRibbonFramework.get(), m_ribbonRequestDispatcher.get()));
-  CHK_RES(nodeBackgroundCommandHandler, S_OK);
   m_pRibbonFramework->GetRibbonCommandHandler()->AddCommandHandler(cmdBackgroundColor, nodeBackgroundCommandHandler);
   m_ribbonRequestDispatcher->AddSelectionChangedListner(
       [](touchmind::ribbon::RibbonFramework *pRibbonFramework,
          std::shared_ptr<touchmind::selection::SelectableSupport> oldSelectedItem,
          std::shared_ptr<touchmind::selection::SelectableSupport> newSelectedItem) {
-        pRibbonFramework->GetFramework()->InvalidateUICommand(cmdBackgroundColor, UI_INVALIDATIONS_PROPERTY,
+        UNREFERENCED_PARAMETER(oldSelectedItem);
+        UNREFERENCED_PARAMETER(newSelectedItem);
+        pRibbonFramework->GetFramework()->InvalidateUICommand(
+            cmdBackgroundColor, UI_INVALIDATIONS_PROPERTY,
                                                               &UI_PKEY_Enabled);
         pRibbonFramework->GetFramework()->InvalidateUICommand(cmdBackgroundColor, UI_INVALIDATIONS_PROPERTY,
                                                               &UI_PKEY_ColorType);
@@ -179,13 +182,15 @@ void touchmind::win::TouchMindApp::_InitializeRibbon() {
   // LineWidthCommandHandler
   CComPtr<IUICommandHandler> lineWidthCommandHandler(new touchmind::ribbon::handler::LineWidthCommandHandler(
       m_pRibbonFramework.get(), m_ribbonRequestDispatcher.get()));
-  CHK_RES(lineWidthCommandHandler, S_OK);
   m_pRibbonFramework->GetRibbonCommandHandler()->AddCommandHandler(cmdLineWidth, lineWidthCommandHandler);
   m_ribbonRequestDispatcher->AddSelectionChangedListner([](
       touchmind::ribbon::RibbonFramework *pRibbonFramework,
       std::shared_ptr<touchmind::selection::SelectableSupport> oldSelectedItem,
       std::shared_ptr<touchmind::selection::SelectableSupport> newSelectedItem) {
-    pRibbonFramework->GetFramework()->InvalidateUICommand(cmdLineWidth, UI_INVALIDATIONS_PROPERTY, &UI_PKEY_Enabled);
+        UNREFERENCED_PARAMETER(oldSelectedItem);
+        UNREFERENCED_PARAMETER(newSelectedItem);
+        pRibbonFramework->GetFramework()->InvalidateUICommand(
+            cmdLineWidth, UI_INVALIDATIONS_PROPERTY, &UI_PKEY_Enabled);
     pRibbonFramework->GetFramework()->InvalidateUICommand(cmdLineWidth, UI_INVALIDATIONS_PROPERTY,
                                                           &UI_PKEY_SelectedItem);
     pRibbonFramework->GetFramework()->InvalidateUICommand(cmdLineWidth, UI_INVALIDATIONS_PROPERTY, &UI_PKEY_LargeImage);
@@ -194,13 +199,15 @@ void touchmind::win::TouchMindApp::_InitializeRibbon() {
   // LineStyleCommandHandler
   CComPtr<IUICommandHandler> lineStyleCommandHandler(new touchmind::ribbon::handler::LineStyleCommandHandler(
       m_pRibbonFramework.get(), m_ribbonRequestDispatcher.get()));
-  CHK_RES(lineStyleCommandHandler, S_OK);
   m_pRibbonFramework->GetRibbonCommandHandler()->AddCommandHandler(cmdLineStyle, lineStyleCommandHandler);
   m_ribbonRequestDispatcher->AddSelectionChangedListner([](
       touchmind::ribbon::RibbonFramework *pRibbonFramework,
       std::shared_ptr<touchmind::selection::SelectableSupport> oldSelectedItem,
       std::shared_ptr<touchmind::selection::SelectableSupport> newSelectedItem) {
-    pRibbonFramework->GetFramework()->InvalidateUICommand(cmdLineStyle, UI_INVALIDATIONS_PROPERTY, &UI_PKEY_Enabled);
+        UNREFERENCED_PARAMETER(oldSelectedItem);
+        UNREFERENCED_PARAMETER(newSelectedItem);
+        pRibbonFramework->GetFramework()->InvalidateUICommand(
+            cmdLineStyle, UI_INVALIDATIONS_PROPERTY, &UI_PKEY_Enabled);
     pRibbonFramework->GetFramework()->InvalidateUICommand(cmdLineStyle, UI_INVALIDATIONS_PROPERTY,
                                                           &UI_PKEY_SelectedItem);
     pRibbonFramework->GetFramework()->InvalidateUICommand(cmdLineStyle, UI_INVALIDATIONS_PROPERTY, &UI_PKEY_LargeImage);
@@ -209,13 +216,15 @@ void touchmind::win::TouchMindApp::_InitializeRibbon() {
   // LineEdgeStyleCommandHandler
   CComPtr<IUICommandHandler> lineEdgeStyleCommandHandler(new touchmind::ribbon::handler::LineEdgeStyleCommandHandler(
       m_pRibbonFramework.get(), m_ribbonRequestDispatcher.get()));
-  CHK_RES(lineEdgeStyleCommandHandler, S_OK);
   m_pRibbonFramework->GetRibbonCommandHandler()->AddCommandHandler(cmdLineEdgeStyle, lineEdgeStyleCommandHandler);
   m_ribbonRequestDispatcher->AddSelectionChangedListner(
       [](touchmind::ribbon::RibbonFramework *pRibbonFramework,
          std::shared_ptr<touchmind::selection::SelectableSupport> oldSelectedItem,
          std::shared_ptr<touchmind::selection::SelectableSupport> newSelectedItem) {
-        pRibbonFramework->GetFramework()->InvalidateUICommand(cmdLineEdgeStyle, UI_INVALIDATIONS_PROPERTY,
+        UNREFERENCED_PARAMETER(oldSelectedItem);
+        UNREFERENCED_PARAMETER(newSelectedItem);
+        pRibbonFramework->GetFramework()->InvalidateUICommand(
+            cmdLineEdgeStyle, UI_INVALIDATIONS_PROPERTY,
                                                               &UI_PKEY_Enabled);
         pRibbonFramework->GetFramework()->InvalidateUICommand(cmdLineEdgeStyle, UI_INVALIDATIONS_PROPERTY,
                                                               &UI_PKEY_SelectedItem);
@@ -226,13 +235,15 @@ void touchmind::win::TouchMindApp::_InitializeRibbon() {
   // LineColorCommandHandler
   CComPtr<IUICommandHandler> lineColorCommandHandler(new touchmind::ribbon::handler::LineColorCommandHandler(
       m_pCanvasPanel->GetContext(), m_pRibbonFramework.get(), m_ribbonRequestDispatcher.get()));
-  CHK_RES(lineColorCommandHandler, S_OK);
   m_pRibbonFramework->GetRibbonCommandHandler()->AddCommandHandler(cmdLineColor, lineColorCommandHandler);
   m_ribbonRequestDispatcher->AddSelectionChangedListner([](
       touchmind::ribbon::RibbonFramework *pRibbonFramework,
       std::shared_ptr<touchmind::selection::SelectableSupport> oldSelectedItem,
       std::shared_ptr<touchmind::selection::SelectableSupport> newSelectedItem) {
-    pRibbonFramework->GetFramework()->InvalidateUICommand(cmdLineColor, UI_INVALIDATIONS_PROPERTY, &UI_PKEY_Enabled);
+        UNREFERENCED_PARAMETER(oldSelectedItem);
+        UNREFERENCED_PARAMETER(newSelectedItem);
+        pRibbonFramework->GetFramework()->InvalidateUICommand(
+            cmdLineColor, UI_INVALIDATIONS_PROPERTY, &UI_PKEY_Enabled);
     pRibbonFramework->GetFramework()->InvalidateUICommand(cmdLineColor, UI_INVALIDATIONS_PROPERTY, &UI_PKEY_ColorType);
     pRibbonFramework->GetFramework()->InvalidateUICommand(cmdLineColor, UI_INVALIDATIONS_PROPERTY, &UI_PKEY_Color);
     pRibbonFramework->GetFramework()->InvalidateUICommand(cmdLineColor, UI_INVALIDATIONS_PROPERTY, &UI_PKEY_LargeImage);
@@ -392,13 +403,13 @@ void touchmind::win::TouchMindApp::_InitializeRibbon() {
         }
         return hr;
       });
-  CHK_HR(m_pRibbonFramework->Initialize(m_hwnd, this));
+  THROW_IF_FAILED(m_pRibbonFramework->Initialize(m_hwnd, this));
 }
 
 void touchmind::win::TouchMindApp::_InitializeShellLibrary() {
   bool win7 = touchmind::util::OSVersionChecker::IsWin7();
   if (!win7) {
-    LOG(SEVERITY_LEVEL_INFO) << L"OS is not Win7. Skip initializing shell library";
+    SPDLOG_INFO(L"OS is not Win7. Skip initializing shell library");
     return;
   }
 
@@ -408,8 +419,7 @@ void touchmind::win::TouchMindApp::_InitializeShellLibrary() {
     hr = SetCurrentProcessExplicitAppUserModelID(APPLICATION_ID);
     if (FAILED(hr)) {
       DWORD lastError = GetLastError();
-      LOG(SEVERITY_LEVEL_ERROR) << util::LastError(
-          util::LastErrorArgs(L"SetCurrentProcessExplicitAppUserModelID", lastError));
+      SPDLOG_ERROR(L"SetCurrentProcessExplicitAppUserModelID, lastError = {}", lastError);
       return;
     }
   }
@@ -434,7 +444,7 @@ void touchmind::win::TouchMindApp::_InitializeShellLibrary() {
   }
   if (FAILED(hr)) {
     DWORD lastError = GetLastError();
-    LOG(SEVERITY_LEVEL_ERROR) << util::LastError(util::LastErrorArgs(L"InitializeShell", lastError));
+    SPDLOG_ERROR(L"InitializeShell, lastError = {}", lastError);
   }
 
   if (pRemoved != nullptr) {
@@ -456,9 +466,6 @@ void touchmind::win::TouchMindApp::OnCreate(HWND hwnd, UINT message, WPARAM wPar
 }
 
 LRESULT CALLBACK touchmind::win::TouchMindApp::WndProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam) {
-#ifdef _DEBUG
-  LOG(SEVERITY_LEVEL_DEBUG_L3) << touchmind::util::WMessage(message);
-#endif
   LRESULT result = 0;
 
   if (message == WM_CREATE) {
@@ -569,7 +576,7 @@ LRESULT CALLBACK touchmind::win::TouchMindApp::WndProc(HWND hwnd, UINT message, 
       case WM_DESTROY: {
         pTouchMindApp->m_pCanvasPanel->OnDestroy();
         pTouchMindApp->GetRibbonFramework()->Destroy();
-        LOG(SEVERITY_LEVEL_INFO) << L"exit application";
+        SPDLOG_INFO(L"exit application");
         PostQuitMessage(0);
       }
         result = 1;
@@ -612,8 +619,8 @@ void touchmind::win::TouchMindApp::OnContextMenu(HWND hWnd, POINT ptLocation) {
   _GetDisplayLocation(hWnd, ptLocation);
   IUIContextualUI *pContextualUI = nullptr;
   int viewId = m_pRibbonFramework->GetRibbonCommandHandler()->GetCurrentContext();
-  CHK_HR(m_pRibbonFramework->GetFramework()->GetView(viewId, IID_PPV_ARGS(&pContextualUI)));
-  CHK_HR(pContextualUI->ShowAtLocation(ptLocation.x, ptLocation.y));
+  THROW_IF_FAILED(m_pRibbonFramework->GetFramework()->GetView(viewId, IID_PPV_ARGS(&pContextualUI)));
+  THROW_IF_FAILED(pContextualUI->ShowAtLocation(ptLocation.x, ptLocation.y));
   pContextualUI->Release();
 }
 
@@ -915,7 +922,7 @@ void touchmind::win::TouchMindApp::ClearStatusBarText() {
 }
 
 void touchmind::win::TouchMindApp::OnDebugDump() {
-  LOG(SEVERITY_LEVEL_INFO) << L"start";
+  SPDLOG_INFO(L"start");
   std::wofstream of("c:\\temp\\dump.txt");
   GetMapModel()->GetRootNodeModel()->DumpAll(of);
 
@@ -923,7 +930,7 @@ void touchmind::win::TouchMindApp::OnDebugDump() {
 
   of.close();
   SetStatusBarText(L"Dumped");
-  LOG(SEVERITY_LEVEL_INFO) << L"finished";
+  SPDLOG_INFO(L"finished");
 }
 
 void touchmind::win::TouchMindApp::OnPrint() {
@@ -939,9 +946,7 @@ void touchmind::win::TouchMindApp::OnCreateLink() {
 }
 
 bool touchmind::win::TouchMindApp::OnCreateLink_UpdateProperty() {
-  LOG_ENTER;
   bool ret = m_pCanvasPanel->GetState() == CANVAS_STATE_CREATING_LINK;
-  LOG_LEAVE_ARG(L"ret = " << ret);
   return ret;
 }
 

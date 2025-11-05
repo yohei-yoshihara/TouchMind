@@ -1,4 +1,4 @@
-#include "StdAfx.h"
+﻿#include "StdAfx.h"
 #include "touchmind/Configuration.h"
 #include "touchmind/logging/Logging.h"
 #include "touchmind/layout/LayoutManager.h"
@@ -38,7 +38,7 @@ public:
       , offsetY(_offsetY) {
   }
   touchmind::VISITOR_RESULT operator()(std::shared_ptr<touchmind::model::node::NodeModel> node) {
-    static wchar_t *colors[] = {L"red", L"green", L"yellow", L"blue", L"orange", L"gray"};
+    static std::vector<std::wstring> colors = {L"red", L"green", L"yellow", L"blue", L"orange", L"gray"};
     out << L"<!-- " << node->GetText() << L" -->" << std::endl;
     out << L"<v:rect style=\"position:absolute;margin-top:" << (node->GetY() + offsetY) << L";margin-left:"
         << (node->GetX() + offsetX) << L";width:" << node->GetWidth() << L";height:" << node->GetHeight()
@@ -388,7 +388,7 @@ void touchmind::layout::LayoutManager::RearrangeVerticalPosition(touchmind::NODE
 }
 
 void touchmind::layout::LayoutManager::PositionTree() {
-  m_node->ApplyVisitor([&](model::node::NodeModel::reference node) -> VISITOR_RESULT {
+  m_node->ApplyVisitor([&](std::shared_ptr<model::node::NodeModel> node) -> VISITOR_RESULT {
     if (m_layoutWorkDataMap.count(node->GetId()) == 0) {
       m_layoutWorkDataMap.insert(std::make_pair<NODE_ID, LayoutWorkData>(node->GetId(), LayoutWorkData()));
     }

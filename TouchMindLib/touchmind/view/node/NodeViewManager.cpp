@@ -1,4 +1,4 @@
-#include "StdAfx.h"
+﻿#include "StdAfx.h"
 #include "touchmind/logging/Logging.h"
 #include "touchmind/model/Insets.h"
 #include "touchmind/model/CurvePoints.h"
@@ -91,7 +91,7 @@ public:
       nodeView->SetHandled();
       m_nodeIdToView.insert({node->GetId(), nodeView});
     } else {
-      LOG(SEVERITY_LEVEL_WARN) << L"Failed to create an edit control";
+      SPDLOG_ERROR(L"Failed to create an edit control");
     }
   }
 
@@ -152,7 +152,7 @@ public:
         nodeView->SetHandled();
         m_nodeIdToView.insert({node->GetId(), nodeView});
       } else {
-        LOG(SEVERITY_LEVEL_WARN) << L"Failed to create an edit control";
+        SPDLOG_ERROR(L"Failed to create an edit control");
       }
     }
     return touchmind::VISITOR_RESULT_CONTINUE;
@@ -180,17 +180,14 @@ HRESULT touchmind::view::node::NodeViewManager::CreateSharedDeviceResources(touc
   if (m_pNodeShadowBrush == nullptr || m_pSelectedNodeShadowBrush1 == nullptr
       || m_pSelectedNodeShadowBrush2 == nullptr) {
     m_pNodeShadowBrush = nullptr;
-    CHK_RES(m_pNodeShadowBrush,
-            pRenderTarget->CreateSolidColorBrush(m_pConfiguration->GetDefaultShadowColor(), &m_pNodeShadowBrush));
+    THROW_IF_FAILED(pRenderTarget->CreateSolidColorBrush(m_pConfiguration->GetDefaultShadowColor(), &m_pNodeShadowBrush));
 
     m_pSelectedNodeShadowBrush1 = nullptr;
-    CHK_RES(m_pSelectedNodeShadowBrush1,
-            pRenderTarget->CreateSolidColorBrush(m_pConfiguration->GetDefaultSelectedColor1(),
+    THROW_IF_FAILED(pRenderTarget->CreateSolidColorBrush(m_pConfiguration->GetDefaultSelectedColor1(),
                                                  &m_pSelectedNodeShadowBrush1));
 
     m_pSelectedNodeShadowBrush2 = nullptr;
-    CHK_RES(m_pSelectedNodeShadowBrush2,
-            pRenderTarget->CreateSolidColorBrush(m_pConfiguration->GetDefaultSelectedColor2(),
+    THROW_IF_FAILED(pRenderTarget->CreateSolidColorBrush(m_pConfiguration->GetDefaultSelectedColor2(),
                                                  &m_pSelectedNodeShadowBrush2));
 
     m_pEditControlManager->InitializeDeviceResources(pRenderTarget);
@@ -421,7 +418,7 @@ touchmind::view::node::NodeViewManager::NodeHitTest(touchmind::Context *pContext
   FLOAT margin = 5.0f;
   std::shared_ptr<touchmind::model::node::NodeModel> result;
   auto root = m_pMapModel->GetRootNodeModel();
-  root->ApplyVisitor([&](std::shared_ptr<touchmind::model::node::NodeModel> &node) -> VISITOR_RESULT {
+  root->ApplyVisitor([&](std::shared_ptr<touchmind::model::node::NodeModel> node) -> VISITOR_RESULT {
     if (((!node->IsCollapsed() && !node->IsAncestorCollapsed())
          || (node->IsCollapsed() && !node->IsAncestorCollapsed()))
         && (node->GetX() - margin) <= point.x && point.x <= (node->GetX() + node->GetWidth() + margin)
@@ -439,7 +436,7 @@ touchmind::view::node::NodeViewManager::PathHitTest(touchmind::Context *pContext
                                                     D2D1_POINT_2F point) {
   std::shared_ptr<touchmind::model::path::PathModel> result;
   auto root = m_pMapModel->GetRootNodeModel();
-  root->ApplyVisitor([&](std::shared_ptr<touchmind::model::node::NodeModel> &node) -> VISITOR_RESULT {
+  root->ApplyVisitor([&](std::shared_ptr<touchmind::model::node::NodeModel> node) -> VISITOR_RESULT {
     if (((!node->IsCollapsed() && !node->IsAncestorCollapsed())
          || (node->IsCollapsed() && !node->IsAncestorCollapsed()))) {
       if (m_nodeIdToPathView.count(node->GetId()) > 0) {

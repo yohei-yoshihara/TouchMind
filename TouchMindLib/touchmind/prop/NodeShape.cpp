@@ -1,4 +1,4 @@
-#include "stdafx.h"
+﻿#include "stdafx.h"
 #include "touchmind/prop/NodeShape.h"
 
 std::wostream &touchmind::operator<<(std::wostream &os, const touchmind::NODE_SHAPE &nodeShape) {

@@ -1,4 +1,4 @@
-#ifndef TOUCHMIND_VIEW_NODE_INODEVIEW_H_
+﻿#ifndef TOUCHMIND_VIEW_NODE_INODEVIEW_H_
 #define TOUCHMIND_VIEW_NODE_INODEVIEW_H_
 
 #include "forwarddecl.h"
