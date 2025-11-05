@@ -380,11 +380,6 @@
     <ClInclude Include="touchmind\util\Utils.h" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="props\boost.props" />
-    <None Include="props\boost_x64.props" />
-    <None Include="props\boost_x86.props">
-      <SubType>Designer</SubType>
-    </None>
     <None Include="props\DirectX.props" />
     <None Include="props\DirectX_x64.props" />
     <None Include="props\DirectX_x86.props" />
