@@ -1,4 +1,4 @@
-#ifndef LIBS_H_
+﻿#ifndef LIBS_H_
 #define LIBS_H_
 
 #pragma comment(lib, "d2d1.lib")
@@ -12,6 +12,7 @@
 #pragma comment(lib, "comctl32.lib")
 #pragma comment(lib, "xpsprint.lib")
 #pragma comment(lib, "prntvpt.lib")
+#pragma comment(lib, "comsuppw.lib")
 
 #ifdef _M_X64
 
