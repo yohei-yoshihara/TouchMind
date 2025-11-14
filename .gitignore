@@ -17,7 +17,7 @@
 *.sdf
 *.suo
 *.vcxproj.user
-*.vcxproj.filters
+#*.vcxproj.filters
 *.cache
 *.bml
 *.opensdf

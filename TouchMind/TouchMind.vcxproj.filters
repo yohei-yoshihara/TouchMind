@@ -1,0 +1,204 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="TouchMind.cpp" />
+    <ClCompile Include="stdafx.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="TouchMind.h" />
+    <ClInclude Include="Resource.h" />
+    <ClInclude Include="stdafx.h" />
+    <ClInclude Include="targetver.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="default.fx" />
+    <CustomBuild Include="gauss.fx" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="TouchMind.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="cleanall.bat" />
+    <None Include="mui.bat" />
+    <None Include="mui_rcconfig.xml" />
+    <None Include="mui_x64.bat" />
+    <None Include="TouchMind_File.ico" />
+    <None Include="TouchMind.ico" />
+    <None Include="res\BackgroundColor.bmp">
+      <Filter>Images</Filter>
+    </None>
+    <None Include="res\BothSideArrowLine.bmp">
+      <Filter>Images</Filter>
+    </None>
+    <None Include="res\Copy.bmp">
+      <Filter>Images</Filter>
+    </None>
+    <None Include="res\Cut.bmp">
+      <Filter>Images</Filter>
+    </None>
+    <None Include="res\DashedLine.bmp">
+      <Filter>Images</Filter>
+    </None>
+    <None Include="res\DottedLine.bmp">
+      <Filter>Images</Filter>
+    </None>
+    <None Include="res\edge_arrow_circle.bmp">
+      <Filter>Images</Filter>
+    </None>
+    <None Include="res\edge_arrow_circle_36x36.bmp">
+      <Filter>Images</Filter>
+    </None>
+    <None Include="res\edge_both_arrow.bmp">
+      <Filter>Images</Filter>
+    </None>
+    <None Include="res\edge_both_arrow_36x36.bmp">
+      <Filter>Images</Filter>
+    </None>
+    <None Include="res\edge_both_circle.bmp">
+      <Filter>Images</Filter>
+    </None>
+    <None Include="res\edge_both_circle_36x36.bmp">
+      <Filter>Images</Filter>
+    </None>
+    <None Include="res\edge_circle_arrow.bmp">
+      <Filter>Images</Filter>
+    </None>
+    <None Include="res\edge_circle_arrow_36x36.bmp">
+      <Filter>Images</Filter>
+    </None>
+    <None Include="res\edge_edge1_arrow.bmp">
+      <Filter>Images</Filter>
+    </None>
+    <None Include="res\edge_edge1_circle.bmp">
+      <Filter>Images</Filter>
+    </None>
+    <None Include="res\edge_edge2_arrow.bmp">
+      <Filter>Images</Filter>
+    </None>
+    <None Include="res\edge_edge2_circle.bmp">
+      <Filter>Images</Filter>
+    </None>
+    <None Include="res\edge_left_arrow_36x36.bmp">
+      <Filter>Images</Filter>
+    </None>
+    <None Include="res\edge_left_circle_36x36.bmp">
+      <Filter>Images</Filter>
+    </None>
+    <None Include="res\edge_normal.bmp">
+      <Filter>Images</Filter>
+    </None>
+    <None Include="res\edge_normal_36x36.bmp">
+      <Filter>Images</Filter>
+    </None>
+    <None Include="res\edge_right_arrow_36x36.bmp">
+      <Filter>Images</Filter>
+    </None>
+    <None Include="res\edge_right_circle_36x36.bmp">
+      <Filter>Images</Filter>
+    </None>
+    <None Include="res\EditText64x64.bmp">
+      <Filter>Images</Filter>
+    </None>
+    <None Include="res\Ellipse.bmp">
+      <Filter>Images</Filter>
+    </None>
+    <None Include="res\ExitL.bmp">
+      <Filter>Images</Filter>
+    </None>
+    <None Include="res\LeftArrowLine.bmp">
+      <Filter>Images</Filter>
+    </None>
+    <None Include="res\line_dashed_36x36.bmp">
+      <Filter>Images</Filter>
+    </None>
+    <None Include="res\line_dashed_64x24.bmp">
+      <Filter>Images</Filter>
+    </None>
+    <None Include="res\line_dotted_36x36.bmp">
+      <Filter>Images</Filter>
+    </None>
+    <None Include="res\line_dotted_64x24.bmp">
+      <Filter>Images</Filter>
+    </None>
+    <None Include="res\line_solid_36x36.bmp">
+      <Filter>Images</Filter>
+    </None>
+    <None Include="res\line_solid_64x24.bmp">
+      <Filter>Images</Filter>
+    </None>
+    <None Include="res\line_width1_36x36.bmp">
+      <Filter>Images</Filter>
+    </None>
+    <None Include="res\line_width3_36x36.bmp">
+      <Filter>Images</Filter>
+    </None>
+    <None Include="res\line_width5_36x36.bmp">
+      <Filter>Images</Filter>
+    </None>
+    <None Include="res\line_width8_36x36.bmp">
+      <Filter>Images</Filter>
+    </None>
+    <None Include="res\Line1.bmp">
+      <Filter>Images</Filter>
+    </None>
+    <None Include="res\Line3.bmp">
+      <Filter>Images</Filter>
+    </None>
+    <None Include="res\Line5.bmp">
+      <Filter>Images</Filter>
+    </None>
+    <None Include="res\Line8.bmp">
+      <Filter>Images</Filter>
+    </None>
+    <None Include="res\Link.bmp">
+      <Filter>Images</Filter>
+    </None>
+    <None Include="res\NewL.bmp">
+      <Filter>Images</Filter>
+    </None>
+    <None Include="res\NewNode64x64.bmp">
+      <Filter>Images</Filter>
+    </None>
+    <None Include="res\NormalLine.bmp">
+      <Filter>Images</Filter>
+    </None>
+    <None Include="res\OpenFileL.bmp">
+      <Filter>Images</Filter>
+    </None>
+    <None Include="res\Paste.bmp">
+      <Filter>Images</Filter>
+    </None>
+    <None Include="res\PrintL.bmp">
+      <Filter>Images</Filter>
+    </None>
+    <None Include="res\PrintPreviewL.bmp">
+      <Filter>Images</Filter>
+    </None>
+    <None Include="res\Rectangle.bmp">
+      <Filter>Images</Filter>
+    </None>
+    <None Include="res\RightArrowLine.bmp">
+      <Filter>Images</Filter>
+    </None>
+    <None Include="res\RoundedRect.bmp">
+      <Filter>Images</Filter>
+    </None>
+    <None Include="res\SaveAsL.bmp">
+      <Filter>Images</Filter>
+    </None>
+    <None Include="res\SaveL.bmp">
+      <Filter>Images</Filter>
+    </None>
+    <None Include="res\TouchMindL.bmp">
+      <Filter>Images</Filter>
+    </None>
+    <None Include="res\UndoS.bmp">
+      <Filter>Images</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Images">
+      <UniqueIdentifier>{ac18f498-a4c6-40be-87cf-1f9043a73154}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>
